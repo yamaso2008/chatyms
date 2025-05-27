@@ -3,88 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - テーマ切替</title>
+    <title>ChatYMS - 多機能版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --font-primary: 'Inter', sans-serif;
 
-            /* --- Dark Mode Variables (Default) --- */
-            --dm-bg-gradient-start: #2c3e50;
+            /* Dark Mode Variables (Default) */
+            --dm-bg-gradient-start: #2c3e50; /* ... (rest of dark mode variables from previous) ... */
             --dm-bg-gradient-mid1: #34495e;
             --dm-bg-gradient-mid2: #2c3e50;
             --dm-bg-gradient-end: #1d2b34;
-
-            --dm-glass-bg: rgba(40, 55, 70, 0.65);
+            --dm-glass-bg: rgba(40, 55, 70, 0.75); /* Slightly more opaque for better readability over animated bg */
             --dm-glass-border: rgba(180, 190, 200, 0.2);
             --dm-glass-shadow: rgba(10, 15, 20, 0.3);
-
             --dm-text-primary: #e0e5ec;
             --dm-text-secondary: #a0a5b0;
             --dm-text-input: #f0f5fa;
             --dm-header-text: #e0e5ec;
-
-
             --dm-accent-glow: rgba(100, 140, 180, 0.5);
-
             --dm-user-bubble-bg: #3a506b;
             --dm-user-bubble-text: #f0f5fa;
-            --dm-bot-bubble-bg: rgba(55, 70, 85, 0.75);
-            --dm-typing-bubble-bg: rgba(65, 80, 95, 0.7);
-
+            --dm-bot-bubble-bg: rgba(55, 70, 85, 0.85); /* More opaque for markdown readability */
+            --dm-typing-dot-color: var(--dm-text-secondary);
             --dm-button-bg: #3b6978;
             --dm-button-hover-bg: #4a8091;
             --dm-button-text: #ffffff;
+            --dm-input-bg: rgba(20, 30, 40, 0.4);
+            --dm-input-focus-bg: rgba(25, 35, 45, 0.5);
+            --dm-footer-header-bg: rgba(0,0,0,0.2);
+            --dm-scrollbar-track: rgba(0,0,0,0.1);
+            --dm-scrollbar-thumb: rgba(255,255,255,0.2);
+            --dm-scrollbar-thumb-hover: rgba(255,255,255,0.3);
+            --dm-markdown-code-bg: rgba(0,0,0,0.3);
+            --dm-markdown-pre-bg: rgba(0,0,0,0.2);
+            --dm-markdown-border: rgba(255,255,255,0.1);
 
-            --dm-input-bg: rgba(20, 30, 40, 0.3);
-            --dm-input-focus-bg: rgba(25, 35, 45, 0.4);
-            --dm-footer-header-bg: rgba(0,0,0,0.1);
-
-            --dm-scrollbar-track: rgba(0,0,0,0.05);
-            --dm-scrollbar-thumb: rgba(255,255,255,0.15);
-            --dm-scrollbar-thumb-hover: rgba(255,255,255,0.25);
-
-
-            /* --- Light Mode Variables --- */
-            --lm-bg-gradient-start: #e8eff7; /* 明るい空色 */
+            /* Light Mode Variables */
+            --lm-bg-gradient-start: #e8eff7; /* ... (rest of light mode variables from previous) ... */
             --lm-bg-gradient-mid1: #f0f5fc;
             --lm-bg-gradient-mid2: #e8eff7;
-            --lm-bg-gradient-end: #d8e2ef; /* 少し濃い空色 */
-
-            --lm-glass-bg: rgba(255, 255, 255, 0.7); /* 半透明の白 */
+            --lm-bg-gradient-end: #d8e2ef;
+            --lm-glass-bg: rgba(255, 255, 255, 0.75); /* Slightly more opaque */
             --lm-glass-border: rgba(0, 0, 0, 0.1);
             --lm-glass-shadow: rgba(100, 100, 150, 0.15);
-
-            --lm-text-primary: #212529; /* 濃いグレー */
-            --lm-text-secondary: #5a6268; /* やや薄いグレー */
+            --lm-text-primary: #212529;
+            --lm-text-secondary: #5a6268;
             --lm-text-input: #121518;
             --lm-header-text: #1c2833;
-
-
-            --lm-accent-glow: rgba(60, 100, 190, 0.4); /* 明るい青のグロー */
-
-            --lm-user-bubble-bg: #007bff; /* 明るい青 */
+            --lm-accent-glow: rgba(60, 100, 190, 0.4);
+            --lm-user-bubble-bg: #007bff;
             --lm-user-bubble-text: #ffffff;
-            --lm-bot-bubble-bg: #e9ecef;  /* 明るいグレー */
-            --lm-typing-bubble-bg: #f0f2f5;
-
+            --lm-bot-bubble-bg: #e9ecef;
+            --lm-typing-dot-color: var(--lm-text-secondary);
             --lm-button-bg: #007bff;
             --lm-button-hover-bg: #0056b3;
             --lm-button-text: #ffffff;
-
-            --lm-input-bg: rgba(255, 255, 255, 0.5);
-            --lm-input-focus-bg: rgba(255, 255, 255, 0.8);
-            --lm-footer-header-bg: rgba(255,255,255,0.2);
-
+            --lm-input-bg: rgba(255, 255, 255, 0.6);
+            --lm-input-focus-bg: rgba(255, 255, 255, 0.9);
+            --lm-footer-header-bg: rgba(255,255,255,0.3);
             --lm-scrollbar-track: rgba(0,0,0,0.05);
-            --lm-scrollbar-thumb: rgba(0,0,0,0.2);
-            --lm-scrollbar-thumb-hover: rgba(0,0,0,0.3);
+            --lm-scrollbar-thumb: rgba(0,0,0,0.25);
+            --lm-scrollbar-thumb-hover: rgba(0,0,0,0.35);
+            --lm-markdown-code-bg: #f0f0f0;
+            --lm-markdown-pre-bg: #f8f9fa;
+            --lm-markdown-border: #ddd;
 
-
-            /* --- Mapped Variables (Defaults to Dark Mode) --- */
-            --bg-gradient-start: var(--dm-bg-gradient-start);
+            /* Mapped Variables (Defaults to Dark Mode) */
+            --bg-gradient-start: var(--dm-bg-gradient-start); /* ... (all mapped variables from previous) ... */
             --bg-gradient-mid1: var(--dm-bg-gradient-mid1);
             --bg-gradient-mid2: var(--dm-bg-gradient-mid2);
             --bg-gradient-end: var(--dm-bg-gradient-end);
@@ -99,7 +88,7 @@
             --user-bubble-bg: var(--dm-user-bubble-bg);
             --user-bubble-text-color: var(--dm-user-bubble-text);
             --bot-bubble-bg: var(--dm-bot-bubble-bg);
-            --typing-bubble-bg: var(--dm-typing-bubble-bg);
+            --typing-dot-color: var(--dm-typing-dot-color);
             --button-bg: var(--dm-button-bg);
             --button-hover-bg: var(--dm-button-hover-bg);
             --button-text-color: var(--dm-button-text);
@@ -109,13 +98,16 @@
             --scrollbar-track-bg: var(--dm-scrollbar-track);
             --scrollbar-thumb-bg: var(--dm-scrollbar-thumb);
             --scrollbar-thumb-hover-bg: var(--dm-scrollbar-thumb-hover);
+            --markdown-code-bg-color: var(--dm-markdown-code-bg);
+            --markdown-pre-bg-color: var(--dm-markdown-pre-bg);
+            --markdown-border-color: var(--dm-markdown-border);
 
             --border-radius-main: 16px;
             --border-radius-bubble: 10px;
         }
 
         body.light-mode {
-            --bg-gradient-start: var(--lm-bg-gradient-start);
+            --bg-gradient-start: var(--lm-bg-gradient-start); /* ... (all light mode mapped variables from previous) ... */
             --bg-gradient-mid1: var(--lm-bg-gradient-mid1);
             --bg-gradient-mid2: var(--lm-bg-gradient-mid2);
             --bg-gradient-end: var(--lm-bg-gradient-end);
@@ -130,7 +122,7 @@
             --user-bubble-bg: var(--lm-user-bubble-bg);
             --user-bubble-text-color: var(--lm-user-bubble-text);
             --bot-bubble-bg: var(--lm-bot-bubble-bg);
-            --typing-bubble-bg: var(--lm-typing-bubble-bg);
+            --typing-dot-color: var(--lm-typing-dot-color);
             --button-bg: var(--lm-button-bg);
             --button-hover-bg: var(--lm-button-hover-bg);
             --button-text-color: var(--lm-button-text);
@@ -140,11 +132,13 @@
             --scrollbar-track-bg: var(--lm-scrollbar-track);
             --scrollbar-thumb-bg: var(--lm-scrollbar-thumb);
             --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
+            --markdown-code-bg-color: var(--lm-markdown-code-bg);
+            --markdown-pre-bg-color: var(--lm-markdown-pre-bg);
+            --markdown-border-color: var(--lm-markdown-border);
         }
 
-
+        /* General Styles (body, chatContainer, header, h1, footer, inputs, buttons from previous) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: var(--font-primary);
             background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end));
@@ -155,221 +149,176 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 1vw; /* Use vw for responsive padding */
             overflow: hidden;
-            transition: background 0.5s ease, color 0.5s ease; /* Theme change transition */
+            transition: background 0.5s ease, color 0.5s ease;
         }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        #chatContainer { width: 100%; max-width: 700px; /* Slightly wider */ height: 90vh; max-height: 800px; background: var(--glass-bg); border-radius: var(--border-radius-main); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--glass-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease; }
+        header { padding: 10px 15px; text-align: center; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0;}
+        header h1 { font-family: var(--font-primary); font-weight: 700; font-size: 1.5rem; color: var(--header-text-color); text-shadow: 0 0 6px var(--accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease; }
+        #chatbox { flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        #chatbox::-webkit-scrollbar { width: 8px; } #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+        footer { padding: 10px 15px; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; gap: 10px; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0;}
+        #userInput { flex-grow: 1; padding: 10px 15px; border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); background: var(--input-bg); color: var(--text-input); font-size: 0.9rem; outline: none; transition: all 0.3s ease; }
+        #userInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); }
+        #sendMessage { padding: 10px 18px; border: none; border-radius: var(--border-radius-bubble); background: var(--button-bg); color: var(--button-text-color); font-size: 0.9rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+        body.light-mode #sendMessage { box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        #sendMessage:hover { background: var(--button-hover-bg); box-shadow: 0 2px 8px var(--accent-glow); } #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #chatContainer {
-            width: 100%;
-            max-width: 600px;
-            height: 85vh;
-            max-height: 700px;
-            background: var(--glass-bg);
-            border-radius: var(--border-radius-main);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 var(--glass-shadow);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
-        }
-
-        header {
-            padding: 15px 20px; /* Reduced padding slightly */
-            text-align: center;
-            background: var(--footer-header-bg-color);
-            border-bottom: 1px solid var(--glass-border);
-            display: flex; /* For theme toggle */
-            justify-content: space-between; /* For theme toggle */
-            align-items: center; /* For theme toggle */
-            transition: background 0.5s ease, border-bottom 0.5s ease;
-        }
-
-        header h1 {
-            font-family: var(--font-primary);
-            font-weight: 700;
-            font-size: 1.6rem; /* Adjusted size */
-            color: var(--header-text-color);
-            text-shadow: 0 0 6px var(--accent-glow);
-            margin-left: auto; /* Push H1 towards center if toggle is on one side */
-            margin-right: auto; /* Push H1 towards center */
-            transition: color 0.5s ease, text-shadow 0.5s ease;
-        }
-
-        #chatbox {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        #chatbox::-webkit-scrollbar { width: 8px; }
-        #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; }
-        #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; }
-        #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
-
-        .message-container { display: flex; margin-bottom: 5px; animation: fadeInSlideUp 0.3s ease-out; }
+        /* --- New Styles for Features --- */
+        .message-container { display: flex; flex-direction: column; /* Timestamps below bubble */ margin-bottom: 8px; animation: fadeInSlideUp 0.3s ease-out; }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .message-container.user-message { justify-content: flex-end; }
-        .message-container.bot-message { justify-content: flex-start; }
+        
+        .message-content-wrapper { /* Groups bubble and copy button */
+            display: flex;
+            align-items: flex-end; /* Aligns copy button with bottom of bubble */
+        }
+        .message-container.user-message .message-content-wrapper { justify-content: flex-end; }
+        .message-container.bot-message .message-content-wrapper { justify-content: flex-start; }
+
 
         .message-bubble {
             padding: 10px 15px;
             border-radius: var(--border-radius-bubble);
-            max-width: 78%;
+            max-width: 85%; /* Allow slightly wider bubbles */
             word-wrap: break-word;
-            line-height: 1.5;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Adjusted shadow for light mode */
+            line-height: 1.6;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: transform 0.15s ease, background 0.5s ease, color 0.5s ease;
+            position: relative; /* For copy button positioning if needed */
         }
-        body.light-mode .message-bubble {
-             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        body.light-mode .message-bubble { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        .user-message .message-bubble { background: var(--user-bubble-bg); color: var(--user-bubble-text-color); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble); }
+        .message-container.user-message { align-items: flex-end; } /* Align entire container for user */
+        
+        .bot-message .message-bubble { background: var(--bot-bubble-bg); color: var(--text-primary); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0; }
+        .message-container.bot-message { align-items: flex-start; } /* Align entire container for bot */
+
+        /* Timestamp */
+        .timestamp {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            margin-left: 5px; /* For bot */
+            margin-right: 5px; /* For user */
+            transition: color 0.5s ease;
         }
+        .message-container.user-message .timestamp { align-self: flex-end; }
+        .message-container.bot-message .timestamp { align-self: flex-start; }
 
-
-        .user-message .message-bubble {
-            background: var(--user-bubble-bg);
-            color: var(--user-bubble-text-color);
-            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble);
-        }
-
-        .bot-message .message-bubble {
-            background: var(--bot-bubble-bg);
-            color: var(--text-primary); /* Bot text uses primary text color of current theme */
-            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0;
-        }
-
-        .bot-message .message-bubble.typing-indicator-bubble {
-             background: var(--typing-bubble-bg);
-             font-style: italic;
-             color: var(--text-secondary);
-        }
-
-        footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--glass-border);
-            background: var(--footer-header-bg-color);
-            display: flex;
-            gap: 10px;
-            transition: background 0.5s ease, border-top 0.5s ease;
-        }
-
-        #userInput {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--glass-border);
-            border-radius: var(--border-radius-bubble);
-            background: var(--input-bg);
-            color: var(--text-input);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        #userInput:focus {
-            border-color: var(--accent-glow); /* Uses mapped accent glow */
-            box-shadow: 0 0 8px var(--accent-glow); /* Uses mapped accent glow */
-            background: var(--input-focus-bg);
-        }
-
-        #sendMessage {
-            padding: 12px 20px;
+        /* Copy Button */
+        .copy-btn {
+            background: none;
             border: none;
-            border-radius: var(--border-radius-bubble);
-            background: var(--button-bg);
-            color: var(--button-text-color);
-            font-size: 0.95rem;
-            font-weight: 500;
+            color: var(--text-secondary);
             cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            margin-left: 8px; /* Space from bot bubble */
+            opacity: 0.6;
+            transition: opacity 0.2s ease, color 0.5s ease;
         }
-         body.light-mode #sendMessage {
-             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-         }
+        .copy-btn:hover { opacity: 1; }
+        .copy-btn-copied { color: var(--button-bg) !important; font-weight: bold; }
 
-        #sendMessage:hover {
-            background: var(--button-hover-bg);
-            box-shadow: 0 2px 8px var(--accent-glow);
-        }
-        #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-
-        /* Theme Toggle Switch CSS */
-        .theme-switch-wrapper {
+        /* Advanced Typing Indicator */
+        .typing-indicator-bubble { /* This class is on the p.message-bubble */
             display: flex;
             align-items: center;
-            /* position: absolute; Ensures it doesn't push H1 too much if header is flex space-between */
-            /* right: 20px; */
+            background: var(--bot-bubble-bg) !important; /* Override general bot bubble if needed */
+            padding: 12px 15px !important;
         }
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px; /* Width of the switch */
-            height: 26px; /* Height of the switch */
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--typing-dot-color);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingDots 1.4s infinite ease-in-out both;
+            transition: background-color 0.5s ease;
         }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingDots {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
         }
-        .slider {
-            position: absolute;
+        /* Hide timestamp and copy for typing indicator */
+        .message-container.bot-message.typing .timestamp,
+        .message-container.bot-message.typing .copy-btn { display: none; }
+
+
+        /* Markdown Styles */
+        .message-bubble pre {
+            background-color: var(--markdown-pre-bg-color);
+            border: 1px solid var(--markdown-border-color);
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 8px 0;
+            transition: background-color 0.5s ease, border 0.5s ease;
+        }
+        .message-bubble code { /* Inline code */
+            background-color: var(--markdown-code-bg-color);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            transition: background-color 0.5s ease;
+        }
+        .message-bubble pre code { /* Code within pre should not have extra padding/bg */
+            background-color: transparent;
+            padding: 0;
+            font-size: inherit; /* Inherit pre's font size */
+        }
+        .message-bubble ul, .message-bubble ol {
+            margin-left: 20px;
+            padding-left: 5px;
+        }
+        .message-bubble li { margin-bottom: 4px; }
+        .message-bubble a { color: var(--button-bg); text-decoration: none; }
+        .message-bubble a:hover { text-decoration: underline; }
+        .message-bubble strong { font-weight: bold; }
+        .message-bubble em { font-style: italic; }
+        .message-bubble blockquote {
+            border-left: 3px solid var(--glass-border);
+            padding-left: 10px;
+            margin-left: 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Theme Toggle & Clear Button Wrapper */
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+        /* Clear Chat Button */
+        #clearChatButton {
+            background: none;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: var(--border-radius-bubble);
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #4c566a; /* Dark mode slider bg */
-            transition: .4s;
-            border-radius: 26px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
         }
-        body.light-mode .slider {
-            background-color: #ccc; /* Light mode slider bg */
+        #clearChatButton:hover {
+            border-color: var(--accent-glow);
+            color: var(--text-primary);
+            box-shadow: 0 0 5px var(--accent-glow);
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px; /* Height of the circle */
-            width: 18px; /* Width of the circle */
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--lm-button-bg); /* Use light mode button color for active slider */
-        }
-        body.light-mode input:checked + .slider {
-             /* Keep it consistent or use a specific light mode active color */
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px var(--lm-button-bg);
-        }
-        input:checked + .slider:before {
-            transform: translateX(24px); /* Move distance of the circle */
-        }
-        .slider.round {
-            border-radius: 26px;
-        }
-        .slider.round:before {
-            border-radius: 50%;
-        }
-
+        /* Theme Toggle Switch CSS (from previous) */
+        .theme-switch-wrapper { display: flex; align-items: center; }
+        .theme-switch { position: relative; display: inline-block; width: 46px; height: 24px; } /* Adjusted size */
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 24px; }
+        body.light-mode .slider { background-color: #ccc; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } /* Adjusted size/pos */
+        input:checked + .slider { background-color: var(--button-bg); } /* Use mapped var */
+        input:focus + .slider { box-shadow: 0 0 1px var(--button-bg); } /* Use mapped var */
+        input:checked + .slider:before { transform: translateX(22px); } /* Adjusted move distance */
     </style>
 </head>
 <body>
@@ -377,19 +326,19 @@
     <div id="chatContainer">
         <header>
             <h1>ChatYMS</h1>
-            <div class="theme-switch-wrapper">
-                <label class="theme-switch" for="themeCheckbox" title="テーマを切り替え">
-                    <input type="checkbox" id="themeCheckbox" />
-                    <span class="slider round"></span>
-                </label>
+            <div class="header-controls">
+                <button id="clearChatButton" title="チャット履歴をクリア">クリア</button>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="themeCheckbox" title="テーマを切り替え">
+                        <input type="checkbox" id="themeCheckbox" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
         </header>
 
         <div id="chatbox">
-            <div class="message-container bot-message">
-                <p class="message-bubble">こんにちは。やまそーです。</p>
             </div>
-        </div>
 
         <footer>
             <input type="text" id="userInput" placeholder="メッセージを入力...">
@@ -398,19 +347,30 @@
     </div>
 
     <script>
+        // DOM elements
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('userInput');
         const sendMessageButton = document.getElementById('sendMessage');
         const themeCheckbox = document.getElementById('themeCheckbox');
+        const clearChatButton = document.getElementById('clearChatButton');
         const bodyElement = document.body;
 
-        const API_KEY = 'ここにあなたのAPIキーを入力してください';
+        // API Config
+        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y';
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
         let conversationHistory = [];
         let typingIndicatorElement = null;
 
-        // Theme switcher logic
+        // Marked.js options (optional: for sanitization or customization)
+        // marked.setOptions({
+        //   sanitize: true, // Be cautious with this, ensure it doesn't break expected Markdown. Or use DOMPurify after parsing.
+        //   breaks: true, // Add <br> on single line breaks
+        //   gfm: true // Enable GitHub Flavored Markdown
+        // });
+
+
+        // --- Theme Switcher Logic ---
         function applyTheme(theme) {
             if (theme === 'light-mode') {
                 bodyElement.classList.add('light-mode');
@@ -420,26 +380,23 @@
                 themeCheckbox.checked = false;
             }
         }
-
         themeCheckbox.addEventListener('change', () => {
-            if (themeCheckbox.checked) {
-                localStorage.setItem('theme', 'light-mode');
-                applyTheme('light-mode');
-            } else {
-                localStorage.setItem('theme', 'dark-mode');
-                applyTheme('dark-mode');
-            }
+            const newTheme = themeCheckbox.checked ? 'light-mode' : 'dark-mode';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
         });
 
-        // Load saved theme on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark
-            applyTheme(savedTheme);
+        // --- Clear Chat Logic ---
+        clearChatButton.addEventListener('click', () => {
+            chatbox.innerHTML = '';
+            conversationHistory = [];
+            typingIndicatorElement = null; // Reset typing indicator if any
+            appendMessage("こんにちは。やまそーです。", 'bot', false, true); // Add initial greeting
         });
 
-
-        function appendMessage(text, sender, isTyping = false) {
-            if (typingIndicatorElement && (!isTyping || (isTyping && sender === 'bot'))) {
+        // --- Message Handling ---
+        function appendMessage(text, sender, isTyping = false, isInitialGreeting = false) {
+            if (typingIndicatorElement && !isInitialGreeting) { // Don't remove if it's the initial greeting while something was typing
                 typingIndicatorElement.remove();
                 typingIndicatorElement = null;
             }
@@ -448,20 +405,71 @@
             messageContainer.classList.add('message-container');
             messageContainer.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
 
+            const messageContentWrapper = document.createElement('div'); // Wrapper for bubble + copy btn
+            messageContentWrapper.classList.add('message-content-wrapper');
+
             const messageBubble = document.createElement('p');
             messageBubble.classList.add('message-bubble');
-            messageBubble.textContent = text;
 
             if (isTyping && sender === 'bot') {
-                messageBubble.classList.add('typing-indicator-bubble');
+                messageContainer.classList.add('typing'); // Add class for specific styling if needed
+                messageBubble.innerHTML = `
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>`;
                 typingIndicatorElement = messageContainer;
+            } else {
+                if (sender === 'bot') {
+                    // Render Markdown for bot messages (excluding typing indicator and simple errors)
+                    try {
+                        messageBubble.innerHTML = marked.parse(text);
+                    } catch (e) {
+                        console.error("Markdown parsing error:", e);
+                        messageBubble.textContent = text; // Fallback to text content
+                    }
+                } else {
+                    messageBubble.textContent = text; // User messages are plain text
+                }
+            }
+            
+            messageContentWrapper.appendChild(messageBubble);
+
+            // Add copy button for non-typing bot messages
+            if (sender === 'bot' && !isTyping) {
+                const copyButton = document.createElement('button');
+                copyButton.classList.add('copy-btn');
+                copyButton.textContent = 'コピー';
+                copyButton.title = 'メッセージをコピー';
+                copyButton.onclick = () => {
+                    // Try to get the original markdown text if possible, or clean text content
+                    const textToCopy = text; // For now, copy the raw text passed to appendMessage
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        copyButton.textContent = 'コピー済!';
+                        copyButton.classList.add('copy-btn-copied');
+                        setTimeout(() => {
+                            copyButton.textContent = 'コピー';
+                            copyButton.classList.remove('copy-btn-copied');
+                        }, 1500);
+                    }).catch(err => console.error('Copy failed:', err));
+                };
+                messageContentWrapper.appendChild(copyButton);
+            }
+            
+            messageContainer.appendChild(messageContentWrapper);
+
+            // Add timestamp for non-typing messages
+            if (!isTyping) {
+                const timestamp = document.createElement('span');
+                timestamp.classList.add('timestamp');
+                timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                messageContainer.appendChild(timestamp);
             }
 
-            messageContainer.appendChild(messageBubble);
             chatbox.appendChild(messageContainer);
             chatbox.scrollTop = chatbox.scrollHeight;
         }
 
+        // --- Send Message Logic (API Call) ---
         async function sendMessage() {
             const userText = userInput.value.trim();
             if (userText === "") return;
@@ -469,17 +477,13 @@
             appendMessage(userText, 'user');
             userInput.value = "";
 
-            conversationHistory.push({
-                role: "user",
-                parts: [{ text: userText }]
-            });
-
-            appendMessage("考え中です...", 'bot', true);
+            conversationHistory.push({ role: "user", parts: [{ text: userText }] });
+            appendMessage("", 'bot', true); // Show advanced typing indicator
 
             try {
                 const requestBody = {
                     contents: conversationHistory,
-                    generationConfig: {}, // Add specific configs if needed
+                    generationConfig: {},
                     safetySettings: [
                         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
                         { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -501,7 +505,12 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
+                    console.error('API Error:', errorData);
                     appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
+                    // Remove last user message from history on API error to prevent resending bad context
+                    if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') {
+                        conversationHistory.pop();
+                    }
                     return;
                 }
 
@@ -515,6 +524,7 @@
                     const blockReason = data.promptFeedback.blockReason;
                     const botText = `申し訳ありませんが、応答できません。(理由: ${blockReason})`;
                     appendMessage(botText, 'bot');
+                    // Add this "canned" response to history as well
                     conversationHistory.push({ role: "model", parts: [{ text: botText }] });
                 } else {
                     appendMessage("応答を正しく処理できませんでした。", 'bot');
@@ -527,21 +537,31 @@
                 }
                 console.error('Fetch Error:', error);
                 appendMessage("ネットワークエラーが発生しました。", 'bot');
+                 if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') {
+                    conversationHistory.pop();
+                }
             }
 
+            // Prune history
             const MAX_HISTORY_PAIRS = 10;
             if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) {
                 conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2);
             }
         }
 
+        // --- Event Listeners & Initial Setup ---
         sendMessageButton.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         });
-    </script>
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark
+            applyTheme(savedTheme);
+            appendMessage("こんにちは。やまそーです。", 'bot', false, true); // Add initial greeting
+        });
+    </script>
 </body>
 </html>
