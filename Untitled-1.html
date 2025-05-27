@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatYMS - 落ち着いたデザイン</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-primary: 'Inter', sans-serif;
+
+            /* 落ち着いたブルーグレー系のグラデーション */
+            --bg-gradient-start: #2c3e50; /* ダークスレートブルー */
+            --bg-gradient-mid1: #34495e;
+            --bg-gradient-mid2: #2c3e50; /* 少し戻すことで揺らぎを */
+            --bg-gradient-end: #1d2b34; /* さらに深いブルーグレー */
+
+
+            --glass-bg: rgba(40, 55, 70, 0.65); /* 半透明のダークブルーグレー */
+            --glass-border: rgba(180, 190, 200, 0.2); /* 半透明の明るいグレー */
+            --glass-shadow: rgba(10, 15, 20, 0.3);
+
+            --text-primary: #e0e5ec; /* やや青みがかった白 */
+            --text-secondary: #a0a5b0; /* やや暗いグレーブルー */
+            --text-input: #f0f5fa;
+
+            --accent-glow: rgba(100, 140, 180, 0.5); /* 落ち着いたブルーのグロー */
+
+            --user-bubble-bg: #3a506b; /* 落ち着いたブルー */
+            --bot-bubble-bg: rgba(55, 70, 85, 0.75); /* ユーザーより少し透明度のあるブルーグレー */
+            --typing-bubble-bg: rgba(65, 80, 95, 0.7);
+
+            --button-bg: #3b6978; /* 落ち着いたティールブルー */
+            --button-hover-bg: #4a8091; /* 少し明るいティールブルー */
+
+            --border-radius-main: 16px; /* 少しシャープに */
+            --border-radius-bubble: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end));
+            background-size: 400% 400%;
+            animation: gradientBG 30s ease infinite; /* アニメーションを少しゆっくりに */
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #chatContainer {
+            width: 100%;
+            max-width: 600px;
+            height: 85vh;
+            max-height: 700px;
+            background: var(--glass-bg);
+            border-radius: var(--border-radius-main);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            backdrop-filter: blur(10px); /* ぼかし具合を少し調整 */
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        header h1 {
+            font-family: var(--font-primary); /* プライマリフォントを使用 */
+            font-weight: 700; /* 太字に */
+            font-size: 1.8rem; /* サイズ調整 */
+            color: var(--text-primary); /* プライマリテキストカラー */
+            text-shadow: 0 0 6px var(--accent-glow); /* グローを控えめに */
+        }
+
+        #chatbox {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #chatbox::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chatbox::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+        #chatbox::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+        #chatbox::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .message-container {
+            display: flex;
+            margin-bottom: 5px;
+            animation: fadeInSlideUp 0.3s ease-out; /* アニメーションを少し速く、スムーズに */
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-container.user-message {
+            justify-content: flex-end;
+        }
+        .message-container.bot-message {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            padding: 10px 15px;
+            border-radius: var(--border-radius-bubble);
+            max-width: 78%; /* 少し最大幅を広げる */
+            word-wrap: break-word;
+            line-height: 1.5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15); /* 影をより繊細に */
+            transition: transform 0.15s ease;
+        }
+        .message-bubble:hover {
+             /* ホバーエフェクトは控えめに、または削除も可 */
+             /* transform: scale(1.01); */
+        }
+
+        .user-message .message-bubble {
+            background: var(--user-bubble-bg);
+            color: var(--text-input); /* ユーザー入力欄と同じテキスト色 */
+            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble);
+        }
+
+        .bot-message .message-bubble {
+            background: var(--bot-bubble-bg);
+            color: var(--text-primary);
+            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0;
+        }
+
+        .bot-message .message-bubble.typing-indicator-bubble {
+             background: var(--typing-bubble-bg);
+             font-style: italic;
+             color: var(--text-secondary);
+        }
+
+
+        footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-bubble);
+            background: rgba(20, 30, 40, 0.3); /* 入力欄背景を少し調整 */
+            color: var(--text-input);
+            font-size: 0.95rem; /* フォントサイズ微調整 */
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        #userInput:focus {
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 8px var(--accent-glow);
+            background: rgba(25, 35, 45, 0.4);
+        }
+
+        #sendMessage {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius-bubble);
+            background: var(--button-bg);
+            color: #fff;
+            font-size: 0.95rem; /* フォントサイズ微調整 */
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2); /* 影を調整 */
+        }
+
+        #sendMessage:hover {
+            background: var(--button-hover-bg);
+            box-shadow: 0 2px 8px var(--accent-glow); /* ホバー時のグローを少し */
+            /* transform: translateY(-1px); */ /* 動きは控えめに */
+        }
+        #sendMessage:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="chatContainer">
+        <header>
+            <h1>ChatYMS</h1>
+        </header>
+
+        <div id="chatbox">
+            <div class="message-container bot-message">
+                <p class="message-bubble">こんにちは。ChatYMSです。ご用件をどうぞ。</p>
+            </div>
+        </div>
+
+        <footer style="display: flex;"> <input type="text" id="userInput" placeholder="メッセージを入力...">
+            <button id="sendMessage">送信</button>
+        </footer>
+    </div>
+
+    <script>
+        // JavaScript部分は前回の会話履歴機能を含んだものから変更ありません。
+        // APIキーと言語モデルの設定、会話履歴の処理などはそのままです。
+
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('userInput');
+        const sendMessageButton = document.getElementById('sendMessage');
+
+        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // ★★★ 必ず自分のAPIキーに置き換えてください ★★★
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+
+        let conversationHistory = [];
+        let typingIndicatorElement = null;
+
+        function appendMessage(text, sender, isTyping = false) {
+            if (typingIndicatorElement && (!isTyping || (isTyping && sender === 'bot'))) {
+                typingIndicatorElement.remove();
+                typingIndicatorElement = null;
+            }
+
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            messageContainer.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+
+            const messageBubble = document.createElement('p');
+            messageBubble.classList.add('message-bubble');
+            messageBubble.textContent = text;
+
+            if (isTyping && sender === 'bot') {
+                messageBubble.classList.add('typing-indicator-bubble');
+                typingIndicatorElement = messageContainer;
+            }
+
+            messageContainer.appendChild(messageBubble);
+            chatbox.appendChild(messageContainer);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userText = userInput.value.trim();
+            if (userText === "") return;
+
+            appendMessage(userText, 'user');
+            userInput.value = "";
+
+            conversationHistory.push({
+                role: "user",
+                parts: [{ text: userText }]
+            });
+
+            appendMessage("考え中です...", 'bot', true);
+
+            try {
+                const requestBody = {
+                    contents: conversationHistory,
+                    generationConfig: {
+                        // temperature: 0.7,
+                        // maxOutputTokens: 250,
+                    },
+                    safetySettings: [
+                        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    ]
+                };
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (typingIndicatorElement) {
+                     typingIndicatorElement.remove();
+                     typingIndicatorElement = null;
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.candidates && data.candidates.length > 0 && data.candidates[0].content?.parts?.length > 0) {
+                    const botText = data.candidates[0].content.parts[0].text;
+                    appendMessage(botText, 'bot');
+                    conversationHistory.push({ role: "model", parts: [{ text: botText }] });
+                } else if (data.promptFeedback && data.promptFeedback.blockReason) {
+                    const blockReason = data.promptFeedback.blockReason;
+                    const botText = `申し訳ありませんが、応答できません。(理由: ${blockReason})`;
+                    appendMessage(botText, 'bot');
+                    conversationHistory.push({ role: "model", parts: [{ text: botText }] });
+                } else {
+                    appendMessage("応答を正しく処理できませんでした。", 'bot');
+                }
+
+            } catch (error) {
+                if (typingIndicatorElement) {
+                     typingIndicatorElement.remove();
+                     typingIndicatorElement = null;
+                }
+                console.error('Fetch Error:', error);
+                appendMessage("ネットワークエラーが発生しました。", 'bot');
+            }
+
+            const MAX_HISTORY_PAIRS = 10;
+            if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) {
+                conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2);
+            }
+        }
+
+        sendMessageButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+
+</body>
+</html>
