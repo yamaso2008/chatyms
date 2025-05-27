@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - やまそー</title>
+    <title>ChatYMS - 超多機能版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        /* :root CSS変数は前回の「デフォルト「やまそー」固定設定チャットボット」のものを流用 */
         :root {
-            /* CSS変数は前回のものをそのまま利用します */
+            --font-primary: 'Inter', sans-serif;
             /* Dark Mode Variables (Default) */
             --dm-bg-gradient-start: #2c3e50; --dm-bg-gradient-mid1: #34495e; --dm-bg-gradient-mid2: #2c3e50; --dm-bg-gradient-end: #1d2b34;
             --dm-glass-bg: rgba(40, 55, 70, 0.75); --dm-glass-border: rgba(180, 190, 200, 0.2); --dm-glass-shadow: rgba(10, 15, 20, 0.3);
@@ -22,6 +23,8 @@
             --dm-input-bg: rgba(20, 30, 40, 0.4); --dm-input-focus-bg: rgba(25, 35, 45, 0.5); --dm-footer-header-bg: rgba(0,0,0,0.2);
             --dm-scrollbar-track: rgba(0,0,0,0.1); --dm-scrollbar-thumb: rgba(255,255,255,0.2); --dm-scrollbar-thumb-hover: rgba(255,255,255,0.3);
             --dm-markdown-code-bg: rgba(0,0,0,0.3); --dm-markdown-pre-bg: rgba(0,0,0,0.2); --dm-markdown-border: rgba(255,255,255,0.1);
+            --dm-quick-reply-bg: rgba(60, 80, 100, 0.8); --dm-quick-reply-hover-bg: rgba(70, 90, 110, 0.9); --dm-quick-reply-text: #e0e5ec;
+            --dm-error-bubble-bg: rgba(179, 58, 58, 0.3); --dm-error-text: #ffcdd2;
 
             /* Light Mode Variables */
             --lm-bg-gradient-start: #e8eff7; --lm-bg-gradient-mid1: #f0f5fc; --lm-bg-gradient-mid2: #e8eff7; --lm-bg-gradient-end: #d8e2ef;
@@ -34,6 +37,9 @@
             --lm-input-bg: rgba(255, 255, 255, 0.6); --lm-input-focus-bg: rgba(255, 255, 255, 0.9); --lm-footer-header-bg: rgba(255,255,255,0.3);
             --lm-scrollbar-track: rgba(0,0,0,0.05); --lm-scrollbar-thumb: rgba(0,0,0,0.25); --lm-scrollbar-thumb-hover: rgba(0,0,0,0.35);
             --lm-markdown-code-bg: #f0f0f0; --lm-markdown-pre-bg: #f8f9fa; --lm-markdown-border: #ddd;
+            --lm-quick-reply-bg: #f0f2f5; --lm-quick-reply-hover-bg: #e2e6ea; --lm-quick-reply-text: #343a40;
+            --lm-error-bubble-bg: rgba(255, 204, 204, 0.8); --lm-error-text: #721c24;
+
 
             /* Mapped Variables */
             --font-primary: 'Inter', sans-serif;
@@ -47,6 +53,8 @@
             --input-bg: var(--dm-input-bg); --input-focus-bg: var(--dm-input-focus-bg); --footer-header-bg-color: var(--dm-footer-header-bg);
             --scrollbar-track-bg: var(--dm-scrollbar-track); --scrollbar-thumb-bg: var(--dm-scrollbar-thumb); --scrollbar-thumb-hover-bg: var(--dm-scrollbar-thumb-hover);
             --markdown-code-bg-color: var(--dm-markdown-code-bg); --markdown-pre-bg-color: var(--dm-markdown-pre-bg); --markdown-border-color: var(--dm-markdown-border);
+            --quick-reply-bg-color: var(--dm-quick-reply-bg); --quick-reply-hover-bg-color: var(--dm-quick-reply-hover-bg); --quick-reply-text-color: var(--dm-quick-reply-text);
+            --error-bubble-bg-color: var(--dm-error-bubble-bg); --error-text-color: var(--dm-error-text);
             --border-radius-main: 16px; --border-radius-bubble: 10px;
         }
         body.light-mode { /* Mapped Light mode variables */
@@ -60,20 +68,21 @@
             --input-bg: var(--lm-input-bg); --input-focus-bg: var(--lm-input-focus-bg); --footer-header-bg-color: var(--lm-footer-header-bg);
             --scrollbar-track-bg: var(--lm-scrollbar-track); --scrollbar-thumb-bg: var(--lm-scrollbar-thumb); --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
             --markdown-code-bg-color: var(--lm-markdown-code-bg); --markdown-pre-bg-color: var(--lm-markdown-pre-bg); --markdown-border-color: var(--lm-markdown-border);
+            --quick-reply-bg-color: var(--lm-quick-reply-bg); --quick-reply-hover-bg-color: var(--lm-quick-reply-hover-bg); --quick-reply-text-color: var(--lm-quick-reply-text);
+            --error-bubble-bg-color: var(--lm-error-bubble-bg); --error-text-color: var(--lm-error-text);
         }
-        /* General, Responsive, and Feature styles from previous version are unchanged, except for system prompt area styles which are removed */
+
+        /* General, Responsive, Feature styles from previous versions, plus new features */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; }
         body { font-family: var(--font-primary); background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end)); background-size: 400% 400%; animation: gradientBG 30s ease infinite; color: var(--text-primary); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1vw; overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        #chatContainer { width: 100%; max-width: 700px; height: 90vh; max-height: 800px; background: var(--glass-bg); border-radius: var(--border-radius-main); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--glass-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease, width 0.3s ease, height 0.3s ease; }
+        #chatContainer { width: 100%; max-width: 700px; height: 90vh; max-height: 800px; background: var(--glass-bg); border-radius: var(--border-radius-main); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--glass-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease, width 0.3s ease, height 0.3s ease; position: relative; /* For scroll to bottom button */ }
         header { padding: 0.6rem 1rem; text-align: center; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0;}
         header h1 { font-family: var(--font-primary); font-weight: 700; font-size: 1.4rem; color: var(--header-text-color); text-shadow: 0 0 6px var(--accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; text-align: center; }
         .header-controls { display: flex; align-items: center; gap: 0.8rem; }
-        #chatbox { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; border-top: 1px solid var(--glass-border); /* Add border if system prompt area is removed */ }
-        /* Styles for systemPromptArea and its children are removed */
-
-        /* Rest of the CSS for messages, scrollbar, markdown, buttons, footer, theme-toggle, responsive etc. remains the same */
+        #chatbox { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; border-top: 1px solid var(--glass-border); position: relative; }
+        /* ... (rest of existing CSS for messages, scrollbar, markdown etc. is largely the same, with minor adjustments for new features) ... */
         #chatbox::-webkit-scrollbar { width: 8px; } #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
         .message-container { display: flex; flex-direction: column; margin-bottom: 0.5rem; animation: fadeInSlideUp 0.3s ease-out; }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -83,6 +92,7 @@
         body.light-mode .message-bubble { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
         .user-message .message-bubble { background: var(--user-bubble-bg); color: var(--user-bubble-text-color); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble); } .message-container.user-message { align-items: flex-end; }
         .bot-message .message-bubble { background: var(--bot-bubble-bg); color: var(--text-primary); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0; } .message-container.bot-message { align-items: flex-start; }
+        .message-bubble.error-message { background: var(--error-bubble-bg-color); color: var(--error-text-color); border: 1px solid var(--error-text-color); } /* Error message style */
         .timestamp { font-size: 0.65rem; color: var(--text-secondary); margin-top: 0.25rem; margin-left: 0.3rem; margin-right: 0.3rem; transition: color 0.5s ease; }
         .message-container.user-message .timestamp { align-self: flex-end; } .message-container.bot-message .timestamp { align-self: flex-start; }
         .copy-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.7rem; padding: 2px 5px; margin-left: 0.5rem; opacity: 0.6; transition: opacity 0.2s ease, color 0.5s ease; }
@@ -96,21 +106,41 @@
         #clearChatButton { background: none; border: 1px solid var(--glass-border); color: var(--text-secondary); padding: 0.35rem 0.6rem; border-radius: var(--border-radius-bubble); cursor: pointer; font-size: 0.75rem; transition: all 0.3s ease; }
         #clearChatButton:hover { border-color: var(--accent-glow); color: var(--text-primary); box-shadow: 0 0 5px var(--accent-glow); }
         .theme-switch-wrapper { display: flex; align-items: center; } .theme-switch { position: relative; display: inline-block; width: 42px; height: 22px; } .theme-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 22px; } body.light-mode .slider { background-color: #ccc; } .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: var(--button-bg); } input:focus + .slider { box-shadow: 0 0 1px var(--button-bg); } input:checked + .slider:before { transform: translateX(20px); }
-        footer { padding: 0.6rem 1rem; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; gap: 0.6rem; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0; }
+        
+        /* Footer and Input Area */
+        footer { padding: 0.6rem 1rem; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0; }
+        .input-area { display: flex; gap: 0.6rem; align-items: center;}
         #userInput { flex-grow: 1; padding: 0.6rem 0.9rem; border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); background: var(--input-bg); color: var(--text-input); font-size: 0.9rem; outline: none; transition: all 0.3s ease; }
         #userInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); }
         #sendMessage { padding: 0.6rem 1.1rem; border: none; border-radius: var(--border-radius-bubble); background: var(--button-bg); color: var(--button-text-color); font-size: 0.9rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.15); } body.light-mode #sendMessage { box-shadow: 0 1px 4px rgba(0,0,0,0.1); } #sendMessage:hover { background: var(--button-hover-bg); box-shadow: 0 2px 8px var(--accent-glow); } #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        @media (max-width: 680px) { /* Mobile styles */
+        
+        /* New Feature Styles */
+        #micButton, #speakerButton { background: none; border: 1px solid var(--glass-border); color: var(--text-secondary); padding: 0.5rem; border-radius: 50%; width: 38px; height: 38px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s ease; }
+        #micButton:hover, #speakerButton:hover { border-color: var(--accent-glow); color: var(--text-primary); box-shadow: 0 0 5px var(--accent-glow); }
+        #micButton.active { background-color: var(--accent-glow); color: white; }
+        #quickRepliesContainer { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 0.5rem; justify-content: center; }
+        .quick-reply-btn { padding: 0.4rem 0.8rem; background-color: var(--quick-reply-bg-color); color: var(--quick-reply-text-color); border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); cursor: pointer; font-size: 0.8rem; transition: background-color 0.3s ease; }
+        .quick-reply-btn:hover { background-color: var(--quick-reply-hover-bg-color); }
+        #scrollToBottomButton { position: absolute; bottom: 10px; right: 10px; background-color: var(--button-bg); color: var(--button-text-color); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 100; display: none; /* Initially hidden */ transition: background-color 0.3s, opacity 0.3s; opacity: 0.8; }
+        #scrollToBottomButton:hover { opacity: 1; }
+        .retry-btn { margin-left: 10px; padding: 3px 8px; font-size: 0.75rem; background-color: var(--button-bg); color: var(--button-text-color); border: none; border-radius: 4px; cursor: pointer; }
+        .retry-btn:hover { background-color: var(--button-hover-bg); }
+
+        /* Responsive Adjustments */
+        @media (max-width: 680px) { /* Mobile styles from previous version, adapted for new elements */
             html { font-size: 15px; } body { padding: 0; overflow-y: auto; }
             #chatContainer { width: 100vw; height: 100%; min-height: 100vh; max-width: 100vw; border-radius: 0; border: none; position: fixed; top: 0; left: 0; bottom: 0; right: 0; }
             header { padding: 0.5rem 0.8rem; } header h1 { font-size: 1.2rem; } .header-controls { gap: 0.5rem; }
             #clearChatButton { padding: 0.3rem 0.5rem; font-size: 0.7rem; } .theme-switch { width: 38px; height: 20px; } .slider:before { height: 14px; width: 14px; left: 3px; bottom: 3px; } input:checked + .slider:before { transform: translateX(18px); }
-            /* SystemPromptArea related mobile styles are removed as the area itself is removed */
             #chatbox { padding: 0.8rem; gap: 0.6rem; } .message-bubble { padding: 0.5rem 0.8rem; max-width: 90%; line-height: 1.5; } .timestamp { font-size: 0.6rem; } .copy-btn { font-size: 0.65rem; padding: 1px 3px; margin-left: 0.4rem; } .typing-dot { width: 5px; height: 5px; }
-            footer { padding: 0.5rem 0.8rem; gap: 0.5rem; } #userInput, #sendMessage { font-size: 0.85rem; padding: 0.5rem 0.8rem; } #sendMessage { padding: 0.5rem 1rem; }
+            footer { padding: 0.5rem 0.8rem; gap: 0.5rem; }
+            .input-area { gap: 0.5rem; }
+            #userInput, #sendMessage { font-size: 0.85rem; padding: 0.5rem 0.8rem; } #sendMessage { padding: 0.5rem 1rem; }
+            #micButton, #speakerButton { width: 34px; height: 34px; padding: 0.4rem; }
+            .quick-reply-btn { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+            #scrollToBottomButton { width: 35px; height: 35px; font-size: 1rem; bottom: 5px; right: 5px; }
         }
         @media (max-width: 380px) { header h1 { font-size: 1.1rem; } #clearChatButton, .theme-switch-wrapper { transform: scale(0.9); } }
-
     </style>
 </head>
 <body>
@@ -125,16 +155,24 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <button id="speakerButton" title="ボットの読み上げをトグル">🔊</button> 
             </div>
         </header>
 
         <div id="chatbox">
             </div>
+        
+        <div id="quickRepliesContainer">
+            </div>
 
         <footer>
-            <input type="text" id="userInput" placeholder="メッセージを入力...">
-            <button id="sendMessage">送信</button>
+            <div class="input-area">
+                <button id="micButton" title="音声入力">🎤</button>
+                <input type="text" id="userInput" placeholder="メッセージを入力...">
+                <button id="sendMessage">送信</button>
+            </div>
         </footer>
+        <button id="scrollToBottomButton" title="一番下へスクロール">↓</button>
     </div>
 
     <script>
@@ -145,114 +183,394 @@
         const themeCheckbox = document.getElementById('themeCheckbox');
         const clearChatButton = document.getElementById('clearChatButton');
         const bodyElement = document.body;
-        // systemPromptInput と saveSystemPromptButton のDOM参照は不要になったため削除
+        const micButton = document.getElementById('micButton');
+        const speakerButton = document.getElementById('speakerButton');
+        const quickRepliesContainer = document.getElementById('quickRepliesContainer');
+        const scrollToBottomButton = document.getElementById('scrollToBottomButton');
 
         // API Config
-        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // ★★★ ご自身のAPIキーに置き換えてください ★★★
+        // Streaming API Endpoint
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${API_KEY}&alt=sse`;
+
 
         let conversationHistory = [];
         let typingIndicatorElement = null;
-        
-        // ★★★ 「やまそー」のデフォルトシステムプロンプトを直接設定 ★★★
-        const defaultYamasoPrompt = "あなたは「やまそー」という名前のAIチャットボットです。常に親しみやすく、少しユーモラスな口調で応答します。ユーザーの質問や会話に、前向きで丁寧な態度で答えてください。一人称は「僕」を基本とし、時々「やまそーはね、」のように自分の名前で話すこともあります。";
-        let currentSystemPrompt = defaultYamasoPrompt; // 常にこのプロンプトを使用
+        const defaultYamasoPrompt = "あなたは「やまそー」です。調布北高校に通う2年生5組の男子生徒で、水泳部に所属しています。得意科目は英語と数学です。友達と話すような、明るく元気な口調で、少し砕けた感じで応答してください。学校生活、部活動、勉強のこと、流行っていることなどについて話すのが好きです。一人称は「俺」か「僕」を使い、相手のことは状況に合わせて「〜さん」や名前で呼ぶように心がけてください。";;
 
-        // --- Theme Switcher Logic --- (変更なし)
-        function applyTheme(theme) {
+        let autoReadBotMessages = false; // For text-to-speech toggle
+        let lastFailedUserMessage = null; // For retry mechanism
+
+        // --- Speech Recognition (Voice Input) ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'ja-JP';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            micButton.addEventListener('click', () => {
+                if (micButton.classList.contains('active')) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch(e) {
+                        console.error("Speech recognition start error:", e);
+                        alert("音声認識を開始できませんでした。マイクが接続されているか、ブラウザの設定を確認してください。");
+                    }
+                }
+            });
+
+            recognition.onstart = () => {
+                micButton.classList.add('active');
+                micButton.textContent = '…'; // Listening indicator
+            };
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[0][0].transcript;
+                userInput.value = speechResult;
+                sendMessage(); // Automatically send after recognition
+            };
+
+            recognition.onspeechend = () => {
+                recognition.stop();
+            };
+            
+            recognition.onend = () => {
+                micButton.classList.remove('active');
+                micButton.textContent = '🎤';
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                let errorMessage = "音声認識エラーが発生しました。";
+                if (event.error === 'no-speech') errorMessage = "音声が検出されませんでした。";
+                else if (event.error === 'audio-capture') errorMessage = "マイクを認識できません。アクセス許可を確認してください。";
+                else if (event.error === 'not-allowed') errorMessage = "マイクへのアクセスが許可されていません。";
+                else if (event.error === 'network') errorMessage = "ネットワークエラーで音声認識に失敗しました。";
+                alert(errorMessage);
+                micButton.classList.remove('active');
+                micButton.textContent = '🎤';
+            };
+        } else {
+            micButton.style.display = 'none'; // Hide if not supported
+            console.warn("Speech Recognition API not supported in this browser.");
+        }
+
+        // --- Speech Synthesis (Voice Output) ---
+        const synth = window.speechSynthesis;
+        speakerButton.addEventListener('click', () => {
+            autoReadBotMessages = !autoReadBotMessages;
+            speakerButton.textContent = autoReadBotMessages ? '🔈' : '🔊';
+            speakerButton.title = autoReadBotMessages ? "ボットの読み上げオン" : "ボットの読み上げオフ";
+            if (!autoReadBotMessages && synth.speaking) {
+                synth.cancel(); // Stop any ongoing speech
+            }
+        });
+
+        function speakText(text) {
+            if (!autoReadBotMessages || !text || !synth) return;
+            if (synth.speaking) { // Cancel previous speech if any new one comes quickly
+                synth.cancel();
+            }
+            // Remove Markdown for cleaner speech
+            const plainText = text.replace(/[`*#\[\]()_~]/g, ''); // Basic Markdown removal
+            const utterance = new SpeechSynthesisUtterance(plainText);
+            utterance.lang = 'ja-JP';
+            utterance.pitch = 1;
+            utterance.rate = 1;
+            utterance.volume = 0.8;
+            synth.speak(utterance);
+        }
+        
+        // --- Theme Switcher Logic ---
+        function applyTheme(theme) { /* ... (same as before) ... */ 
             if (theme === 'light-mode') { bodyElement.classList.add('light-mode'); themeCheckbox.checked = true; } 
             else { bodyElement.classList.remove('light-mode'); themeCheckbox.checked = false; }
         }
-        themeCheckbox.addEventListener('change', () => {
+        themeCheckbox.addEventListener('change', () => { /* ... (same as before) ... */ 
             const newTheme = themeCheckbox.checked ? 'light-mode' : 'dark-mode';
             localStorage.setItem('theme', newTheme); applyTheme(newTheme);
         });
 
-        // --- Clear Chat Logic --- (変更なし)
-        clearChatButton.addEventListener('click', () => {
-            chatbox.innerHTML = ''; conversationHistory = [];
+        // --- Clear Chat Logic ---
+        clearChatButton.addEventListener('click', () => { /* ... (same as before, ensure greeting has new structure) ... */ 
+            chatbox.innerHTML = ''; conversationHistory = []; lastFailedUserMessage = null;
             if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-            appendMessage("こんにちは。やまそーです。", 'bot', false, true);
+            appendMessage("こんにちは。やまそーです。", 'bot', false, true); 
+            showInitialQuickReplies();
         });
 
-        // --- System Prompt Logic --- (UI関連の処理を削除し、デフォルトを固定)
-        // saveSystemPromptButton のイベントリスナーは削除
-        // DOMContentLoaded で localStorage から読み込む処理も、デフォルト固定のため不要に (currentSystemPrompt は上記で直接設定)
 
-        // --- Message Handling (appendMessage) --- (変更なし)
-        function appendMessage(text, sender, isTyping = false, isInitialGreeting = false) {
-            if (typingIndicatorElement && !isInitialGreeting) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-            const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
-            const messageContentWrapper = document.createElement('div'); messageContentWrapper.classList.add('message-content-wrapper');
-            const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble');
+        // --- Message Display & Handling (appendMessage - heavily modified for streaming) ---
+        let currentBotMessageElement = null; // To hold the bubble being streamed into
+        let currentBotTextContent = "";   // To accumulate streamed text
+
+        function appendMessage(text, sender, isTyping = false, isInitialGreeting = false, isError = false, errorDetails = null) {
             if (isTyping && sender === 'bot') {
-                messageContainer.classList.add('typing'); messageBubble.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
+                if (typingIndicatorElement) typingIndicatorElement.remove(); // Remove old one if any
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message-container', 'bot-message', 'typing');
+                const messageBubble = document.createElement('p');
+                messageBubble.classList.add('message-bubble', 'typing-indicator-bubble');
+                messageBubble.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
+                messageContainer.appendChild(messageBubble);
+                chatbox.appendChild(messageContainer);
                 typingIndicatorElement = messageContainer;
+                chatbox.scrollTop = chatbox.scrollHeight;
+                return typingIndicatorElement; // Return the element for streaming updates
+            }
+
+            // Remove typing indicator once actual message/response starts
+            if (typingIndicatorElement && !isInitialGreeting) {
+                typingIndicatorElement.remove();
+                typingIndicatorElement = null;
+            }
+
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
+
+            const messageContentWrapper = document.createElement('div');
+            messageContentWrapper.classList.add('message-content-wrapper');
+
+            const messageBubble = document.createElement('p');
+            messageBubble.classList.add('message-bubble');
+            if (isError) messageBubble.classList.add('error-message');
+
+            // If it's a bot message starting to stream, this bubble will be updated later
+            if (sender === 'bot' && !isTyping && !isInitialGreeting && !isError) { // This is the start of a streamed message
+                currentBotMessageElement = messageBubble; // Store for streaming
+                currentBotTextContent = ""; // Reset accumulated text
+                // Initial empty bubble, will be filled by stream
             } else {
-                if (sender === 'bot') { try { messageBubble.innerHTML = marked.parse(text); } catch (e) { console.error("Markdown parsing error:", e); messageBubble.textContent = text; } } 
-                else { messageBubble.textContent = text; }
+                if (sender === 'bot') {
+                    try { messageBubble.innerHTML = marked.parse(text); } 
+                    catch (e) { messageBubble.textContent = text; }
+                } else {
+                    messageBubble.textContent = text; // User messages
+                }
             }
+            
             messageContentWrapper.appendChild(messageBubble);
-            if (sender === 'bot' && !isTyping) {
-                const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn'); copyButton.textContent = 'コピー'; copyButton.title = 'メッセージをコピー';
-                copyButton.onclick = (e) => { e.stopPropagation(); const textToCopy = text; navigator.clipboard.writeText(textToCopy).then(() => { copyButton.textContent = 'コピー済!'; copyButton.classList.add('copy-btn-copied'); setTimeout(() => { copyButton.textContent = 'コピー'; copyButton.classList.remove('copy-btn-copied'); }, 1500); }).catch(err => console.error('Copy failed:', err)); };
-                messageContentWrapper.appendChild(copyButton);
+
+            // Add copy button for non-typing, non-error bot messages
+            // Will be added *after streaming* for streamed messages
+            if (sender === 'bot' && !isTyping && !isError && isInitialGreeting) { // Only for initial, non-streamed greeting
+                 addCopyButton(messageContentWrapper, text);
             }
+            
             messageContainer.appendChild(messageContentWrapper);
-            if (!isTyping) {
-                const timestamp = document.createElement('span'); timestamp.classList.add('timestamp'); timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                messageContainer.appendChild(timestamp);
+
+            // Add timestamp for non-typing messages
+            const timestamp = document.createElement('span');
+            timestamp.classList.add('timestamp');
+            timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            messageContainer.appendChild(timestamp);
+
+            // Add retry button for error messages
+            if (isError && lastFailedUserMessage) {
+                const retryButton = document.createElement('button');
+                retryButton.classList.add('retry-btn');
+                retryButton.textContent = '再試行';
+                retryButton.title = '最後に失敗したメッセージを再送信します';
+                retryButton.onclick = () => {
+                    if (lastFailedUserMessage) {
+                        userInput.value = lastFailedUserMessage.parts[0].text; // Put text in input
+                        sendMessage(); // Send it
+                        lastFailedUserMessage = null; // Clear after attempting retry
+                        messageContainer.remove(); // Remove the error message with retry btn
+                    }
+                };
+                // Append retry button next to or below the error message bubble
+                messageContentWrapper.appendChild(retryButton);
             }
-            chatbox.appendChild(messageContainer); chatbox.scrollTop = chatbox.scrollHeight;
+
+
+            chatbox.appendChild(messageContainer);
+            updateScrollToBottomButtonVisibility();
+            if (isScrolledToBottom()) {
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+            return messageBubble; // Return the bubble itself for potential direct updates
         }
-        
-        // --- Send Message Logic (API Call) --- (systemInstruction は currentSystemPrompt を使用)
+
+        function addCopyButton(wrapperElement, textToCopy) {
+            const copyButton = document.createElement('button');
+            copyButton.classList.add('copy-btn');
+            copyButton.textContent = 'コピー';
+            copyButton.title = 'メッセージをコピー';
+            copyButton.onclick = (e) => { /* ... (copy logic same as before) ... */ 
+                e.stopPropagation(); 
+                navigator.clipboard.writeText(textToCopy).then(() => { 
+                    copyButton.textContent = 'コピー済!'; copyButton.classList.add('copy-btn-copied'); 
+                    setTimeout(() => { copyButton.textContent = 'コピー'; copyButton.classList.remove('copy-btn-copied'); }, 1500); 
+                }).catch(err => console.error('Copy failed:', err)); 
+            };
+            wrapperElement.appendChild(copyButton);
+        }
+
+
+        // --- Send Message Logic (API Call - Modified for Streaming) ---
         async function sendMessage() {
-            const userText = userInput.value.trim(); if (userText === "") return;
-            appendMessage(userText, 'user'); userInput.value = "";
-            conversationHistory.push({ role: "user", parts: [{ text: userText }] });
-            appendMessage("", 'bot', true); 
+            const userText = userInput.value.trim();
+            if (userText === "") return;
+
+            const userMessageForHistory = { role: "user", parts: [{ text: userText }] };
+            lastFailedUserMessage = userMessageForHistory; // Store for potential retry
+
+            appendMessage(userText, 'user');
+            userInput.value = "";
+            conversationHistory.push(userMessageForHistory);
+            
+            clearQuickReplies();
+            appendMessage("", 'bot', true); // Show advanced typing indicator
+
+            currentBotMessageElement = null; // Ensure it's reset for new message
+            currentBotTextContent = "";   // Reset accumulated text
+
             try {
                 const requestBody = {
                     contents: conversationHistory,
-                    generationConfig: {},
-                    safetySettings: [ { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" } ]
+                    systemInstruction: currentSystemPrompt ? { parts: [{ text: currentSystemPrompt }] } : undefined,
+                    generationConfig: {}, safetySettings: [ /* ... */ ]
                 };
-                // Apply system prompt (which is now always the defaultYamasoPrompt)
-                if (currentSystemPrompt) { // currentSystemPrompt will always be defaultYamasoPrompt
-                    requestBody.systemInstruction = { parts: [{ text: currentSystemPrompt }] };
-                }
-                const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(requestBody) });
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
                 if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
+
                 if (!response.ok) {
-                    const errorData = await response.json(); console.error('API Error:', errorData); appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
-                    if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') { conversationHistory.pop(); } return;
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTPエラー: ${response.status} ${response.statusText}` }}));
+                    console.error('API Error:', errorData);
+                    const displayError = `APIエラー: ${errorData.error?.message || response.statusText || "不明なエラー"}`;
+                    appendMessage(displayError, 'bot', false, false, true, errorData); // isError = true
+                    // Don't pop history here, let retry use it
+                    return;
                 }
-                const data = await response.json();
-                if (data.candidates && data.candidates.length > 0 && data.candidates[0].content?.parts?.length > 0) {
-                    const botText = data.candidates[0].content.parts[0].text; appendMessage(botText, 'bot'); conversationHistory.push({ role: "model", parts: [{ text: botText }] });
-                } else if (data.promptFeedback && data.promptFeedback.blockReason) {
-                    const blockReason = data.promptFeedback.blockReason; const botText = `申し訳ありませんが、応答できません。(理由: ${blockReason})`; appendMessage(botText, 'bot'); conversationHistory.push({ role: "model", parts: [{ text: botText }] });
-                } else { appendMessage("応答を正しく処理できませんでした。", 'bot'); }
+                
+                // --- Streaming Logic ---
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let firstChunk = true;
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    const chunkText = decoder.decode(value, { stream: true });
+                    // Gemini stream for alt=sse is like "data: { ...JSON... }\n\n"
+                    const lines = chunkText.split('\n');
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const jsonStr = line.substring(5);
+                            try {
+                                const streamData = JSON.parse(jsonStr);
+                                if (streamData.candidates && streamData.candidates[0].content && streamData.candidates[0].content.parts) {
+                                    const textPart = streamData.candidates[0].content.parts[0].text;
+                                    if (textPart) {
+                                        if (firstChunk) {
+                                            // Create the bot message bubble on the first valid chunk
+                                            currentBotMessageElement = appendMessage("", 'bot'); // Get the bubble
+                                            firstChunk = false;
+                                        }
+                                        currentBotTextContent += textPart;
+                                        if (currentBotMessageElement) {
+                                            currentBotMessageElement.innerHTML = marked.parse(currentBotTextContent); // Progressive Markdown render
+                                            if (isScrolledToBottom()) chatbox.scrollTop = chatbox.scrollHeight;
+                                        }
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn("Error parsing stream JSON chunk:", e, jsonStr);
+                            }
+                        }
+                    }
+                }
+                // After stream finishes
+                if (currentBotMessageElement) {
+                     // Final Markdown parse of accumulated text
+                    currentBotMessageElement.innerHTML = marked.parse(currentBotTextContent);
+                    // Add copy button to the wrapper of currentBotMessageElement
+                    addCopyButton(currentBotMessageElement.parentElement, currentBotTextContent);
+                    speakText(currentBotTextContent); // Speak full message
+                }
+                conversationHistory.push({ role: "model", parts: [{ text: currentBotTextContent }] });
+                lastFailedUserMessage = null; // Clear on success
+
+
             } catch (error) {
                 if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-                console.error('Fetch Error:', error); appendMessage("ネットワークエラーが発生しました。", 'bot');
-                if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') { conversationHistory.pop(); }
+                console.error('Fetch/Stream Error:', error);
+                appendMessage(`ネットワークまたはストリームエラー: ${error.message}`, 'bot', false, false, true, error);
             }
+            pruneHistory();
+            showDefaultQuickReplies(); // Or context specific ones
+        }
+        
+        function pruneHistory() { /* ... (same as before) ... */ 
             const MAX_HISTORY_PAIRS = 10; if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) { conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2); }
         }
 
+        // --- Quick Replies Logic ---
+        const defaultQuickReplies = [
+            { text: "何ができる？", prompt: "あなたは何ができますか？" },
+            { text: "今日の天気は？", prompt: "東京の今日の天気を教えてください。" },
+            { text: "冗談を言って", prompt: "何か面白い冗談を言ってください。" }
+        ];
+
+        function showQuickReplies(replies) {
+            clearQuickReplies();
+            replies.forEach(reply => {
+                const button = document.createElement('button');
+                button.classList.add('quick-reply-btn');
+                button.textContent = reply.text;
+                button.onclick = () => {
+                    userInput.value = reply.prompt;
+                    sendMessage();
+                    clearQuickReplies();
+                };
+                quickRepliesContainer.appendChild(button);
+            });
+        }
+        function clearQuickReplies() { quickRepliesContainer.innerHTML = ''; }
+        function showInitialQuickReplies() { showQuickReplies(defaultQuickReplies); }
+
+        // --- Scroll to Bottom Logic ---
+        function isScrolledToBottom() {
+            return chatbox.scrollHeight - chatbox.clientHeight <= chatbox.scrollTop + 10; // Add a 10px tolerance
+        }
+
+        function updateScrollToBottomButtonVisibility() {
+            if (!isScrolledToBottom()) {
+                scrollToBottomButton.style.display = 'block';
+            } else {
+                scrollToBottomButton.style.display = 'none';
+            }
+        }
+        chatbox.addEventListener('scroll', updateScrollToBottomButtonVisibility);
+        scrollToBottomButton.addEventListener('click', () => {
+            chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: 'smooth' });
+        });
+        
         // --- Event Listeners & Initial Setup ---
         sendMessageButton.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', function(event) { if (event.key === 'Enter') { sendMessage(); } });
+        userInput.addEventListener('keypress', function(event) { if (event.key === 'Enter') sendMessage(); });
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => { /* ... (same theme & initial greeting logic as before) ... */
             const savedTheme = localStorage.getItem('theme') || 'dark-mode'; applyTheme(savedTheme);
-            
-            // ★★★ システムプロンプトは localStorage から読み込まず、常に defaultYamasoPrompt を使用 ★★★
-            // systemPromptInput.value = currentSystemPrompt; // テキストエリアが削除されたため不要
-
-            if (chatbox.children.length === 0) { appendMessage("こんにちは。やまそーです。", 'bot', false, true); }
+            currentSystemPrompt = defaultYamasoPrompt; // Set default persona
+            if (chatbox.children.length === 0) { 
+                appendMessage("こんにちは。やまそーです。", 'bot', false, true); 
+            }
+            showInitialQuickReplies();
+            updateScrollToBottomButtonVisibility(); // Initial check
         });
     </script>
 </body>
