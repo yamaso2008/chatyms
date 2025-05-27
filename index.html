@@ -3,326 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - 多機能版</title>
+    <title>ChatYMS - システムプロンプト</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --font-primary: 'Inter', sans-serif;
-
+            /* CSS変数は前回のものをそのまま利用します (ダーク/ライトモード対応済み) */
             /* Dark Mode Variables (Default) */
-            --dm-bg-gradient-start: #2c3e50; /* ... (rest of dark mode variables from previous) ... */
-            --dm-bg-gradient-mid1: #34495e;
-            --dm-bg-gradient-mid2: #2c3e50;
-            --dm-bg-gradient-end: #1d2b34;
-            --dm-glass-bg: rgba(40, 55, 70, 0.75); /* Slightly more opaque for better readability over animated bg */
-            --dm-glass-border: rgba(180, 190, 200, 0.2);
-            --dm-glass-shadow: rgba(10, 15, 20, 0.3);
-            --dm-text-primary: #e0e5ec;
-            --dm-text-secondary: #a0a5b0;
-            --dm-text-input: #f0f5fa;
-            --dm-header-text: #e0e5ec;
+            --dm-bg-gradient-start: #2c3e50; --dm-bg-gradient-mid1: #34495e; --dm-bg-gradient-mid2: #2c3e50; --dm-bg-gradient-end: #1d2b34;
+            --dm-glass-bg: rgba(40, 55, 70, 0.75); --dm-glass-border: rgba(180, 190, 200, 0.2); --dm-glass-shadow: rgba(10, 15, 20, 0.3);
+            --dm-text-primary: #e0e5ec; --dm-text-secondary: #a0a5b0; --dm-text-input: #f0f5fa; --dm-header-text: #e0e5ec;
             --dm-accent-glow: rgba(100, 140, 180, 0.5);
-            --dm-user-bubble-bg: #3a506b;
-            --dm-user-bubble-text: #f0f5fa;
-            --dm-bot-bubble-bg: rgba(55, 70, 85, 0.85); /* More opaque for markdown readability */
+            --dm-user-bubble-bg: #3a506b; --dm-user-bubble-text: #f0f5fa; --dm-bot-bubble-bg: rgba(55, 70, 85, 0.85);
             --dm-typing-dot-color: var(--dm-text-secondary);
-            --dm-button-bg: #3b6978;
-            --dm-button-hover-bg: #4a8091;
-            --dm-button-text: #ffffff;
-            --dm-input-bg: rgba(20, 30, 40, 0.4);
-            --dm-input-focus-bg: rgba(25, 35, 45, 0.5);
-            --dm-footer-header-bg: rgba(0,0,0,0.2);
-            --dm-scrollbar-track: rgba(0,0,0,0.1);
-            --dm-scrollbar-thumb: rgba(255,255,255,0.2);
-            --dm-scrollbar-thumb-hover: rgba(255,255,255,0.3);
-            --dm-markdown-code-bg: rgba(0,0,0,0.3);
-            --dm-markdown-pre-bg: rgba(0,0,0,0.2);
-            --dm-markdown-border: rgba(255,255,255,0.1);
+            --dm-button-bg: #3b6978; --dm-button-hover-bg: #4a8091; --dm-button-text: #ffffff;
+            --dm-input-bg: rgba(20, 30, 40, 0.4); --dm-input-focus-bg: rgba(25, 35, 45, 0.5); --dm-footer-header-bg: rgba(0,0,0,0.2);
+            --dm-scrollbar-track: rgba(0,0,0,0.1); --dm-scrollbar-thumb: rgba(255,255,255,0.2); --dm-scrollbar-thumb-hover: rgba(255,255,255,0.3);
+            --dm-markdown-code-bg: rgba(0,0,0,0.3); --dm-markdown-pre-bg: rgba(0,0,0,0.2); --dm-markdown-border: rgba(255,255,255,0.1);
 
             /* Light Mode Variables */
-            --lm-bg-gradient-start: #e8eff7; /* ... (rest of light mode variables from previous) ... */
-            --lm-bg-gradient-mid1: #f0f5fc;
-            --lm-bg-gradient-mid2: #e8eff7;
-            --lm-bg-gradient-end: #d8e2ef;
-            --lm-glass-bg: rgba(255, 255, 255, 0.75); /* Slightly more opaque */
-            --lm-glass-border: rgba(0, 0, 0, 0.1);
-            --lm-glass-shadow: rgba(100, 100, 150, 0.15);
-            --lm-text-primary: #212529;
-            --lm-text-secondary: #5a6268;
-            --lm-text-input: #121518;
-            --lm-header-text: #1c2833;
+            --lm-bg-gradient-start: #e8eff7; --lm-bg-gradient-mid1: #f0f5fc; --lm-bg-gradient-mid2: #e8eff7; --lm-bg-gradient-end: #d8e2ef;
+            --lm-glass-bg: rgba(255, 255, 255, 0.75); --lm-glass-border: rgba(0, 0, 0, 0.1); --lm-glass-shadow: rgba(100, 100, 150, 0.15);
+            --lm-text-primary: #212529; --lm-text-secondary: #5a6268; --lm-text-input: #121518; --lm-header-text: #1c2833;
             --lm-accent-glow: rgba(60, 100, 190, 0.4);
-            --lm-user-bubble-bg: #007bff;
-            --lm-user-bubble-text: #ffffff;
-            --lm-bot-bubble-bg: #e9ecef;
+            --lm-user-bubble-bg: #007bff; --lm-user-bubble-text: #ffffff; --lm-bot-bubble-bg: #e9ecef;
             --lm-typing-dot-color: var(--lm-text-secondary);
-            --lm-button-bg: #007bff;
-            --lm-button-hover-bg: #0056b3;
-            --lm-button-text: #ffffff;
-            --lm-input-bg: rgba(255, 255, 255, 0.6);
-            --lm-input-focus-bg: rgba(255, 255, 255, 0.9);
-            --lm-footer-header-bg: rgba(255,255,255,0.3);
-            --lm-scrollbar-track: rgba(0,0,0,0.05);
-            --lm-scrollbar-thumb: rgba(0,0,0,0.25);
-            --lm-scrollbar-thumb-hover: rgba(0,0,0,0.35);
-            --lm-markdown-code-bg: #f0f0f0;
-            --lm-markdown-pre-bg: #f8f9fa;
-            --lm-markdown-border: #ddd;
+            --lm-button-bg: #007bff; --lm-button-hover-bg: #0056b3; --lm-button-text: #ffffff;
+            --lm-input-bg: rgba(255, 255, 255, 0.6); --lm-input-focus-bg: rgba(255, 255, 255, 0.9); --lm-footer-header-bg: rgba(255,255,255,0.3);
+            --lm-scrollbar-track: rgba(0,0,0,0.05); --lm-scrollbar-thumb: rgba(0,0,0,0.25); --lm-scrollbar-thumb-hover: rgba(0,0,0,0.35);
+            --lm-markdown-code-bg: #f0f0f0; --lm-markdown-pre-bg: #f8f9fa; --lm-markdown-border: #ddd;
 
-            /* Mapped Variables (Defaults to Dark Mode) */
-            --bg-gradient-start: var(--dm-bg-gradient-start); /* ... (all mapped variables from previous) ... */
-            --bg-gradient-mid1: var(--dm-bg-gradient-mid1);
-            --bg-gradient-mid2: var(--dm-bg-gradient-mid2);
-            --bg-gradient-end: var(--dm-bg-gradient-end);
-            --glass-bg: var(--dm-glass-bg);
-            --glass-border: var(--dm-glass-border);
-            --glass-shadow: var(--dm-glass-shadow);
-            --text-primary: var(--dm-text-primary);
-            --text-secondary: var(--dm-text-secondary);
-            --text-input: var(--dm-text-input);
-            --header-text-color: var(--dm-header-text);
+            /* Mapped Variables */
+            --font-primary: 'Inter', sans-serif;
+            --bg-gradient-start: var(--dm-bg-gradient-start); --bg-gradient-mid1: var(--dm-bg-gradient-mid1); --bg-gradient-mid2: var(--dm-bg-gradient-mid2); --bg-gradient-end: var(--dm-bg-gradient-end);
+            --glass-bg: var(--dm-glass-bg); --glass-border: var(--dm-glass-border); --glass-shadow: var(--dm-glass-shadow);
+            --text-primary: var(--dm-text-primary); --text-secondary: var(--dm-text-secondary); --text-input: var(--dm-text-input); --header-text-color: var(--dm-header-text);
             --accent-glow: var(--dm-accent-glow);
-            --user-bubble-bg: var(--dm-user-bubble-bg);
-            --user-bubble-text-color: var(--dm-user-bubble-text);
-            --bot-bubble-bg: var(--dm-bot-bubble-bg);
+            --user-bubble-bg: var(--dm-user-bubble-bg); --user-bubble-text-color: var(--dm-user-bubble-text); --bot-bubble-bg: var(--dm-bot-bubble-bg);
             --typing-dot-color: var(--dm-typing-dot-color);
-            --button-bg: var(--dm-button-bg);
-            --button-hover-bg: var(--dm-button-hover-bg);
-            --button-text-color: var(--dm-button-text);
-            --input-bg: var(--dm-input-bg);
-            --input-focus-bg: var(--dm-input-focus-bg);
-            --footer-header-bg-color: var(--dm-footer-header-bg);
-            --scrollbar-track-bg: var(--dm-scrollbar-track);
-            --scrollbar-thumb-bg: var(--dm-scrollbar-thumb);
-            --scrollbar-thumb-hover-bg: var(--dm-scrollbar-thumb-hover);
-            --markdown-code-bg-color: var(--dm-markdown-code-bg);
-            --markdown-pre-bg-color: var(--dm-markdown-pre-bg);
-            --markdown-border-color: var(--dm-markdown-border);
-
-            --border-radius-main: 16px;
-            --border-radius-bubble: 10px;
+            --button-bg: var(--dm-button-bg); --button-hover-bg: var(--dm-button-hover-bg); --button-text-color: var(--dm-button-text);
+            --input-bg: var(--dm-input-bg); --input-focus-bg: var(--dm-input-focus-bg); --footer-header-bg-color: var(--dm-footer-header-bg);
+            --scrollbar-track-bg: var(--dm-scrollbar-track); --scrollbar-thumb-bg: var(--dm-scrollbar-thumb); --scrollbar-thumb-hover-bg: var(--dm-scrollbar-thumb-hover);
+            --markdown-code-bg-color: var(--dm-markdown-code-bg); --markdown-pre-bg-color: var(--dm-markdown-pre-bg); --markdown-border-color: var(--dm-markdown-border);
+            --border-radius-main: 16px; --border-radius-bubble: 10px;
         }
-
-        body.light-mode {
-            --bg-gradient-start: var(--lm-bg-gradient-start); /* ... (all light mode mapped variables from previous) ... */
-            --bg-gradient-mid1: var(--lm-bg-gradient-mid1);
-            --bg-gradient-mid2: var(--lm-bg-gradient-mid2);
-            --bg-gradient-end: var(--lm-bg-gradient-end);
-            --glass-bg: var(--lm-glass-bg);
-            --glass-border: var(--lm-glass-border);
-            --glass-shadow: var(--lm-glass-shadow);
-            --text-primary: var(--lm-text-primary);
-            --text-secondary: var(--lm-text-secondary);
-            --text-input: var(--lm-text-input);
-            --header-text-color: var(--lm-header-text);
+        body.light-mode { /* Mapped Light mode variables */
+            --bg-gradient-start: var(--lm-bg-gradient-start); --bg-gradient-mid1: var(--lm-bg-gradient-mid1); --bg-gradient-mid2: var(--lm-bg-gradient-mid2); --bg-gradient-end: var(--lm-bg-gradient-end);
+            --glass-bg: var(--lm-glass-bg); --glass-border: var(--lm-glass-border); --glass-shadow: var(--lm-glass-shadow);
+            --text-primary: var(--lm-text-primary); --text-secondary: var(--lm-text-secondary); --text-input: var(--lm-text-input); --header-text-color: var(--lm-header-text);
             --accent-glow: var(--lm-accent-glow);
-            --user-bubble-bg: var(--lm-user-bubble-bg);
-            --user-bubble-text-color: var(--lm-user-bubble-text);
-            --bot-bubble-bg: var(--lm-bot-bubble-bg);
+            --user-bubble-bg: var(--lm-user-bubble-bg); --user-bubble-text-color: var(--lm-user-bubble-text); --bot-bubble-bg: var(--lm-bot-bubble-bg);
             --typing-dot-color: var(--lm-typing-dot-color);
-            --button-bg: var(--lm-button-bg);
-            --button-hover-bg: var(--lm-button-hover-bg);
-            --button-text-color: var(--lm-button-text);
-            --input-bg: var(--lm-input-bg);
-            --input-focus-bg: var(--lm-input-focus-bg);
-            --footer-header-bg-color: var(--lm-footer-header-bg);
-            --scrollbar-track-bg: var(--lm-scrollbar-track);
-            --scrollbar-thumb-bg: var(--lm-scrollbar-thumb);
-            --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
-            --markdown-code-bg-color: var(--lm-markdown-code-bg);
-            --markdown-pre-bg-color: var(--lm-markdown-pre-bg);
-            --markdown-border-color: var(--lm-markdown-border);
+            --button-bg: var(--lm-button-bg); --button-hover-bg: var(--lm-button-hover-bg); --button-text-color: var(--lm-button-text);
+            --input-bg: var(--lm-input-bg); --input-focus-bg: var(--lm-input-focus-bg); --footer-header-bg-color: var(--lm-footer-header-bg);
+            --scrollbar-track-bg: var(--lm-scrollbar-track); --scrollbar-thumb-bg: var(--lm-scrollbar-thumb); --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
+            --markdown-code-bg-color: var(--lm-markdown-code-bg); --markdown-pre-bg-color: var(--lm-markdown-pre-bg); --markdown-border-color: var(--lm-markdown-border);
         }
 
-        /* General Styles (body, chatContainer, header, h1, footer, inputs, buttons from previous) */
+        /* General, Responsive, and Feature styles from previous version */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: var(--font-primary);
-            background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end));
-            background-size: 400% 400%;
-            animation: gradientBG 30s ease infinite;
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1vw; /* Use vw for responsive padding */
-            overflow: hidden;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
+        html { font-size: 16px; }
+        body { font-family: var(--font-primary); background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end)); background-size: 400% 400%; animation: gradientBG 30s ease infinite; color: var(--text-primary); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1vw; overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        #chatContainer { width: 100%; max-width: 700px; /* Slightly wider */ height: 90vh; max-height: 800px; background: var(--glass-bg); border-radius: var(--border-radius-main); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--glass-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease; }
-        header { padding: 10px 15px; text-align: center; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0;}
-        header h1 { font-family: var(--font-primary); font-weight: 700; font-size: 1.5rem; color: var(--header-text-color); text-shadow: 0 0 6px var(--accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease; }
-        #chatbox { flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        #chatContainer { width: 100%; max-width: 700px; height: 90vh; max-height: 800px; background: var(--glass-bg); border-radius: var(--border-radius-main); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px 0 var(--glass-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease, width 0.3s ease, height 0.3s ease; }
+        header { padding: 0.6rem 1rem; text-align: center; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0;}
+        header h1 { font-family: var(--font-primary); font-weight: 700; font-size: 1.4rem; color: var(--header-text-color); text-shadow: 0 0 6px var(--accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; text-align: center; }
+        .header-controls { display: flex; align-items: center; gap: 0.8rem; /* Removed margin-left: auto to allow h1 to truly center with space-between */ }
+        #chatbox { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; }
         #chatbox::-webkit-scrollbar { width: 8px; } #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
-        footer { padding: 10px 15px; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; gap: 10px; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0;}
-        #userInput { flex-grow: 1; padding: 10px 15px; border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); background: var(--input-bg); color: var(--text-input); font-size: 0.9rem; outline: none; transition: all 0.3s ease; }
-        #userInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); }
-        #sendMessage { padding: 10px 18px; border: none; border-radius: var(--border-radius-bubble); background: var(--button-bg); color: var(--button-text-color); font-size: 0.9rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
-        body.light-mode #sendMessage { box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-        #sendMessage:hover { background: var(--button-hover-bg); box-shadow: 0 2px 8px var(--accent-glow); } #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-
-        /* --- New Styles for Features --- */
-        .message-container { display: flex; flex-direction: column; /* Timestamps below bubble */ margin-bottom: 8px; animation: fadeInSlideUp 0.3s ease-out; }
+        .message-container { display: flex; flex-direction: column; margin-bottom: 0.5rem; animation: fadeInSlideUp 0.3s ease-out; }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .message-content-wrapper { /* Groups bubble and copy button */
-            display: flex;
-            align-items: flex-end; /* Aligns copy button with bottom of bubble */
-        }
-        .message-container.user-message .message-content-wrapper { justify-content: flex-end; }
-        .message-container.bot-message .message-content-wrapper { justify-content: flex-start; }
-
-
-        .message-bubble {
-            padding: 10px 15px;
-            border-radius: var(--border-radius-bubble);
-            max-width: 85%; /* Allow slightly wider bubbles */
-            word-wrap: break-word;
-            line-height: 1.6;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.15s ease, background 0.5s ease, color 0.5s ease;
-            position: relative; /* For copy button positioning if needed */
-        }
+        .message-content-wrapper { display: flex; align-items: flex-end; width: 100%; }
+        .message-container.user-message .message-content-wrapper { justify-content: flex-end; } .message-container.bot-message .message-content-wrapper { justify-content: flex-start; }
+        .message-bubble { padding: 0.6rem 0.9rem; border-radius: var(--border-radius-bubble); max-width: 85%; line-height: 1.55; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.15s ease, background 0.5s ease, color 0.5s ease; display: inline-block; text-align: left; overflow-wrap: break-word; }
         body.light-mode .message-bubble { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-
-        .user-message .message-bubble { background: var(--user-bubble-bg); color: var(--user-bubble-text-color); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble); }
-        .message-container.user-message { align-items: flex-end; } /* Align entire container for user */
+        .user-message .message-bubble { background: var(--user-bubble-bg); color: var(--user-bubble-text-color); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble); } .message-container.user-message { align-items: flex-end; }
+        .bot-message .message-bubble { background: var(--bot-bubble-bg); color: var(--text-primary); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0; } .message-container.bot-message { align-items: flex-start; }
+        .timestamp { font-size: 0.65rem; color: var(--text-secondary); margin-top: 0.25rem; margin-left: 0.3rem; margin-right: 0.3rem; transition: color 0.5s ease; }
+        .message-container.user-message .timestamp { align-self: flex-end; } .message-container.bot-message .timestamp { align-self: flex-start; }
+        .copy-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.7rem; padding: 2px 5px; margin-left: 0.5rem; opacity: 0.6; transition: opacity 0.2s ease, color 0.5s ease; }
+        .copy-btn:hover { opacity: 1; } .copy-btn-copied { color: var(--button-bg) !important; font-weight: bold; }
+        .typing-indicator-bubble { display: flex; align-items: center; background: var(--bot-bubble-bg) !important; padding: 0.7rem 0.9rem !important; }
+        .typing-dot { width: 6px; height: 6px; background-color: var(--typing-dot-color); border-radius: 50%; margin: 0 2px; animation: typingDots 1.4s infinite ease-in-out both; transition: background-color 0.5s ease; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingDots { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        .message-container.bot-message.typing .timestamp, .message-container.bot-message.typing .copy-btn { display: none; }
+        .message-bubble pre { background-color: var(--markdown-pre-bg-color); border: 1px solid var(--markdown-border-color); border-radius: 4px; padding: 0.6rem; overflow-x: auto; font-size: 0.8rem; margin: 0.5rem 0; transition: background-color 0.5s ease, border 0.5s ease; } .message-bubble code { background-color: var(--markdown-code-bg-color); padding: 2px 4px; border-radius: 3px; font-size: 0.85em; transition: background-color 0.5s ease; } .message-bubble pre code { background-color: transparent; padding: 0; font-size: inherit; } .message-bubble ul, .message-bubble ol { margin-left: 1.2rem; padding-left: 0.3rem; } .message-bubble li { margin-bottom: 0.25rem; } .message-bubble a { color: var(--button-bg); text-decoration: none; } .message-bubble a:hover { text-decoration: underline; } .message-bubble strong { font-weight: bold; } .message-bubble em { font-style: italic; } .message-bubble blockquote { border-left: 3px solid var(--glass-border); padding-left: 0.6rem; margin-left: 0; color: var(--text-secondary); font-style: italic; }
+        #clearChatButton { background: none; border: 1px solid var(--glass-border); color: var(--text-secondary); padding: 0.35rem 0.6rem; border-radius: var(--border-radius-bubble); cursor: pointer; font-size: 0.75rem; transition: all 0.3s ease; }
+        #clearChatButton:hover { border-color: var(--accent-glow); color: var(--text-primary); box-shadow: 0 0 5px var(--accent-glow); }
+        .theme-switch-wrapper { display: flex; align-items: center; } .theme-switch { position: relative; display: inline-block; width: 42px; height: 22px; } .theme-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 22px; } body.light-mode .slider { background-color: #ccc; } .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: var(--button-bg); } input:focus + .slider { box-shadow: 0 0 1px var(--button-bg); } input:checked + .slider:before { transform: translateX(20px); }
+        footer { padding: 0.6rem 1rem; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; gap: 0.6rem; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0; }
+        #userInput { flex-grow: 1; padding: 0.6rem 0.9rem; border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); background: var(--input-bg); color: var(--text-input); font-size: 0.9rem; outline: none; transition: all 0.3s ease; }
+        #userInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); }
+        #sendMessage { padding: 0.6rem 1.1rem; border: none; border-radius: var(--border-radius-bubble); background: var(--button-bg); color: var(--button-text-color); font-size: 0.9rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.15); } body.light-mode #sendMessage { box-shadow: 0 1px 4px rgba(0,0,0,0.1); } #sendMessage:hover { background: var(--button-hover-bg); box-shadow: 0 2px 8px var(--accent-glow); } #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
         
-        .bot-message .message-bubble { background: var(--bot-bubble-bg); color: var(--text-primary); border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0; }
-        .message-container.bot-message { align-items: flex-start; } /* Align entire container for bot */
-
-        /* Timestamp */
-        .timestamp {
-            font-size: 0.7rem;
+        /* --- Styles for System Prompt Area --- */
+        #systemPromptArea {
+            padding: 0.8rem 1rem;
+            background: var(--footer-header-bg-color); /* Match header/footer bg */
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: background 0.5s ease, border-bottom 0.5s ease;
+            flex-shrink: 0;
+        }
+        .system-prompt-label {
+            font-size: 0.8rem;
+            font-weight: 500;
             color: var(--text-secondary);
-            margin-top: 4px;
-            margin-left: 5px; /* For bot */
-            margin-right: 5px; /* For user */
             transition: color 0.5s ease;
         }
-        .message-container.user-message .timestamp { align-self: flex-end; }
-        .message-container.bot-message .timestamp { align-self: flex-start; }
-
-        /* Copy Button */
-        .copy-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            margin-left: 8px; /* Space from bot bubble */
-            opacity: 0.6;
-            transition: opacity 0.2s ease, color 0.5s ease;
-        }
-        .copy-btn:hover { opacity: 1; }
-        .copy-btn-copied { color: var(--button-bg) !important; font-weight: bold; }
-
-        /* Advanced Typing Indicator */
-        .typing-indicator-bubble { /* This class is on the p.message-bubble */
-            display: flex;
-            align-items: center;
-            background: var(--bot-bubble-bg) !important; /* Override general bot bubble if needed */
-            padding: 12px 15px !important;
-        }
-        .typing-dot {
-            width: 7px;
-            height: 7px;
-            background-color: var(--typing-dot-color);
-            border-radius: 50%;
-            margin: 0 2px;
-            animation: typingDots 1.4s infinite ease-in-out both;
-            transition: background-color 0.5s ease;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes typingDots {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1.0); }
-        }
-        /* Hide timestamp and copy for typing indicator */
-        .message-container.bot-message.typing .timestamp,
-        .message-container.bot-message.typing .copy-btn { display: none; }
-
-
-        /* Markdown Styles */
-        .message-bubble pre {
-            background-color: var(--markdown-pre-bg-color);
-            border: 1px solid var(--markdown-border-color);
-            border-radius: 4px;
-            padding: 10px;
-            overflow-x: auto;
-            font-size: 0.85em;
-            margin: 8px 0;
-            transition: background-color 0.5s ease, border 0.5s ease;
-        }
-        .message-bubble code { /* Inline code */
-            background-color: var(--markdown-code-bg-color);
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 0.9em;
-            transition: background-color 0.5s ease;
-        }
-        .message-bubble pre code { /* Code within pre should not have extra padding/bg */
-            background-color: transparent;
-            padding: 0;
-            font-size: inherit; /* Inherit pre's font size */
-        }
-        .message-bubble ul, .message-bubble ol {
-            margin-left: 20px;
-            padding-left: 5px;
-        }
-        .message-bubble li { margin-bottom: 4px; }
-        .message-bubble a { color: var(--button-bg); text-decoration: none; }
-        .message-bubble a:hover { text-decoration: underline; }
-        .message-bubble strong { font-weight: bold; }
-        .message-bubble em { font-style: italic; }
-        .message-bubble blockquote {
-            border-left: 3px solid var(--glass-border);
-            padding-left: 10px;
-            margin-left: 0;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* Theme Toggle & Clear Button Wrapper */
-        .header-controls { display: flex; align-items: center; gap: 15px; }
-        /* Clear Chat Button */
-        #clearChatButton {
-            background: none;
+        #systemPromptInput {
+            width: 100%;
+            padding: 0.5rem 0.7rem;
+            border-radius: calc(var(--border-radius-bubble) - 4px); /* Slightly smaller radius */
             border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            padding: 6px 10px;
-            border-radius: var(--border-radius-bubble);
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-input);
+            font-family: var(--font-primary);
+            font-size: 0.85rem;
+            resize: vertical; /* Allow vertical resize */
+            min-height: 40px; /* Minimum height for 2 rows approx */
+            transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
         }
-        #clearChatButton:hover {
+        #systemPromptInput:focus {
             border-color: var(--accent-glow);
-            color: var(--text-primary);
-            box-shadow: 0 0 5px var(--accent-glow);
+            box-shadow: 0 0 8px var(--accent-glow);
+            background: var(--input-focus-bg);
+            outline: none;
+        }
+        #saveSystemPromptButton {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: calc(var(--border-radius-bubble) - 4px);
+            background: var(--button-bg);
+            color: var(--button-text-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start; /* Align button to the left */
+        }
+        #saveSystemPromptButton:hover {
+            background: var(--button-hover-bg);
+            box-shadow: 0 1px 5px var(--accent-glow);
         }
 
-        /* Theme Toggle Switch CSS (from previous) */
-        .theme-switch-wrapper { display: flex; align-items: center; }
-        .theme-switch { position: relative; display: inline-block; width: 46px; height: 24px; } /* Adjusted size */
-        .theme-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 24px; }
-        body.light-mode .slider { background-color: #ccc; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } /* Adjusted size/pos */
-        input:checked + .slider { background-color: var(--button-bg); } /* Use mapped var */
-        input:focus + .slider { box-shadow: 0 0 1px var(--button-bg); } /* Use mapped var */
-        input:checked + .slider:before { transform: translateX(22px); } /* Adjusted move distance */
+
+        /* Mobile Optimization (from previous) */
+        @media (max-width: 680px) {
+            html { font-size: 15px; } body { padding: 0; overflow-y: auto; }
+            #chatContainer { width: 100vw; height: 100%; min-height: 100vh; max-width: 100vw; border-radius: 0; border: none; position: fixed; top: 0; left: 0; bottom: 0; right: 0; }
+            header { padding: 0.5rem 0.8rem; } header h1 { font-size: 1.2rem; } .header-controls { gap: 0.5rem; }
+            #clearChatButton { padding: 0.3rem 0.5rem; font-size: 0.7rem; } .theme-switch { width: 38px; height: 20px; } .slider:before { height: 14px; width: 14px; left: 3px; bottom: 3px; } input:checked + .slider:before { transform: translateX(18px); }
+            
+            #systemPromptArea { padding: 0.6rem 0.8rem; }
+            .system-prompt-label { font-size: 0.75rem; }
+            #systemPromptInput { font-size: 0.8rem; padding: 0.4rem 0.6rem; min-height: 35px;}
+            #saveSystemPromptButton { font-size: 0.75rem; padding: 0.3rem 0.6rem;}
+
+            #chatbox { padding: 0.8rem; gap: 0.6rem; } .message-bubble { padding: 0.5rem 0.8rem; max-width: 90%; line-height: 1.5; } .timestamp { font-size: 0.6rem; } .copy-btn { font-size: 0.65rem; padding: 1px 3px; margin-left: 0.4rem; } .typing-dot { width: 5px; height: 5px; }
+            footer { padding: 0.5rem 0.8rem; gap: 0.5rem; } #userInput, #sendMessage { font-size: 0.85rem; padding: 0.5rem 0.8rem; } #sendMessage { padding: 0.5rem 1rem; }
+        }
+        @media (max-width: 380px) { header h1 { font-size: 1.1rem; } #clearChatButton, .theme-switch-wrapper { transform: scale(0.9); } }
+
     </style>
 </head>
 <body>
-
     <div id="chatContainer">
         <header>
             <h1>ChatYMS</h1>
@@ -336,6 +186,12 @@
                 </div>
             </div>
         </header>
+
+        <div id="systemPromptArea">
+            <label for="systemPromptInput" class="system-prompt-label">AIの役割・設定 (システムプロンプト):</label>
+            <textarea id="systemPromptInput" rows="2" placeholder="例: あなたは親切でユーモラスなアシスタントです。"></textarea>
+            <button id="saveSystemPromptButton">設定を保存</button>
+        </div>
 
         <div id="chatbox">
             </div>
@@ -354,6 +210,8 @@
         const themeCheckbox = document.getElementById('themeCheckbox');
         const clearChatButton = document.getElementById('clearChatButton');
         const bodyElement = document.body;
+        const systemPromptInput = document.getElementById('systemPromptInput'); // New
+        const saveSystemPromptButton = document.getElementById('saveSystemPromptButton'); // New
 
         // API Config
         const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y';
@@ -361,206 +219,115 @@
 
         let conversationHistory = [];
         let typingIndicatorElement = null;
+        let currentSystemPrompt = ""; // New: To store the current system prompt
 
-        // Marked.js options (optional: for sanitization or customization)
-        // marked.setOptions({
-        //   sanitize: true, // Be cautious with this, ensure it doesn't break expected Markdown. Or use DOMPurify after parsing.
-        //   breaks: true, // Add <br> on single line breaks
-        //   gfm: true // Enable GitHub Flavored Markdown
-        // });
-
-
-        // --- Theme Switcher Logic ---
+        // --- Theme Switcher Logic --- (Same as before)
         function applyTheme(theme) {
-            if (theme === 'light-mode') {
-                bodyElement.classList.add('light-mode');
-                themeCheckbox.checked = true;
-            } else {
-                bodyElement.classList.remove('light-mode');
-                themeCheckbox.checked = false;
-            }
+            if (theme === 'light-mode') { bodyElement.classList.add('light-mode'); themeCheckbox.checked = true; } 
+            else { bodyElement.classList.remove('light-mode'); themeCheckbox.checked = false; }
         }
         themeCheckbox.addEventListener('change', () => {
             const newTheme = themeCheckbox.checked ? 'light-mode' : 'dark-mode';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme); applyTheme(newTheme);
         });
 
-        // --- Clear Chat Logic ---
+        // --- Clear Chat Logic --- (Same as before)
         clearChatButton.addEventListener('click', () => {
-            chatbox.innerHTML = '';
-            conversationHistory = [];
-            typingIndicatorElement = null; // Reset typing indicator if any
-            appendMessage("こんにちは。やまそーです。", 'bot', false, true); // Add initial greeting
+            chatbox.innerHTML = ''; conversationHistory = [];
+            if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
+            appendMessage("こんにちは。やまそーです。", 'bot', false, true);
         });
 
-        // --- Message Handling ---
+        // --- System Prompt Logic --- (New)
+        saveSystemPromptButton.addEventListener('click', () => {
+            currentSystemPrompt = systemPromptInput.value.trim();
+            localStorage.setItem('systemPrompt', currentSystemPrompt);
+            saveSystemPromptButton.textContent = '保存済';
+            setTimeout(() => { saveSystemPromptButton.textContent = '設定を保存'; }, 1500);
+        });
+
+        // --- Message Handling --- (Same as before)
         function appendMessage(text, sender, isTyping = false, isInitialGreeting = false) {
-            if (typingIndicatorElement && !isInitialGreeting) { // Don't remove if it's the initial greeting while something was typing
-                typingIndicatorElement.remove();
-                typingIndicatorElement = null;
-            }
-
-            const messageContainer = document.createElement('div');
-            messageContainer.classList.add('message-container');
-            messageContainer.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-
-            const messageContentWrapper = document.createElement('div'); // Wrapper for bubble + copy btn
-            messageContentWrapper.classList.add('message-content-wrapper');
-
-            const messageBubble = document.createElement('p');
-            messageBubble.classList.add('message-bubble');
-
+            if (typingIndicatorElement && !isInitialGreeting) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
+            const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
+            const messageContentWrapper = document.createElement('div'); messageContentWrapper.classList.add('message-content-wrapper');
+            const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble');
             if (isTyping && sender === 'bot') {
-                messageContainer.classList.add('typing'); // Add class for specific styling if needed
-                messageBubble.innerHTML = `
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>
-                    <span class="typing-dot"></span>`;
+                messageContainer.classList.add('typing'); messageBubble.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
                 typingIndicatorElement = messageContainer;
             } else {
-                if (sender === 'bot') {
-                    // Render Markdown for bot messages (excluding typing indicator and simple errors)
-                    try {
-                        messageBubble.innerHTML = marked.parse(text);
-                    } catch (e) {
-                        console.error("Markdown parsing error:", e);
-                        messageBubble.textContent = text; // Fallback to text content
-                    }
-                } else {
-                    messageBubble.textContent = text; // User messages are plain text
-                }
+                if (sender === 'bot') { try { messageBubble.innerHTML = marked.parse(text); } catch (e) { console.error("Markdown parsing error:", e); messageBubble.textContent = text; } } 
+                else { messageBubble.textContent = text; }
             }
-            
             messageContentWrapper.appendChild(messageBubble);
-
-            // Add copy button for non-typing bot messages
             if (sender === 'bot' && !isTyping) {
-                const copyButton = document.createElement('button');
-                copyButton.classList.add('copy-btn');
-                copyButton.textContent = 'コピー';
-                copyButton.title = 'メッセージをコピー';
-                copyButton.onclick = () => {
-                    // Try to get the original markdown text if possible, or clean text content
-                    const textToCopy = text; // For now, copy the raw text passed to appendMessage
-                    navigator.clipboard.writeText(textToCopy).then(() => {
-                        copyButton.textContent = 'コピー済!';
-                        copyButton.classList.add('copy-btn-copied');
-                        setTimeout(() => {
-                            copyButton.textContent = 'コピー';
-                            copyButton.classList.remove('copy-btn-copied');
-                        }, 1500);
-                    }).catch(err => console.error('Copy failed:', err));
-                };
+                const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn'); copyButton.textContent = 'コピー'; copyButton.title = 'メッセージをコピー';
+                copyButton.onclick = (e) => { e.stopPropagation(); const textToCopy = text; navigator.clipboard.writeText(textToCopy).then(() => { copyButton.textContent = 'コピー済!'; copyButton.classList.add('copy-btn-copied'); setTimeout(() => { copyButton.textContent = 'コピー'; copyButton.classList.remove('copy-btn-copied'); }, 1500); }).catch(err => console.error('Copy failed:', err)); };
                 messageContentWrapper.appendChild(copyButton);
             }
-            
             messageContainer.appendChild(messageContentWrapper);
-
-            // Add timestamp for non-typing messages
             if (!isTyping) {
-                const timestamp = document.createElement('span');
-                timestamp.classList.add('timestamp');
-                timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const timestamp = document.createElement('span'); timestamp.classList.add('timestamp'); timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 messageContainer.appendChild(timestamp);
             }
-
-            chatbox.appendChild(messageContainer);
-            chatbox.scrollTop = chatbox.scrollHeight;
+            chatbox.appendChild(messageContainer); chatbox.scrollTop = chatbox.scrollHeight;
         }
 
-        // --- Send Message Logic (API Call) ---
+        // --- Send Message Logic (API Call) --- (Modified for System Prompt)
         async function sendMessage() {
-            const userText = userInput.value.trim();
-            if (userText === "") return;
-
-            appendMessage(userText, 'user');
-            userInput.value = "";
-
+            const userText = userInput.value.trim(); if (userText === "") return;
+            appendMessage(userText, 'user'); userInput.value = "";
             conversationHistory.push({ role: "user", parts: [{ text: userText }] });
-            appendMessage("", 'bot', true); // Show advanced typing indicator
+            appendMessage("", 'bot', true); 
 
             try {
                 const requestBody = {
                     contents: conversationHistory,
                     generationConfig: {},
-                    safetySettings: [
-                        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                    ]
+                    safetySettings: [ { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" } ]
                 };
 
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if (typingIndicatorElement) {
-                     typingIndicatorElement.remove();
-                     typingIndicatorElement = null;
+                // ★★★ NEW: Add systemInstruction if currentSystemPrompt is not empty ★★★
+                if (currentSystemPrompt) {
+                    requestBody.systemInstruction = {
+                        parts: [{ text: currentSystemPrompt }]
+                    };
                 }
 
+                const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(requestBody) });
+                if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('API Error:', errorData);
-                    appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
-                    // Remove last user message from history on API error to prevent resending bad context
-                    if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') {
-                        conversationHistory.pop();
-                    }
-                    return;
+                    const errorData = await response.json(); console.error('API Error:', errorData); appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
+                    if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') { conversationHistory.pop(); } return;
                 }
-
                 const data = await response.json();
-
                 if (data.candidates && data.candidates.length > 0 && data.candidates[0].content?.parts?.length > 0) {
-                    const botText = data.candidates[0].content.parts[0].text;
-                    appendMessage(botText, 'bot');
-                    conversationHistory.push({ role: "model", parts: [{ text: botText }] });
+                    const botText = data.candidates[0].content.parts[0].text; appendMessage(botText, 'bot'); conversationHistory.push({ role: "model", parts: [{ text: botText }] });
                 } else if (data.promptFeedback && data.promptFeedback.blockReason) {
-                    const blockReason = data.promptFeedback.blockReason;
-                    const botText = `申し訳ありませんが、応答できません。(理由: ${blockReason})`;
-                    appendMessage(botText, 'bot');
-                    // Add this "canned" response to history as well
-                    conversationHistory.push({ role: "model", parts: [{ text: botText }] });
-                } else {
-                    appendMessage("応答を正しく処理できませんでした。", 'bot');
-                }
-
+                    const blockReason = data.promptFeedback.blockReason; const botText = `申し訳ありませんが、応答できません。(理由: ${blockReason})`; appendMessage(botText, 'bot'); conversationHistory.push({ role: "model", parts: [{ text: botText }] });
+                } else { appendMessage("応答を正しく処理できませんでした。", 'bot'); }
             } catch (error) {
-                if (typingIndicatorElement) {
-                     typingIndicatorElement.remove();
-                     typingIndicatorElement = null;
-                }
-                console.error('Fetch Error:', error);
-                appendMessage("ネットワークエラーが発生しました。", 'bot');
-                 if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') {
-                    conversationHistory.pop();
-                }
+                if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
+                console.error('Fetch Error:', error); appendMessage("ネットワークエラーが発生しました。", 'bot');
+                if(conversationHistory.length > 0 && conversationHistory[conversationHistory.length -1].role === 'user') { conversationHistory.pop(); }
             }
-
-            // Prune history
-            const MAX_HISTORY_PAIRS = 10;
-            if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) {
-                conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2);
-            }
+            const MAX_HISTORY_PAIRS = 10; if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) { conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2); }
         }
 
         // --- Event Listeners & Initial Setup ---
         sendMessageButton.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
+        userInput.addEventListener('keypress', function(event) { if (event.key === 'Enter') { sendMessage(); } });
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark
-            applyTheme(savedTheme);
-            appendMessage("こんにちは。やまそーです。", 'bot', false, true); // Add initial greeting
+            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; applyTheme(savedTheme);
+            
+            // Load saved system prompt
+            const savedSystemPrompt = localStorage.getItem('systemPrompt');
+            if (savedSystemPrompt) {
+                currentSystemPrompt = savedSystemPrompt;
+                systemPromptInput.value = currentSystemPrompt;
+            }
+
+            if (chatbox.children.length === 0) { appendMessage("こんにちは。やまそーです。", 'bot', false, true); }
         });
     </script>
 </body>
