@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - 落ち着いたデザイン</title>
+    <title>ChatYMS - テーマ切替</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -11,45 +11,145 @@
         :root {
             --font-primary: 'Inter', sans-serif;
 
-            /* 落ち着いたブルーグレー系のグラデーション */
-            --bg-gradient-start: #2c3e50; /* ダークスレートブルー */
-            --bg-gradient-mid1: #34495e;
-            --bg-gradient-mid2: #2c3e50; /* 少し戻すことで揺らぎを */
-            --bg-gradient-end: #1d2b34; /* さらに深いブルーグレー */
+            /* --- Dark Mode Variables (Default) --- */
+            --dm-bg-gradient-start: #2c3e50;
+            --dm-bg-gradient-mid1: #34495e;
+            --dm-bg-gradient-mid2: #2c3e50;
+            --dm-bg-gradient-end: #1d2b34;
+
+            --dm-glass-bg: rgba(40, 55, 70, 0.65);
+            --dm-glass-border: rgba(180, 190, 200, 0.2);
+            --dm-glass-shadow: rgba(10, 15, 20, 0.3);
+
+            --dm-text-primary: #e0e5ec;
+            --dm-text-secondary: #a0a5b0;
+            --dm-text-input: #f0f5fa;
+            --dm-header-text: #e0e5ec;
 
 
-            --glass-bg: rgba(40, 55, 70, 0.65); /* 半透明のダークブルーグレー */
-            --glass-border: rgba(180, 190, 200, 0.2); /* 半透明の明るいグレー */
-            --glass-shadow: rgba(10, 15, 20, 0.3);
+            --dm-accent-glow: rgba(100, 140, 180, 0.5);
 
-            --text-primary: #e0e5ec; /* やや青みがかった白 */
-            --text-secondary: #a0a5b0; /* やや暗いグレーブルー */
-            --text-input: #f0f5fa;
+            --dm-user-bubble-bg: #3a506b;
+            --dm-user-bubble-text: #f0f5fa;
+            --dm-bot-bubble-bg: rgba(55, 70, 85, 0.75);
+            --dm-typing-bubble-bg: rgba(65, 80, 95, 0.7);
 
-            --accent-glow: rgba(100, 140, 180, 0.5); /* 落ち着いたブルーのグロー */
+            --dm-button-bg: #3b6978;
+            --dm-button-hover-bg: #4a8091;
+            --dm-button-text: #ffffff;
 
-            --user-bubble-bg: #3a506b; /* 落ち着いたブルー */
-            --bot-bubble-bg: rgba(55, 70, 85, 0.75); /* ユーザーより少し透明度のあるブルーグレー */
-            --typing-bubble-bg: rgba(65, 80, 95, 0.7);
+            --dm-input-bg: rgba(20, 30, 40, 0.3);
+            --dm-input-focus-bg: rgba(25, 35, 45, 0.4);
+            --dm-footer-header-bg: rgba(0,0,0,0.1);
 
-            --button-bg: #3b6978; /* 落ち着いたティールブルー */
-            --button-hover-bg: #4a8091; /* 少し明るいティールブルー */
+            --dm-scrollbar-track: rgba(0,0,0,0.05);
+            --dm-scrollbar-thumb: rgba(255,255,255,0.15);
+            --dm-scrollbar-thumb-hover: rgba(255,255,255,0.25);
 
-            --border-radius-main: 16px; /* 少しシャープに */
+
+            /* --- Light Mode Variables --- */
+            --lm-bg-gradient-start: #e8eff7; /* 明るい空色 */
+            --lm-bg-gradient-mid1: #f0f5fc;
+            --lm-bg-gradient-mid2: #e8eff7;
+            --lm-bg-gradient-end: #d8e2ef; /* 少し濃い空色 */
+
+            --lm-glass-bg: rgba(255, 255, 255, 0.7); /* 半透明の白 */
+            --lm-glass-border: rgba(0, 0, 0, 0.1);
+            --lm-glass-shadow: rgba(100, 100, 150, 0.15);
+
+            --lm-text-primary: #212529; /* 濃いグレー */
+            --lm-text-secondary: #5a6268; /* やや薄いグレー */
+            --lm-text-input: #121518;
+            --lm-header-text: #1c2833;
+
+
+            --lm-accent-glow: rgba(60, 100, 190, 0.4); /* 明るい青のグロー */
+
+            --lm-user-bubble-bg: #007bff; /* 明るい青 */
+            --lm-user-bubble-text: #ffffff;
+            --lm-bot-bubble-bg: #e9ecef;  /* 明るいグレー */
+            --lm-typing-bubble-bg: #f0f2f5;
+
+            --lm-button-bg: #007bff;
+            --lm-button-hover-bg: #0056b3;
+            --lm-button-text: #ffffff;
+
+            --lm-input-bg: rgba(255, 255, 255, 0.5);
+            --lm-input-focus-bg: rgba(255, 255, 255, 0.8);
+            --lm-footer-header-bg: rgba(255,255,255,0.2);
+
+            --lm-scrollbar-track: rgba(0,0,0,0.05);
+            --lm-scrollbar-thumb: rgba(0,0,0,0.2);
+            --lm-scrollbar-thumb-hover: rgba(0,0,0,0.3);
+
+
+            /* --- Mapped Variables (Defaults to Dark Mode) --- */
+            --bg-gradient-start: var(--dm-bg-gradient-start);
+            --bg-gradient-mid1: var(--dm-bg-gradient-mid1);
+            --bg-gradient-mid2: var(--dm-bg-gradient-mid2);
+            --bg-gradient-end: var(--dm-bg-gradient-end);
+            --glass-bg: var(--dm-glass-bg);
+            --glass-border: var(--dm-glass-border);
+            --glass-shadow: var(--dm-glass-shadow);
+            --text-primary: var(--dm-text-primary);
+            --text-secondary: var(--dm-text-secondary);
+            --text-input: var(--dm-text-input);
+            --header-text-color: var(--dm-header-text);
+            --accent-glow: var(--dm-accent-glow);
+            --user-bubble-bg: var(--dm-user-bubble-bg);
+            --user-bubble-text-color: var(--dm-user-bubble-text);
+            --bot-bubble-bg: var(--dm-bot-bubble-bg);
+            --typing-bubble-bg: var(--dm-typing-bubble-bg);
+            --button-bg: var(--dm-button-bg);
+            --button-hover-bg: var(--dm-button-hover-bg);
+            --button-text-color: var(--dm-button-text);
+            --input-bg: var(--dm-input-bg);
+            --input-focus-bg: var(--dm-input-focus-bg);
+            --footer-header-bg-color: var(--dm-footer-header-bg);
+            --scrollbar-track-bg: var(--dm-scrollbar-track);
+            --scrollbar-thumb-bg: var(--dm-scrollbar-thumb);
+            --scrollbar-thumb-hover-bg: var(--dm-scrollbar-thumb-hover);
+
+            --border-radius-main: 16px;
             --border-radius-bubble: 10px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body.light-mode {
+            --bg-gradient-start: var(--lm-bg-gradient-start);
+            --bg-gradient-mid1: var(--lm-bg-gradient-mid1);
+            --bg-gradient-mid2: var(--lm-bg-gradient-mid2);
+            --bg-gradient-end: var(--lm-bg-gradient-end);
+            --glass-bg: var(--lm-glass-bg);
+            --glass-border: var(--lm-glass-border);
+            --glass-shadow: var(--lm-glass-shadow);
+            --text-primary: var(--lm-text-primary);
+            --text-secondary: var(--lm-text-secondary);
+            --text-input: var(--lm-text-input);
+            --header-text-color: var(--lm-header-text);
+            --accent-glow: var(--lm-accent-glow);
+            --user-bubble-bg: var(--lm-user-bubble-bg);
+            --user-bubble-text-color: var(--lm-user-bubble-text);
+            --bot-bubble-bg: var(--lm-bot-bubble-bg);
+            --typing-bubble-bg: var(--lm-typing-bubble-bg);
+            --button-bg: var(--lm-button-bg);
+            --button-hover-bg: var(--lm-button-hover-bg);
+            --button-text-color: var(--lm-button-text);
+            --input-bg: var(--lm-input-bg);
+            --input-focus-bg: var(--lm-input-focus-bg);
+            --footer-header-bg-color: var(--lm-footer-header-bg);
+            --scrollbar-track-bg: var(--lm-scrollbar-track);
+            --scrollbar-thumb-bg: var(--lm-scrollbar-thumb);
+            --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
         }
+
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-primary);
             background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end));
             background-size: 400% 400%;
-            animation: gradientBG 30s ease infinite; /* アニメーションを少しゆっくりに */
+            animation: gradientBG 30s ease infinite;
             color: var(--text-primary);
             display: flex;
             justify-content: center;
@@ -57,6 +157,7 @@
             min-height: 100vh;
             padding: 20px;
             overflow: hidden;
+            transition: background 0.5s ease, color 0.5s ease; /* Theme change transition */
         }
 
         @keyframes gradientBG {
@@ -74,27 +175,34 @@
             border-radius: var(--border-radius-main);
             border: 1px solid var(--glass-border);
             box-shadow: 0 8px 32px 0 var(--glass-shadow);
-            backdrop-filter: blur(10px); /* ぼかし具合を少し調整 */
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
         }
 
         header {
-            padding: 20px;
+            padding: 15px 20px; /* Reduced padding slightly */
             text-align: center;
-            background: rgba(0,0,0,0.1);
+            background: var(--footer-header-bg-color);
             border-bottom: 1px solid var(--glass-border);
+            display: flex; /* For theme toggle */
+            justify-content: space-between; /* For theme toggle */
+            align-items: center; /* For theme toggle */
+            transition: background 0.5s ease, border-bottom 0.5s ease;
         }
 
         header h1 {
-            font-family: var(--font-primary); /* プライマリフォントを使用 */
-            font-weight: 700; /* 太字に */
-            font-size: 1.8rem; /* サイズ調整 */
-            color: var(--text-primary); /* プライマリテキストカラー */
-            text-shadow: 0 0 6px var(--accent-glow); /* グローを控えめに */
+            font-family: var(--font-primary);
+            font-weight: 700;
+            font-size: 1.6rem; /* Adjusted size */
+            color: var(--header-text-color);
+            text-shadow: 0 0 6px var(--accent-glow);
+            margin-left: auto; /* Push H1 towards center if toggle is on one side */
+            margin-right: auto; /* Push H1 towards center */
+            transition: color 0.5s ease, text-shadow 0.5s ease;
         }
 
         #chatbox {
@@ -106,68 +214,39 @@
             gap: 12px;
         }
 
-        #chatbox::-webkit-scrollbar {
-            width: 8px;
-        }
-        #chatbox::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-            border-radius: 4px;
-        }
-        #chatbox::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.15);
-            border-radius: 4px;
-        }
-        #chatbox::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.25);
-        }
+        #chatbox::-webkit-scrollbar { width: 8px; }
+        #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; }
+        #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; }
+        #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
 
-        .message-container {
-            display: flex;
-            margin-bottom: 5px;
-            animation: fadeInSlideUp 0.3s ease-out; /* アニメーションを少し速く、スムーズに */
-        }
-
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message-container.user-message {
-            justify-content: flex-end;
-        }
-        .message-container.bot-message {
-            justify-content: flex-start;
-        }
+        .message-container { display: flex; margin-bottom: 5px; animation: fadeInSlideUp 0.3s ease-out; }
+        @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .message-container.user-message { justify-content: flex-end; }
+        .message-container.bot-message { justify-content: flex-start; }
 
         .message-bubble {
             padding: 10px 15px;
             border-radius: var(--border-radius-bubble);
-            max-width: 78%; /* 少し最大幅を広げる */
+            max-width: 78%;
             word-wrap: break-word;
             line-height: 1.5;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15); /* 影をより繊細に */
-            transition: transform 0.15s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Adjusted shadow for light mode */
+            transition: transform 0.15s ease, background 0.5s ease, color 0.5s ease;
         }
-        .message-bubble:hover {
-             /* ホバーエフェクトは控えめに、または削除も可 */
-             /* transform: scale(1.01); */
+        body.light-mode .message-bubble {
+             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
+
 
         .user-message .message-bubble {
             background: var(--user-bubble-bg);
-            color: var(--text-input); /* ユーザー入力欄と同じテキスト色 */
+            color: var(--user-bubble-text-color);
             border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble);
         }
 
         .bot-message .message-bubble {
             background: var(--bot-bubble-bg);
-            color: var(--text-primary);
+            color: var(--text-primary); /* Bot text uses primary text color of current theme */
             border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0;
         }
 
@@ -177,13 +256,13 @@
              color: var(--text-secondary);
         }
 
-
         footer {
             padding: 15px 20px;
             border-top: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.05);
+            background: var(--footer-header-bg-color);
             display: flex;
             gap: 10px;
+            transition: background 0.5s ease, border-top 0.5s ease;
         }
 
         #userInput {
@@ -191,17 +270,17 @@
             padding: 12px 15px;
             border: 1px solid var(--glass-border);
             border-radius: var(--border-radius-bubble);
-            background: rgba(20, 30, 40, 0.3); /* 入力欄背景を少し調整 */
+            background: var(--input-bg);
             color: var(--text-input);
-            font-size: 0.95rem; /* フォントサイズ微調整 */
+            font-size: 0.95rem;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         #userInput:focus {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 8px var(--accent-glow);
-            background: rgba(25, 35, 45, 0.4);
+            border-color: var(--accent-glow); /* Uses mapped accent glow */
+            box-shadow: 0 0 8px var(--accent-glow); /* Uses mapped accent glow */
+            background: var(--input-focus-bg);
         }
 
         #sendMessage {
@@ -209,23 +288,86 @@
             border: none;
             border-radius: var(--border-radius-bubble);
             background: var(--button-bg);
-            color: #fff;
-            font-size: 0.95rem; /* フォントサイズ微調整 */
+            color: var(--button-text-color);
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             outline: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2); /* 影を調整 */
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
+         body.light-mode #sendMessage {
+             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+         }
 
         #sendMessage:hover {
             background: var(--button-hover-bg);
-            box-shadow: 0 2px 8px var(--accent-glow); /* ホバー時のグローを少し */
-            /* transform: translateY(-1px); */ /* 動きは控えめに */
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
-        #sendMessage:active {
-            transform: scale(0.98);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+        /* Theme Toggle Switch CSS */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            /* position: absolute; Ensures it doesn't push H1 too much if header is flex space-between */
+            /* right: 20px; */
+        }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* Width of the switch */
+            height: 26px; /* Height of the switch */
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4c566a; /* Dark mode slider bg */
+            transition: .4s;
+            border-radius: 26px;
+        }
+        body.light-mode .slider {
+            background-color: #ccc; /* Light mode slider bg */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* Height of the circle */
+            width: 18px; /* Width of the circle */
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--lm-button-bg); /* Use light mode button color for active slider */
+        }
+        body.light-mode input:checked + .slider {
+             /* Keep it consistent or use a specific light mode active color */
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--lm-button-bg);
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px); /* Move distance of the circle */
+        }
+        .slider.round {
+            border-radius: 26px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
         }
 
     </style>
@@ -235,32 +377,66 @@
     <div id="chatContainer">
         <header>
             <h1>ChatYMS</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="themeCheckbox" title="テーマを切り替え">
+                    <input type="checkbox" id="themeCheckbox" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </header>
 
         <div id="chatbox">
             <div class="message-container bot-message">
-                <p class="message-bubble">こんにちは。私の名前はやまそーです。この会話の履歴は残りません。</p>
+                <p class="message-bubble">こんにちは。やまそーです。</p>
             </div>
         </div>
 
-        <footer style="display: flex;"> <input type="text" id="userInput" placeholder="メッセージを入力...">
+        <footer>
+            <input type="text" id="userInput" placeholder="メッセージを入力...">
             <button id="sendMessage">送信</button>
         </footer>
     </div>
 
     <script>
-        // JavaScript部分は前回の会話履歴機能を含んだものから変更ありません。
-        // APIキーと言語モデルの設定、会話履歴の処理などはそのままです。
-
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('userInput');
         const sendMessageButton = document.getElementById('sendMessage');
+        const themeCheckbox = document.getElementById('themeCheckbox');
+        const bodyElement = document.body;
 
-        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // ★★★ 必ず自分のAPIキーに置き換えてください ★★★
+        const API_KEY = 'ここにあなたのAPIキーを入力してください';
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
         let conversationHistory = [];
         let typingIndicatorElement = null;
+
+        // Theme switcher logic
+        function applyTheme(theme) {
+            if (theme === 'light-mode') {
+                bodyElement.classList.add('light-mode');
+                themeCheckbox.checked = true;
+            } else {
+                bodyElement.classList.remove('light-mode');
+                themeCheckbox.checked = false;
+            }
+        }
+
+        themeCheckbox.addEventListener('change', () => {
+            if (themeCheckbox.checked) {
+                localStorage.setItem('theme', 'light-mode');
+                applyTheme('light-mode');
+            } else {
+                localStorage.setItem('theme', 'dark-mode');
+                applyTheme('dark-mode');
+            }
+        });
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark-mode'; // Default to dark
+            applyTheme(savedTheme);
+        });
+
 
         function appendMessage(text, sender, isTyping = false) {
             if (typingIndicatorElement && (!isTyping || (isTyping && sender === 'bot'))) {
@@ -303,10 +479,7 @@
             try {
                 const requestBody = {
                     contents: conversationHistory,
-                    generationConfig: {
-                        // temperature: 0.7,
-                        // maxOutputTokens: 250,
-                    },
+                    generationConfig: {}, // Add specific configs if needed
                     safetySettings: [
                         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
                         { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -328,7 +501,6 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error('API Error:', errorData);
                     appendMessage(`エラー: ${errorData.error?.message || response.statusText}`, 'bot');
                     return;
                 }
