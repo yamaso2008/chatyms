@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - やまそーモード</title>
+    <title>ChatYMS - やまそー</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* CSSは前回のシステムプロンプト設定機能付きチャットボットのものから変更ありません */
         :root {
+            /* CSS変数は前回のものをそのまま利用します */
             /* Dark Mode Variables (Default) */
             --dm-bg-gradient-start: #2c3e50; --dm-bg-gradient-mid1: #34495e; --dm-bg-gradient-mid2: #2c3e50; --dm-bg-gradient-end: #1d2b34;
             --dm-glass-bg: rgba(40, 55, 70, 0.75); --dm-glass-border: rgba(180, 190, 200, 0.2); --dm-glass-shadow: rgba(10, 15, 20, 0.3);
@@ -61,7 +61,7 @@
             --scrollbar-track-bg: var(--lm-scrollbar-track); --scrollbar-thumb-bg: var(--lm-scrollbar-thumb); --scrollbar-thumb-hover-bg: var(--lm-scrollbar-thumb-hover);
             --markdown-code-bg-color: var(--lm-markdown-code-bg); --markdown-pre-bg-color: var(--lm-markdown-pre-bg); --markdown-border-color: var(--lm-markdown-border);
         }
-        /* Rest of CSS (General, Responsive, Feature styles) from previous version is unchanged */
+        /* General, Responsive, and Feature styles from previous version are unchanged, except for system prompt area styles which are removed */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; }
         body { font-family: var(--font-primary); background: linear-gradient(-45deg, var(--bg-gradient-start), var(--bg-gradient-mid1), var(--bg-gradient-mid2), var(--bg-gradient-end)); background-size: 400% 400%; animation: gradientBG 30s ease infinite; color: var(--text-primary); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 1vw; overflow-x: hidden; transition: background 0.5s ease, color 0.5s ease; }
@@ -70,7 +70,10 @@
         header { padding: 0.6rem 1rem; text-align: center; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0;}
         header h1 { font-family: var(--font-primary); font-weight: 700; font-size: 1.4rem; color: var(--header-text-color); text-shadow: 0 0 6px var(--accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; text-align: center; }
         .header-controls { display: flex; align-items: center; gap: 0.8rem; }
-        #chatbox { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; }
+        #chatbox { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.7rem; border-top: 1px solid var(--glass-border); /* Add border if system prompt area is removed */ }
+        /* Styles for systemPromptArea and its children are removed */
+
+        /* Rest of the CSS for messages, scrollbar, markdown, buttons, footer, theme-toggle, responsive etc. remains the same */
         #chatbox::-webkit-scrollbar { width: 8px; } #chatbox::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; } #chatbox::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
         .message-container { display: flex; flex-direction: column; margin-bottom: 0.5rem; animation: fadeInSlideUp 0.3s ease-out; }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -93,26 +96,21 @@
         #clearChatButton { background: none; border: 1px solid var(--glass-border); color: var(--text-secondary); padding: 0.35rem 0.6rem; border-radius: var(--border-radius-bubble); cursor: pointer; font-size: 0.75rem; transition: all 0.3s ease; }
         #clearChatButton:hover { border-color: var(--accent-glow); color: var(--text-primary); box-shadow: 0 0 5px var(--accent-glow); }
         .theme-switch-wrapper { display: flex; align-items: center; } .theme-switch { position: relative; display: inline-block; width: 42px; height: 22px; } .theme-switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 22px; } body.light-mode .slider { background-color: #ccc; } .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: var(--button-bg); } input:focus + .slider { box-shadow: 0 0 1px var(--button-bg); } input:checked + .slider:before { transform: translateX(20px); }
-        #systemPromptArea { padding: 0.8rem 1rem; background: var(--footer-header-bg-color); border-bottom: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 0.5rem; transition: background 0.5s ease, border-bottom 0.5s ease; flex-shrink: 0; }
-        .system-prompt-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); transition: color 0.5s ease; }
-        #systemPromptInput { width: 100%; padding: 0.5rem 0.7rem; border-radius: calc(var(--border-radius-bubble) - 4px); border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-input); font-family: var(--font-primary); font-size: 0.85rem; resize: vertical; min-height: 40px; transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease; }
-        #systemPromptInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); outline: none; }
-        #saveSystemPromptButton { padding: 0.4rem 0.8rem; border: none; border-radius: calc(var(--border-radius-bubble) - 4px); background: var(--button-bg); color: var(--button-text-color); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; align-self: flex-start; }
-        #saveSystemPromptButton:hover { background: var(--button-hover-bg); box-shadow: 0 1px 5px var(--accent-glow); }
         footer { padding: 0.6rem 1rem; border-top: 1px solid var(--glass-border); background: var(--footer-header-bg-color); display: flex; gap: 0.6rem; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0; }
         #userInput { flex-grow: 1; padding: 0.6rem 0.9rem; border: 1px solid var(--glass-border); border-radius: var(--border-radius-bubble); background: var(--input-bg); color: var(--text-input); font-size: 0.9rem; outline: none; transition: all 0.3s ease; }
         #userInput:focus { border-color: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); background: var(--input-focus-bg); }
         #sendMessage { padding: 0.6rem 1.1rem; border: none; border-radius: var(--border-radius-bubble); background: var(--button-bg); color: var(--button-text-color); font-size: 0.9rem; font-weight: 500; cursor: pointer; outline: none; transition: all 0.3s ease; box-shadow: 0 1px 4px rgba(0,0,0,0.15); } body.light-mode #sendMessage { box-shadow: 0 1px 4px rgba(0,0,0,0.1); } #sendMessage:hover { background: var(--button-hover-bg); box-shadow: 0 2px 8px var(--accent-glow); } #sendMessage:active { transform: scale(0.98); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        @media (max-width: 680px) { /* Mobile styles from previous version */
+        @media (max-width: 680px) { /* Mobile styles */
             html { font-size: 15px; } body { padding: 0; overflow-y: auto; }
             #chatContainer { width: 100vw; height: 100%; min-height: 100vh; max-width: 100vw; border-radius: 0; border: none; position: fixed; top: 0; left: 0; bottom: 0; right: 0; }
             header { padding: 0.5rem 0.8rem; } header h1 { font-size: 1.2rem; } .header-controls { gap: 0.5rem; }
             #clearChatButton { padding: 0.3rem 0.5rem; font-size: 0.7rem; } .theme-switch { width: 38px; height: 20px; } .slider:before { height: 14px; width: 14px; left: 3px; bottom: 3px; } input:checked + .slider:before { transform: translateX(18px); }
-            #systemPromptArea { padding: 0.6rem 0.8rem; } .system-prompt-label { font-size: 0.75rem; } #systemPromptInput { font-size: 0.8rem; padding: 0.4rem 0.6rem; min-height: 35px;} #saveSystemPromptButton { font-size: 0.75rem; padding: 0.3rem 0.6rem;}
+            /* SystemPromptArea related mobile styles are removed as the area itself is removed */
             #chatbox { padding: 0.8rem; gap: 0.6rem; } .message-bubble { padding: 0.5rem 0.8rem; max-width: 90%; line-height: 1.5; } .timestamp { font-size: 0.6rem; } .copy-btn { font-size: 0.65rem; padding: 1px 3px; margin-left: 0.4rem; } .typing-dot { width: 5px; height: 5px; }
             footer { padding: 0.5rem 0.8rem; gap: 0.5rem; } #userInput, #sendMessage { font-size: 0.85rem; padding: 0.5rem 0.8rem; } #sendMessage { padding: 0.5rem 1rem; }
         }
         @media (max-width: 380px) { header h1 { font-size: 1.1rem; } #clearChatButton, .theme-switch-wrapper { transform: scale(0.9); } }
+
     </style>
 </head>
 <body>
@@ -129,13 +127,10 @@
                 </div>
             </div>
         </header>
-        <div id="systemPromptArea">
-            <label for="systemPromptInput" class="system-prompt-label">AIの役割・設定 (システムプロンプト):</label>
-            <textarea id="systemPromptInput" rows="2" placeholder="例: あなたは親切でユーモラスなアシスタントです。"></textarea>
-            <button id="saveSystemPromptButton">設定を保存</button>
-        </div>
+
         <div id="chatbox">
             </div>
+
         <footer>
             <input type="text" id="userInput" placeholder="メッセージを入力...">
             <button id="sendMessage">送信</button>
@@ -150,20 +145,20 @@
         const themeCheckbox = document.getElementById('themeCheckbox');
         const clearChatButton = document.getElementById('clearChatButton');
         const bodyElement = document.body;
-        const systemPromptInput = document.getElementById('systemPromptInput');
-        const saveSystemPromptButton = document.getElementById('saveSystemPromptButton');
+        // systemPromptInput と saveSystemPromptButton のDOM参照は不要になったため削除
 
         // API Config
-        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // ★★★ ご自身のAPIキーに置き換えてください ★★★
+        const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; 
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
         let conversationHistory = [];
         let typingIndicatorElement = null;
-        let currentSystemPrompt = ""; 
-        // ★★★ デフォルトの「やまそー」システムプロンプト ★★★
+        
+        // ★★★ 「やまそー」のデフォルトシステムプロンプトを直接設定 ★★★
         const defaultYamasoPrompt = "あなたは「やまそー」という名前のAIチャットボットです。常に親しみやすく、少しユーモラスな口調で応答します。ユーザーの質問や会話に、前向きで丁寧な態度で答えてください。一人称は「僕」を基本とし、時々「やまそーはね、」のように自分の名前で話すこともあります。";
+        let currentSystemPrompt = defaultYamasoPrompt; // 常にこのプロンプトを使用
 
-        // --- Theme Switcher Logic ---
+        // --- Theme Switcher Logic --- (変更なし)
         function applyTheme(theme) {
             if (theme === 'light-mode') { bodyElement.classList.add('light-mode'); themeCheckbox.checked = true; } 
             else { bodyElement.classList.remove('light-mode'); themeCheckbox.checked = false; }
@@ -173,22 +168,18 @@
             localStorage.setItem('theme', newTheme); applyTheme(newTheme);
         });
 
-        // --- Clear Chat Logic ---
+        // --- Clear Chat Logic --- (変更なし)
         clearChatButton.addEventListener('click', () => {
             chatbox.innerHTML = ''; conversationHistory = [];
             if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-            appendMessage("こんにちは。やまそーです。", 'bot', false, true); // 初期メッセージも「やまそー」に
+            appendMessage("こんにちは。やまそーです。", 'bot', false, true);
         });
 
-        // --- System Prompt Logic ---
-        saveSystemPromptButton.addEventListener('click', () => {
-            currentSystemPrompt = systemPromptInput.value.trim();
-            localStorage.setItem('systemPrompt', currentSystemPrompt);
-            saveSystemPromptButton.textContent = '保存済';
-            setTimeout(() => { saveSystemPromptButton.textContent = '設定を保存'; }, 1500);
-        });
+        // --- System Prompt Logic --- (UI関連の処理を削除し、デフォルトを固定)
+        // saveSystemPromptButton のイベントリスナーは削除
+        // DOMContentLoaded で localStorage から読み込む処理も、デフォルト固定のため不要に (currentSystemPrompt は上記で直接設定)
 
-        // --- Message Handling (appendMessage) --- (No change from previous version with all features)
+        // --- Message Handling (appendMessage) --- (変更なし)
         function appendMessage(text, sender, isTyping = false, isInitialGreeting = false) {
             if (typingIndicatorElement && !isInitialGreeting) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
             const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
@@ -215,7 +206,7 @@
             chatbox.appendChild(messageContainer); chatbox.scrollTop = chatbox.scrollHeight;
         }
         
-        // --- Send Message Logic (API Call) ---
+        // --- Send Message Logic (API Call) --- (systemInstruction は currentSystemPrompt を使用)
         async function sendMessage() {
             const userText = userInput.value.trim(); if (userText === "") return;
             appendMessage(userText, 'user'); userInput.value = "";
@@ -227,8 +218,8 @@
                     generationConfig: {},
                     safetySettings: [ { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" } ]
                 };
-                // Apply system prompt if it exists
-                if (currentSystemPrompt) {
+                // Apply system prompt (which is now always the defaultYamasoPrompt)
+                if (currentSystemPrompt) { // currentSystemPrompt will always be defaultYamasoPrompt
                     requestBody.systemInstruction = { parts: [{ text: currentSystemPrompt }] };
                 }
                 const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(requestBody) });
@@ -258,16 +249,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'dark-mode'; applyTheme(savedTheme);
             
-            // ★★★ Load saved system prompt or apply default "Yamaso" prompt ★★★
-            let başlangıçSystemPrompt = localStorage.getItem('systemPrompt');
-            if (başlangıçSystemPrompt === null || başlangıçSystemPrompt.trim() === "") { // Check if null or empty string after trim
-                currentSystemPrompt = defaultYamasoPrompt;
-                // Optionally save the default to localStorage so it's "set" from the start
-                // localStorage.setItem('systemPrompt', currentSystemPrompt); 
-            } else {
-                currentSystemPrompt = başlangıçSystemPrompt;
-            }
-            systemPromptInput.value = currentSystemPrompt; // Reflect current prompt in textarea
+            // ★★★ システムプロンプトは localStorage から読み込まず、常に defaultYamasoPrompt を使用 ★★★
+            // systemPromptInput.value = currentSystemPrompt; // テキストエリアが削除されたため不要
 
             if (chatbox.children.length === 0) { appendMessage("こんにちは。やまそーです。", 'bot', false, true); }
         });
