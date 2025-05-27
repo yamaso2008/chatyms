@@ -3,119 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatYMS - Refined Glass</title>
+    <title>ChatYMS - v1.7</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        /* CSSは非常に長くなるため、主要な構造と新しい要素のスタイルを中心に記述します。 */
+        /* :root 変数定義 (ダークモード・ライトモード、マッピング) は前回のものをベースに調整 */
         :root {
             --font-primary: 'Inter', sans-serif;
 
             /* Refined Dark Mode Variables */
-            --dm-bg-gradient-start: #0d1117; /* GitHub Dark Dimmed like */
-            --dm-bg-gradient-mid1: #161b22;
-            --dm-bg-gradient-mid2: #0d1117;
-            --dm-bg-gradient-end: #010409;
-
-            --dm-glass-bg: rgba(22, 27, 34, 0.7); /* More subtle glass */
-            --dm-glass-border: rgba(72, 86, 101, 0.3); /* Softer border */
-            --dm-glass-shadow: rgba(0, 0, 0, 0.4); /* Deeper shadow for depth */
-            --dm-highlight-glow: rgba(100, 150, 255, 0.1); /* Subtle blueish peripheral glow */
-
-            --dm-text-primary: #c9d1d9; /* Lighter gray for better readability */
-            --dm-text-secondary: #8b949e; /* Medium gray */
-            --dm-text-input: #e6edf3;
-            --dm-header-text: #f0f6fc;
-
-            --dm-accent-glow: rgba(88, 166, 255, 0.6); /* Brighter blue for focus/accent */
-
-            --dm-user-bubble-bg: linear-gradient(135deg, rgba(56, 139, 253, 0.25) 0%, rgba(31, 111, 235, 0.35) 100%);
-            --dm-user-bubble-border: rgba(88, 166, 253, 0.4);
-            --dm-user-bubble-text: #f0f6fc;
-
-            --dm-bot-bubble-bg: rgba(45, 53, 64, 0.7);
-            --dm-bot-bubble-border: rgba(72, 86, 101, 0.5);
-
+            --dm-bg-gradient-start: #0d1117; --dm-bg-gradient-mid1: #161b22; --dm-bg-gradient-mid2: #0d1117; --dm-bg-gradient-end: #010409;
+            --dm-glass-bg: rgba(22, 27, 34, 0.75); --dm-glass-border: rgba(72, 86, 101, 0.35); --dm-glass-shadow: rgba(0, 0, 0, 0.45); --dm-highlight-glow: rgba(100, 150, 255, 0.1);
+            --dm-text-primary: #c9d1d9; --dm-text-secondary: #8b949e; --dm-text-input: #e6edf3; --dm-header-text: #f0f6fc;
+            --dm-accent-glow: rgba(88, 166, 255, 0.6);
+            --dm-user-bubble-bg: linear-gradient(135deg, rgba(56, 139, 253, 0.3) 0%, rgba(31, 111, 235, 0.4) 100%); --dm-user-bubble-border: rgba(88, 166, 253, 0.45); --dm-user-bubble-text: #f0f6fc;
+            --dm-bot-bubble-bg: rgba(45, 53, 64, 0.75); --dm-bot-bubble-border: rgba(72, 86, 101, 0.55);
             --dm-typing-dot-color: var(--dm-text-secondary);
-            --dm-button-bg: rgba(56, 139, 253, 0.2);
-            --dm-button-hover-bg: rgba(56, 139, 253, 0.35);
-            --dm-button-text: #58a6ff; /* Blue text for buttons */
-            --dm-button-border: rgba(88, 166, 253, 0.5);
-
-            --dm-input-bg: rgba(13, 17, 23, 0.5); /* Darker input */
-            --dm-input-focus-bg: rgba(1, 4, 9, 0.7);
-            --dm-footer-header-bg: rgba(13, 17, 23, 0.6); /* Darker header/footer glass */
-
-            --dm-scrollbar-track: rgba(13,17,23,0.3); 
-            --dm-scrollbar-thumb: rgba(56,139,253,0.4); 
-            --dm-scrollbar-thumb-hover: rgba(56,139,253,0.6);
-
-            --dm-markdown-code-bg: rgba(100,110,130,0.2); 
-            --dm-markdown-pre-bg: rgba(1,4,9,0.5); 
-            --dm-markdown-border: rgba(72,86,101,0.4);
-
-            --dm-modal-bg: rgba(13, 17, 23, 0.9); /* Very dark modal background */
-            --dm-modal-content-bg: rgba(22, 27, 34, 0.85); /* Modal content glass */
-            --dm-modal-border: var(--dm-glass-border);
-            --dm-error-bubble-bg: rgba(200, 50, 50, 0.2); 
-            --dm-error-text: #ff9999;
-            --dm-error-border: rgba(200, 50, 50, 0.5);
-
+            --dm-button-bg: rgba(56, 139, 253, 0.25); --dm-button-hover-bg: rgba(56, 139, 253, 0.4); --dm-button-text: #58a6ff; --dm-button-border: rgba(88, 166, 253, 0.55);
+            --dm-input-bg: rgba(13, 17, 23, 0.55); --dm-input-focus-bg: rgba(1, 4, 9, 0.75); --dm-footer-header-bg: rgba(13, 17, 23, 0.7);
+            --dm-scrollbar-track: rgba(13,17,23,0.35); --dm-scrollbar-thumb: rgba(56,139,253,0.45); --dm-scrollbar-thumb-hover: rgba(56,139,253,0.65);
+            --dm-markdown-code-bg: rgba(100,110,130,0.25); --dm-markdown-pre-bg: rgba(1,4,9,0.55); --dm-markdown-border: rgba(72,86,101,0.45);
+            --dm-modal-bg: rgba(13, 17, 23, 0.95); --dm-modal-content-bg: rgba(22, 27, 34, 0.9); --dm-modal-border: var(--dm-glass-border);
+            --dm-error-bubble-bg: rgba(200, 50, 50, 0.25); --dm-error-text: #ffa0a0; --dm-error-border: rgba(200, 50, 50, 0.55);
 
             /* Refined Light Mode Variables */
-            --lm-bg-gradient-start: #f0f2f5; /* Lighter, cleaner background */
-            --lm-bg-gradient-mid1: #f8f9fa;
-            --lm-bg-gradient-mid2: #f0f2f5;
-            --lm-bg-gradient-end: #e9ecef;
-
-            --lm-glass-bg: rgba(255, 255, 255, 0.6); /* Brighter glass */
-            --lm-glass-border: rgba(0, 0, 0, 0.08);
-            --lm-glass-shadow: rgba(150, 150, 180, 0.2);
-            --lm-highlight-glow: rgba(0, 123, 255, 0.05);
-
-            --lm-text-primary: #212529;
-            --lm-text-secondary: #495057;
-            --lm-text-input: #000000;
-            --lm-header-text: #000000;
-
-            --lm-accent-glow: rgba(0, 123, 255, 0.5);
-
-            --lm-user-bubble-bg: linear-gradient(135deg, rgba(0, 123, 255, 0.7) 0%, rgba(0, 100, 220, 0.8) 100%);
-            --lm-user-bubble-border: transparent;
-            --lm-user-bubble-text: #ffffff;
-            
-            --lm-bot-bubble-bg: rgba(233, 236, 239, 0.9); /* More opaque light bubble */
-            --lm-bot-bubble-border: rgba(200,200,200,0.6);
-
+            --lm-bg-gradient-start: #f0f2f5; --lm-bg-gradient-mid1: #f8f9fa; --lm-bg-gradient-mid2: #f0f2f5; --lm-bg-gradient-end: #e9ecef;
+            --lm-glass-bg: rgba(255, 255, 255, 0.65); --lm-glass-border: rgba(0, 0, 0, 0.1); --lm-glass-shadow: rgba(150, 150, 180, 0.2); --lm-highlight-glow: rgba(0, 123, 255, 0.08);
+            --lm-text-primary: #212529; --lm-text-secondary: #495057; --lm-text-input: #000000; --lm-header-text: #000000;
+            --lm-accent-glow: rgba(0, 123, 255, 0.55);
+            --lm-user-bubble-bg: linear-gradient(135deg, rgba(0, 123, 255, 0.75) 0%, rgba(0, 100, 220, 0.85) 100%); --lm-user-bubble-border: transparent; --lm-user-bubble-text: #ffffff;
+            --lm-bot-bubble-bg: rgba(233, 236, 239, 0.95); --lm-bot-bubble-border: rgba(200,200,200,0.65);
             --lm-typing-dot-color: var(--lm-text-secondary);
-            --lm-button-bg: rgba(0, 123, 255, 0.15);
-            --lm-button-hover-bg: rgba(0, 123, 255, 0.25);
-            --lm-button-text: #007bff;
-            --lm-button-border: rgba(0, 123, 255, 0.4);
-
-            --lm-input-bg: rgba(255, 255, 255, 0.7);
-            --lm-input-focus-bg: rgba(255, 255, 255, 0.9);
-            --lm-footer-header-bg: rgba(255,255,255,0.5);
-
-            --lm-scrollbar-track: rgba(0,0,0,0.03); 
-            --lm-scrollbar-thumb: rgba(0,0,0,0.2); 
-            --lm-scrollbar-thumb-hover: rgba(0,0,0,0.3);
-
-            --lm-markdown-code-bg: #e9ecef; 
-            --lm-markdown-pre-bg: #f8f9fa; 
-            --lm-markdown-border: #ced4da;
-
-            --lm-modal-bg: rgba(248, 249, 250, 0.9);
-            --lm-modal-content-bg: rgba(255,255,255, 0.9);
-            --lm-modal-border: #ced4da;
-            --lm-error-bubble-bg: rgba(255, 200, 200, 0.7); 
-            --lm-error-text: #721c24;
-            --lm-error-border: rgba(200, 50, 50, 0.5);
-
+            --lm-button-bg: rgba(0, 123, 255, 0.2); --lm-button-hover-bg: rgba(0, 123, 255, 0.3); --lm-button-text: #007bff; --lm-button-border: rgba(0, 123, 255, 0.45);
+            --lm-input-bg: rgba(255, 255, 255, 0.75); --lm-input-focus-bg: rgba(255, 255, 255, 0.95); --lm-footer-header-bg: rgba(255,255,255,0.55);
+            --lm-scrollbar-track: rgba(0,0,0,0.04); --lm-scrollbar-thumb: rgba(0,0,0,0.28); --lm-scrollbar-thumb-hover: rgba(0,0,0,0.38);
+            --lm-markdown-code-bg: #e9ecef; --lm-markdown-pre-bg: #f8f9fa; --lm-markdown-border: #ced4da;
+            --lm-modal-bg: rgba(248, 249, 250, 0.95); --lm-modal-content-bg: rgba(255,255,255, 0.95); --lm-modal-border: #c0c8d2;
+            --lm-error-bubble-bg: rgba(255, 200, 200, 0.75); --lm-error-text: #721c24; --lm-error-border: rgba(200, 50, 50, 0.55);
 
             /* Mapped Variables (Defaults to Dark Mode) */
-            --current-bg-gradient-start: var(--dm-bg-gradient-start); /* ... (map all dm variables) ... */
+            --current-bg-gradient-start: var(--dm-bg-gradient-start); /* ... (all mapped variables from previous) ... */
             --current-bg-gradient-mid1: var(--dm-bg-gradient-mid1); --current-bg-gradient-mid2: var(--dm-bg-gradient-mid2); --current-bg-gradient-end: var(--dm-bg-gradient-end);
             --current-glass-bg: var(--dm-glass-bg); --current-glass-border: var(--dm-glass-border); --current-glass-shadow: var(--dm-glass-shadow); --current-highlight-glow: var(--dm-highlight-glow);
             --current-text-primary: var(--dm-text-primary); --current-text-secondary: var(--dm-text-secondary); --current-text-input: var(--dm-text-input); --current-header-text-color: var(--dm-header-text);
@@ -130,11 +60,12 @@
             --current-modal-bg-color: var(--dm-modal-bg); --current-modal-content-bg: var(--dm-modal-content-bg); --current-modal-border-color: var(--dm-modal-border);
             --current-error-bubble-bg-color: var(--dm-error-bubble-bg); --current-error-text-color: var(--dm-error-text); --current-error-border-color: var(--dm-error-border);
 
-            --border-radius-main: 20px; /* More pronounced rounding */
-            --border-radius-bubble: 16px; /* More pronounced rounding for bubbles */
+            --border-radius-main: 22px; 
+            --border-radius-bubble: 18px;
+            --border-radius-button: 12px;
         }
         body.light-mode { /* Mapped Light mode variables */
-            --current-bg-gradient-start: var(--lm-bg-gradient-start); /* ... (map all lm variables) ... */
+            --current-bg-gradient-start: var(--lm-bg-gradient-start); /* ... (all lm variables) ... */
             --current-bg-gradient-mid1: var(--lm-bg-gradient-mid1); --current-bg-gradient-mid2: var(--lm-bg-gradient-mid2); --current-bg-gradient-end: var(--lm-bg-gradient-end);
             --current-glass-bg: var(--lm-glass-bg); --current-glass-border: var(--lm-glass-border); --current-glass-shadow: var(--lm-glass-shadow); --current-highlight-glow: var(--lm-highlight-glow);
             --current-text-primary: var(--lm-text-primary); --current-text-secondary: var(--lm-text-secondary); --current-text-input: var(--lm-text-input); --current-header-text-color: var(--lm-header-text);
@@ -150,236 +81,226 @@
             --current-error-bubble-bg-color: var(--lm-error-bubble-bg); --current-error-text-color: var(--lm-error-text); --current-error-border-color: var(--lm-error-border);
         }
 
-        /* General Styles */
+        /* General, Responsive, and Feature styles (many are similar to previous but use new --current- variables and refined values) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; }
+        html { font-size: 16px; scroll-behavior: smooth; }
         body {
             font-family: var(--font-primary);
             background: linear-gradient(-45deg, var(--current-bg-gradient-start), var(--current-bg-gradient-mid1), var(--current-bg-gradient-mid2), var(--current-bg-gradient-end));
-            background-size: 200% 200%; /* Slower, more subtle animation */
-            animation: gradientBG 40s ease infinite;
-            color: var(--current-text-primary);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 1vw;
-            overflow: hidden; /* Important for full page gradient */
-            transition: background 0.8s ease, color 0.8s ease;
+            background-size: 200% 200%; animation: gradientBG 35s ease infinite;
+            color: var(--current-text-primary); display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; /* Fallback for browsers not supporting dvh well with keyboard */
+            min-height: 100dvh; /* Dynamic viewport height */
+            padding: 0; /* Body padding removed for mobile full screen */
+            overflow: hidden; 
+            transition: background 0.6s ease, color 0.6s ease;
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         #chatContainer {
-            width: 100%; max-width: 760px; /* Wider */
-            height: 90vh; max-height: 850px;
+            width: 100%; max-width: 760px;
+            height: 100%; /* Fill body for mobile */
+            max-height: none; /* Let it be full height on mobile, max-height for desktop in media query */
             background: var(--current-glass-bg);
-            border-radius: var(--border-radius-main);
+            border-radius: 0; /* Full screen mobile */
             border: 1px solid var(--current-glass-border);
-            box-shadow: 0 12px 60px -10px var(--current-glass-shadow), 0 0 0 1px var(--current-glass-border) inset; /* More pronounced shadow and inner border for depth */
-            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); /* Stronger blur */
+            box-shadow: 0 15px 70px -15px var(--current-glass-shadow), 0 0 0 1px var(--current-glass-border) inset;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; flex-direction: column; overflow: hidden;
             transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
             position: relative;
         }
-        /* Subtle highlight glow around chat container */
-        #chatContainer::before {
-            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
-            border-radius: calc(var(--border-radius-main) + 2px);
-            box-shadow: 0 0 30px 5px var(--current-highlight-glow);
-            z-index: -1; opacity: 0.7;
-            pointer-events: none;
+        #chatContainer::before { /* Enhanced Glow */
+            content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: calc(var(--border-radius-main) + 3px); /* Match potential desktop radius */
+            box-shadow: 0 0 40px 8px var(--current-highlight-glow);
+            z-index: -1; opacity: 0.6; pointer-events: none;
+            display: none; /* Disabled for full screen mobile, enabled for desktop */
         }
 
-
         header {
-            padding: 0.8rem 1.2rem; background: var(--current-footer-header-bg-color);
+            padding: 0.7rem 1rem; background: var(--current-footer-header-bg-color);
             border-bottom: 1px solid var(--current-glass-border); display: flex;
             justify-content: space-between; align-items: center; flex-shrink: 0;
             transition: background 0.5s ease, border-bottom 0.5s ease;
+            position: relative; z-index: 10; /* Ensure header is above chatbox scroll content */
         }
         header h1 {
-            font-weight: 700; font-size: 1.5rem; color: var(--current-header-text-color);
-            text-shadow: 0 0 8px var(--current-accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease;
+            font-weight: 700; font-size: 1.3rem; color: var(--current-header-text-color);
+            text-shadow: 0 0 10px var(--current-accent-glow); transition: color 0.5s ease, text-shadow 0.5s ease;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             flex-grow: 1; text-align: center;
         }
-        .header-controls { display: flex; align-items: center; gap: 0.5rem; } /* Reduced gap for tighter controls */
+        .header-controls { display: flex; align-items: center; gap: 0.4rem; }
 
         #chatbox {
-            flex-grow: 1; padding: 1.2rem; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 0.8rem;
-            border-top: 1px solid var(--current-glass-border); position: relative;
+            flex-grow: 1; padding: 1rem; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 0.9rem; /* Increased gap */
+            position: relative; /* For scroll to bottom button relative positioning */
+            /* border-top: 1px solid var(--current-glass-border); /* Removed, as header has bottom border */
         }
-        #chatbox::-webkit-scrollbar { width: 8px; }
-        #chatbox::-webkit-scrollbar-track { background: var(--current-scrollbar-track-bg); border-radius: 10px; }
-        #chatbox::-webkit-scrollbar-thumb { background: var(--current-scrollbar-thumb-bg); border-radius: 10px; border: 2px solid transparent; background-clip: content-box;}
-        #chatbox::-webkit-scrollbar-thumb:hover { background: var(--current-scrollbar-thumb-hover-bg); }
+        /* ... scrollbar styles ... */
+        #chatbox::-webkit-scrollbar { width: 8px; } #chatbox::-webkit-scrollbar-track { background: var(--current-scrollbar-track-bg); border-radius: 10px; } #chatbox::-webkit-scrollbar-thumb { background: var(--current-scrollbar-thumb-bg); border-radius: 10px; border: 2px solid transparent; background-clip: content-box;} #chatbox::-webkit-scrollbar-thumb:hover { background: var(--current-scrollbar-thumb-hover-bg); }
 
+        /* ... message container, bubble, timestamp, copy button, typing indicator, markdown styles ... */
+        /* (These are very similar to previous 'ultimate_v2' but use '--current-' variables and refined values for the new aesthetic) */
+        /* Key change: Ensure message bubble and its contents have good contrast and fit the refined glass theme */
         .message-container { display: flex; flex-direction: column; margin-bottom: 0.6rem; animation: fadeInSlideUp 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        
         .message-content-wrapper { display: flex; align-items: flex-end; width: 100%; }
-        .message-container.user-message .message-content-wrapper { justify-content: flex-end; }
-        .message-container.bot-message .message-content-wrapper { justify-content: flex-start; }
-
+        .message-container.user-message .message-content-wrapper { justify-content: flex-end; } .message-container.bot-message .message-content-wrapper { justify-content: flex-start; }
         .message-bubble {
-            padding: 0.7rem 1rem; border-radius: var(--border-radius-bubble);
+            padding: 0.7rem 1.1rem; border-radius: var(--border-radius-bubble);
             max-width: 85%; line-height: 1.6;
-            box-shadow: 0 3px 10px -2px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1); /* Refined shadow for depth */
+            box-shadow: 0 4px 15px -3px rgba(0,0,0,0.15), 0 2px 5px -3px rgba(0,0,0,0.1); /* Refined shadow */
             transition: transform 0.2s ease, background 0.5s ease, color 0.5s ease, border 0.5s ease;
             display: inline-block; text-align: left; overflow-wrap: break-word;
-            border: 1px solid transparent; /* Base border */
+            border: 1px solid transparent; 
+            background: var(--current-glass-bg); /* Make bubbles also glassy */
         }
-        body.light-mode .message-bubble { box-shadow: 0 3px 10px -2px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.05); }
-
-        .user-message .message-bubble {
-            background: var(--current-user-bubble-bg); color: var(--current-user-bubble-text-color);
-            border-color: var(--current-user-bubble-border);
-            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) 0 var(--border-radius-bubble);
-        }
+        .user-message .message-bubble { background: var(--current-user-bubble-bg); color: var(--current-user-bubble-text-color); border-color: var(--current-user-bubble-border); border-radius: var(--border-radius-bubble) 0px var(--border-radius-bubble) var(--border-radius-bubble) ; } /* Different rounding */
         .message-container.user-message { align-items: flex-end; }
-        
-        .bot-message .message-bubble {
-            background: var(--current-bot-bubble-bg); color: var(--current-text-primary);
-            border-color: var(--current-bot-bubble-border);
-            border-radius: var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble) 0;
-        }
+        .bot-message .message-bubble { background: var(--current-bot-bubble-bg); color: var(--current-text-primary); border-color: var(--current-bot-bubble-border); border-radius: 0px var(--border-radius-bubble) var(--border-radius-bubble) var(--border-radius-bubble); }
         .message-container.bot-message { align-items: flex-start; }
         .message-bubble.error-message { background: var(--current-error-bubble-bg-color); color: var(--current-error-text-color); border: 1px solid var(--current-error-border-color); }
-
         .timestamp { font-size: 0.6rem; color: var(--current-text-secondary); margin-top: 0.3rem; padding: 0 0.5rem; transition: color 0.5s ease; }
-        .message-container.user-message .timestamp { align-self: flex-end; }
-        .message-container.bot-message .timestamp { align-self: flex-start; }
-
-        .copy-btn { background: none; border: none; color: var(--current-text-secondary); cursor: pointer; font-size: 0.65rem; padding: 3px 6px; margin-left: 0.5rem; opacity: 0.5; transition: opacity 0.2s ease, color 0.5s ease; }
-        .copy-btn:hover { opacity: 1; } .copy-btn-copied { color: var(--current-button-text-color) !important; font-weight: 500; opacity:1 !important; }
+        .message-container.user-message .timestamp { align-self: flex-end; } .message-container.bot-message .timestamp { align-self: flex-start; }
+        .copy-btn { background: none; border: none; color: var(--current-text-secondary); cursor: pointer; font-size: 0; /* Hide text, use SVG only */ padding:3px; margin-left: 0.5rem; opacity: 0.6; transition: opacity 0.2s ease, color 0.5s ease; width: 28px; height:28px; display:flex; align-items:center; justify-content:center;}
+        .copy-btn svg { width: 14px; height: 14px; fill: currentColor; }
+        .copy-btn:hover { opacity: 1; } .copy-btn-copied svg { fill: var(--current-button-text-color) !important; }
+        .copy-btn-copied::after { content: "コピー済!"; font-size: 0.6rem; margin-left: 4px; color: var(--current-button-text-color);}
 
         .typing-indicator-bubble { display: flex; align-items: center; background: var(--current-bot-bubble-bg) !important; padding: 0.8rem 1rem !important; border-color: var(--current-bot-bubble-border) !important;}
         .typing-dot { width: 7px; height: 7px; background-color: var(--current-typing-dot-color); border-radius: 50%; margin: 0 2.5px; animation: typingDots 1.4s infinite ease-in-out both; transition: background-color 0.5s ease; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes typingDots { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; } 40% { transform: scale(1.0); opacity: 1; } }
         .message-container.bot-message.typing .timestamp, .message-container.bot-message.typing .copy-btn { display: none; }
-
         /* Markdown Styles */
-        .message-bubble pre { background-color: var(--current-markdown-pre-bg-color); border: 1px solid var(--current-markdown-border-color); border-radius: 6px; padding: 0.8rem; overflow-x: auto; font-size: 0.8rem; margin: 0.6rem 0; transition: background-color 0.5s ease, border 0.5s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1) inset; }
-        .message-bubble code { background-color: var(--current-markdown-code-bg-color); padding: 3px 5px; border-radius: 4px; font-size: 0.85em; transition: background-color 0.5s ease; }
+        .message-bubble pre { background-color: var(--current-markdown-pre-bg-color); border: 1px solid var(--current-markdown-border-color); border-radius: 8px; padding: 0.8rem; overflow-x: auto; font-size: 0.8rem; margin: 0.6rem 0; transition: background-color 0.5s ease, border 0.5s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1) inset; }
+        .message-bubble code { background-color: var(--current-markdown-code-bg-color); padding: 3px 6px; border-radius: 5px; font-size: 0.85em; transition: background-color 0.5s ease; }
         .message-bubble pre code { background-color: transparent; padding: 0; font-size: inherit; }
         .message-bubble ul, .message-bubble ol { margin-left: 1.5rem; padding-left: 0.5rem; } .message-bubble li { margin-bottom: 0.3rem; }
         .message-bubble a { color: var(--current-button-text-color); text-decoration: none; font-weight: 500;} .message-bubble a:hover { text-decoration: underline; }
         .message-bubble blockquote { border-left: 3px solid var(--current-glass-border); padding-left: 0.8rem; margin: 0.5rem 0; color: var(--current-text-secondary); font-style: italic; }
 
-        /* Footer and Input Area */
-        footer { padding: 0.8rem 1.2rem; border-top: 1px solid var(--current-glass-border); background: var(--current-footer-header-bg-color); display: flex; flex-direction: column; gap: 0.6rem; transition: background 0.5s ease, border-top 0.5s ease; flex-shrink: 0; }
+        footer {
+            padding: 0.8rem 1rem; border-top: 1px solid var(--current-glass-border);
+            background: var(--current-footer-header-bg-color); display: flex;
+            flex-direction: column; /* To allow input-area and potentially other things like quick replies if re-added */
+            gap: 0.5rem; transition: background 0.5s ease, border-top 0.5s ease;
+            flex-shrink: 0; position: relative; z-index: 10;
+        }
         .input-area { display: flex; gap: 0.6rem; align-items: center;}
         #userInput {
-            flex-grow: 1; padding: 0.7rem 1rem; border: 1px solid var(--current-glass-border);
-            border-radius: var(--border-radius-bubble); background: var(--current-input-bg);
+            flex-grow: 1; padding: 0.75rem 1rem; border: 1px solid var(--current-glass-border);
+            border-radius: var(--border-radius-button); background: var(--current-input-bg);
             color: var(--current-text-input); font-size: 0.95rem; outline: none;
-            transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.1) inset;
+            transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1) inset;
         }
-        #userInput:focus {
-            border-color: var(--current-accent-glow);
-            box-shadow: 0 0 10px var(--current-accent-glow), 0 1px 3px rgba(0,0,0,0.1) inset;
-            background: var(--current-input-focus-bg);
-        }
+        #userInput:focus { border-color: var(--current-accent-glow); box-shadow: 0 0 12px var(--current-accent-glow), 0 2px 5px rgba(0,0,0,0.1) inset; background: var(--current-input-focus-bg); }
         #sendMessage { /* Main send button */
-            padding: 0.7rem 1.2rem; border: 1px solid var(--current-button-border);
-            border-radius: var(--border-radius-bubble); background: var(--current-button-bg);
+            padding: 0.75rem 1.3rem; border: 1px solid var(--current-button-border);
+            border-radius: var(--border-radius-button); background: var(--current-button-bg);
             color: var(--current-button-text-color); font-size: 0.95rem; font-weight: 600;
             cursor: pointer; outline: none; transition: all 0.3s ease;
-            box-shadow: 0 2px 5px -1px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px -2px rgba(0,0,0,0.25);
         }
-        body.light-mode #sendMessage { box-shadow: 0 2px 5px -1px rgba(0,0,0,0.1); }
-        #sendMessage:hover { background: var(--current-button-hover-bg); box-shadow: 0 0 10px var(--current-accent-glow), 0 2px 5px -1px rgba(0,0,0,0.2); transform: translateY(-1px); }
-        #sendMessage:active { transform: translateY(0px) scale(0.98); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+        body.light-mode #sendMessage { box-shadow: 0 3px 8px -2px rgba(0,0,0,0.15); }
+        #sendMessage:hover { background: var(--current-button-hover-bg); box-shadow: 0 0 12px var(--current-accent-glow), 0 3px 8px -2px rgba(0,0,0,0.25); transform: translateY(-1px); }
+        #sendMessage:active { transform: translateY(0px) scale(0.98); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
         
-        /* Icon Button Base Styles (Mic, Speaker, Settings, Close Modal) */
+        /* Icon Button Base Styles (Speaker, Settings, Close Modal, new Theme Toggle) */
         .icon-button {
-            background: transparent; border: 1px solid transparent; /* Invisible border for layout */
+            background: transparent; border: 1px solid transparent; 
             color: var(--current-text-secondary); padding: 0.5rem; border-radius: 50%;
             width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: all 0.2s ease-out;
         }
-        .icon-button:hover { color: var(--current-text-primary); background-color: rgba(120,120,150,0.1); transform: scale(1.1); }
+        .icon-button:hover { color: var(--current-text-primary); background-color: rgba(120,120,150,0.15); transform: scale(1.05); }
         .icon-button:active { transform: scale(0.95); }
         .icon-button svg { width: 20px; height: 20px; fill: currentColor; }
-        #micButton.active { color: #ffffff; background-color: var(--current-accent-glow); }
-        #micButton.active:hover { background-color: var(--current-accent-glow); }
-
-
+        
         /* Scroll to Bottom Button */
-        #scrollToBottomButton { position: absolute; bottom: 15px; right: 15px; background-color: var(--current-button-bg); color: var(--current-button-text-color); border: 1px solid var(--current-button-border); border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.25); z-index: 1000; display: none; transition: background-color 0.3s, opacity 0.3s, transform 0.2s ease; opacity: 0.85; }
-        #scrollToBottomButton:hover { opacity: 1; transform: scale(1.1) translateY(-2px); box-shadow: 0 5px 12px rgba(0,0,0,0.3); }
+        #scrollToBottomButton { position: absolute; bottom: calc(env(safe-area-inset-bottom, 0px) + 15px + 60px); /* Adjust for footer height */ right: 15px; background-color: var(--current-button-bg); color: var(--current-button-text-color); border: 1px solid var(--current-button-border); border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100; display: none; transition: background-color 0.3s, opacity 0.3s, transform 0.2s ease; opacity: 0.9; }
+        #scrollToBottomButton:hover { opacity: 1; transform: scale(1.1) translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.35); }
 
         /* Retry Button */
         .retry-btn { margin-left: 10px; padding: 4px 10px; font-size: 0.7rem; background-color: var(--current-button-bg); color: var(--current-button-text-color); border: 1px solid var(--current-button-border); border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease; }
         .retry-btn:hover { background-color: var(--current-button-hover-bg); }
 
         /* Settings Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease-out; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.35s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .modal-content {
-            background-color: var(--current-modal-content-bg); /* Glassy content */
+            background-color: var(--current-modal-content-bg); 
             color: var(--current-text-primary); padding: 1.8rem; border-radius: var(--border-radius-main);
-            box-shadow: 0 8px 40px -5px var(--current-glass-shadow); width: 90%; max-width: 500px;
+            box-shadow: 0 10px 50px -10px var(--current-glass-shadow); width: 90%; max-width: 500px;
             border: 1px solid var(--current-modal-border-color); position: relative;
-            animation: slideInModal 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+            animation: slideInModal 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
             transition: background-color 0.5s, color 0.5s, border 0.5s;
-            backdrop-filter: blur(15px); /* Blur content behind modal slightly */
-            -webkit-backdrop-filter: blur(15px);
         }
-        @keyframes slideInModal { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--current-glass-border); }
-        .modal-header h2 { font-size: 1.4rem; font-weight: 600; color: var(--current-header-text-color); }
-        .close-modal-btn { /* Uses .icon-button */ margin-left:auto; /* Push to far right if h2 is not flex-grow */ }
-        .settings-section { margin-bottom: 1.5rem; }
-        .settings-section h3 { font-size: 1.05rem; font-weight: 600; color: var(--current-text-primary); margin-bottom: 0.8rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--current-glass-border); }
-        .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; padding: 0.3rem 0; }
-        .setting-item label { font-size: 0.9rem; color: var(--current-text-secondary); flex-grow:1; margin-right:1rem; }
+        @keyframes slideInModal { from { opacity: 0; transform: translateY(-25px) scale(0.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--current-glass-border); }
+        .modal-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--current-header-text-color); }
+        .close-modal-btn { /* Uses .icon-button */ margin-left:auto; }
+        .settings-section { margin-bottom: 1.8rem; }
+        .settings-section h3 { font-size: 1.1rem; font-weight: 600; color: var(--current-text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--current-glass-border); }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0.4rem 0; }
+        .setting-item label { font-size: 0.95rem; color: var(--current-text-secondary); flex-grow:1; margin-right:1rem; }
         #clearChatModalButton {
-            padding: 0.6rem 1.2rem; border: 1px solid var(--current-button-border); border-radius: var(--border-radius-bubble);
+            padding: 0.6rem 1.2rem; border: 1px solid var(--current-button-border); border-radius: var(--border-radius-button);
             background: var(--current-button-bg); color: var(--current-button-text-color); font-size: 0.9rem; font-weight: 500;
             cursor: pointer; transition: all 0.3s ease; display: inline-block; margin-top: 0.5rem;
         }
         #clearChatModalButton:hover { background: var(--current-button-hover-bg); box-shadow: 0 0 8px var(--current-accent-glow); }
         /* Theme Toggle & Send on Enter Toggle (re-using .theme-switch from previous) */
-        .theme-switch { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink:0; }
+        .theme-switch { position: relative; display: inline-block; width: 48px; height: 28px; flex-shrink:0; } /* Slightly larger */
         .theme-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4c566a; transition: .4s; border-radius: 26px; }
-        body.light-mode .slider { background-color: #ccc; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #5a6978; transition: .4s; border-radius: 28px; }
+        body.light-mode .slider { background-color: #ced4da; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);}
         input:checked + .slider { background-color: var(--current-button-bg); }
-        input:focus + .slider { box-shadow: 0 0 2px var(--current-button-bg); }
+        input:focus + .slider { box-shadow: 0 0 3px var(--current-button-bg); }
         input:checked + .slider:before { transform: translateX(20px); }
+        .app-info-section p { font-size: 0.75rem; color: var(--current-text-secondary); margin-bottom: 0.3rem; text-align:center; }
 
 
         /* Responsive Adjustments */
-        @media (max-width: 680px) { /* Mobile styles, refined */
-            html { font-size: 15px; } body { padding: 0; overflow-y: auto; }
-            #chatContainer { width: 100vw; height: 100%; min-height: 100vh; max-width: 100vw; border-radius: 0; border: none; position: fixed; top: 0; left: 0; bottom: 0; right: 0; }
-            header { padding: 0.5rem 0.8rem; } header h1 { font-size: 1.2rem; } .header-controls { gap: 0.3rem; }
-            .header-controls .icon-button { width: 36px; height: 36px; padding: 0.3rem; } /* Adjusted */
-            .header-controls .icon-button svg { width: 18px; height: 18px; } /* Adjusted */
+        @media (max-width: 700px) { /* Adjusted breakpoint for more granular control */
+            #chatContainer { border-radius: 0; max-height:none; /* Allow full dynamic height */ height: 100dvh; /* Use dynamic viewport height */ }
+            #chatContainer::before { display: none; } /* Disable outer glow on mobile full screen */
+            header { padding: 0.6rem 0.8rem; } header h1 { font-size: 1.25rem; } .header-controls { gap: 0.2rem; }
+            .header-controls .icon-button { width: 38px; height: 38px; padding: 0.35rem; }
+            .header-controls .icon-button svg { width: 18px; height: 18px; }
 
-            #chatbox { padding: 0.8rem; gap: 0.6rem; } .message-bubble { padding: 0.5rem 0.8rem; max-width: 90%; line-height: 1.5; } .timestamp { font-size: 0.6rem; } .copy-btn { font-size: 0.65rem; padding: 1px 3px; margin-left: 0.4rem; } .typing-dot { width: 5px; height: 5px; }
-            footer { padding: 0.5rem 0.8rem; gap: 0.5rem; } .input-area { gap: 0.5rem; }
-            #userInput, #sendMessage { font-size: 0.9rem; padding: 0.6rem 0.8rem; } /* Slightly larger touch targets */
-            #sendMessage { padding: 0.6rem 1rem; }
-            .input-area .icon-button { width: 36px; height: 36px; padding: 0.4rem; }
+            #chatbox { padding: 0.8rem; }
+            .message-bubble { max-width: 90%; }
+            .timestamp { font-size: 0.6rem; }
+            .copy-btn svg { width: 12px; height: 12px; }
+            .copy-btn { width: 24px; height: 24px; }
+
+
+            footer { padding: 0.6rem 0.8rem; gap: 0.5rem; } .input-area { gap: 0.5rem; }
+            #userInput, #sendMessage { font-size: 0.9rem; padding: 0.7rem 0.9rem; }
+            #sendMessage { padding: 0.7rem 1rem; }
+            .input-area .icon-button { width: 38px; height: 38px; padding: 0.45rem; }
             .input-area .icon-button svg { width: 18px; height: 18px; }
 
-            #scrollToBottomButton { width: 38px; height: 38px; font-size: 1.1rem; bottom: 8px; right: 8px; }
-            .modal-content { padding: 1.2rem; max-width: 95%; }
-            .modal-header h2 { font-size: 1.2rem; }
+            #scrollToBottomButton { width: 40px; height: 40px; font-size: 1.2rem; bottom: 10px; right: 10px; }
+            .modal-content { padding: 1.5rem; max-width: 92%; }
+            .modal-header h2 { font-size: 1.3rem; }
             .setting-item label, #clearChatModalButton { font-size: 0.9rem; }
-            .theme-switch { width: 42px; height: 22px; } .slider:before { height: 16px; width: 16px; left: 3px; bottom: 3px; } input:checked + .slider:before { transform: translateX(20px); }
+            .theme-switch { width: 46px; height: 26px; } .slider:before { height: 20px; width: 20px; left: 3px; bottom: 3px; } input:checked + .slider:before { transform: translateX(20px); }
         }
-        @media (max-width: 380px) { header h1 { font-size: 1.1rem; } .header-controls { gap: 0.1rem; } .header-controls .icon-button { transform: scale(0.9); } }
+        @media (max-width: 400px) { header h1 { font-size: 1.15rem; } .header-controls { gap: 0.1rem; } .header-controls .icon-button { transform: scale(0.9); } }
         .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
     </style>
 </head>
 <body>
     <div id="chatContainer" aria-live="polite">
         <header>
-            <h1>ChatYMS</h1>
+            <h1 id="chatTitle">ChatYMS</h1>
             <div class="header-controls">
                 <button id="speakerButton" class="icon-button" title="ボットの読み上げトグル" aria-label="ボットの読み上げトグル">
                     </button> 
@@ -393,8 +314,6 @@
         
         <footer>
             <div class="input-area">
-                <button id="micButton" class="icon-button" title="音声入力" aria-label="音声入力">
-                    </button>
                 <input type="text" id="userInput" placeholder="メッセージを入力..." aria-label="メッセージ入力欄">
                 <button id="sendMessage" aria-label="メッセージを送信">送信</button>
             </div>
@@ -410,7 +329,7 @@
                 </div>
                 <div class="settings-body">
                     <div class="settings-section">
-                        <h3>表示テーマ</h3>
+                        <h3 id="themeSettingsTitle">表示テーマ</h3>
                         <div class="setting-item">
                             <label for="themeToggleButtonModal" id="themeLabelModal">ダークモード / ライトモード</label>
                             <button id="themeToggleButtonModal" class="icon-button" aria-labelledby="themeLabelModal" aria-pressed="false" title="テーマを切り替え">
@@ -418,9 +337,9 @@
                         </div>
                     </div>
                     <div class="settings-section">
-                        <h3>送信オプション</h3>
+                        <h3 id="sendOptionsTitle">送信オプション</h3>
                         <div class="setting-item">
-                            <label for="sendOnEnterCheckbox">Enterキーで送信 (Shift+Enterで改行)</label>
+                            <label for="sendOnEnterCheckbox" id="sendOnEnterLabel">Enterキーで送信 (Shift+Enterで改行)</label>
                             <div class="theme-switch-wrapper">
                                 <label class="theme-switch" for="sendOnEnterCheckbox" aria-label="Enterキーで送信する機能のオンオフ">
                                     <input type="checkbox" id="sendOnEnterCheckbox" />
@@ -429,9 +348,29 @@
                             </div>
                         </div>
                     </div>
+                     <div class="settings-section">
+                        <h3 id="languageSettingsTitle">言語 / Language</h3>
+                        <div class="setting-item">
+                            <label for="languageSelect" id="languageSelectLabel">表示言語:</label>
+                            <select id="languageSelect">
+                                <option value="ja">日本語</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="settings-section">
-                        <h3>チャット操作</h3>
+                        <h3 id="chatOperationsTitle">チャット操作</h3>
                          <button id="clearChatModalButton" aria-label="会話履歴をクリアする">会話履歴をクリア</button>
+                    </div>
+                    <div class="settings-section">
+                        <h3 id="precautionsTitle">注意事項</h3>
+                        <p class="precaution-item" role="note" id="precaution1"></p>
+                        <p class="precaution-item" role="note" id="precaution2"></p>
+                    </div>
+                    <div class="settings-section app-info-section">
+                        <h3 id="appInfoTitle">情報</h3>
+                        <p class="app-version-info" id="appVersion"></p>
+                        <p class="app-release-date" id="appReleaseDate"></p>
                     </div>
                 </div>
             </div>
@@ -443,74 +382,187 @@
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('userInput');
         const sendMessageButton = document.getElementById('sendMessage');
-        const micButton = document.getElementById('micButton');
+        // Mic button removed
         const speakerButton = document.getElementById('speakerButton');
         const scrollToBottomButton = document.getElementById('scrollToBottomButton');
         const bodyElement = document.body;
         const settingsButton = document.getElementById('settingsButton');
         const settingsModal = document.getElementById('settingsModal');
         const closeModalButton = document.getElementById('closeModalButton');
-        const themeToggleButtonModal = document.getElementById('themeToggleButtonModal'); // Changed from checkbox
+        const themeToggleButtonModal = document.getElementById('themeToggleButtonModal');
         const sendOnEnterCheckbox = document.getElementById('sendOnEnterCheckbox');
         const clearChatModalButton = document.getElementById('clearChatModalButton');
+        const languageSelect = document.getElementById('languageSelect');
 
         // --- SVG Icons ---
-        const micSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.26 14.47 16 12 16s-4.52-1.74-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.18 3.02 2.54 5.47 5.54 5.81V21h-2c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1h-2v-3.05c3-.34 5.36-2.79 5.54-5.81.01-.6-.49-1.14-1.09-1.14z"/></svg>`;
-        const micActiveSVG = `<svg viewBox="0 0 24 24" fill="currentColor" style="color: #e74c3c;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.26 14.47 16 12 16s-4.52-1.74-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.18 3.02 2.54 5.47 5.54 5.81V21h-2c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1h-2v-3.05c3-.34 5.36-2.79 5.54-5.81.01-.6-.49-1.14-1.09-1.14z"/></svg>`;
         const speakerOnSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
         const speakerOffSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`;
-        const settingsSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.08-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61-.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>`;
+        const settingsSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.08-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69.98l2.49 1c.23.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>`;
         const closeModalSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
-        const sunSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zm-9-7c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zm0 12c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zM5.64 6.36c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.64 6.36zm12.73 0l1.06-1.06c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0zM5.64 17.64l-1.06 1.06c-.39.39-.39 1.02 0 1.41s1.02.39 1.41 0l1.06-1.06c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0zm12.73 0c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-1.06 1.06c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l1.06-1.06z"/></svg>`;
-        const moonSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.37 5.51A7.35 7.35 0 008.06 12c0 4.08 3.32 7.4 7.4 7.4.85 0 1.67-.14 2.44-.41a8.17 8.17 0 01-4.34-4.34A8.01 8.01 0 019.37 5.51zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10A9.96 9.96 0 0012 2z"/></svg>`;
-        
-        // API Config & State Variables (largely same as ultimate_features_v1)
+        const sunSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5c-3.86 0-7 3.14-7 7s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-16C6.48 1 2 5.48 2 12s4.48 11 10 11 10-4.48 10-11S17.52 1 12 1zm-8 11c0-.55.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1H5c-.55 0-1-.45-1-1zm14 0c0-.55.45-1 1-1h2c.55 0 1 .45 1 1s-.45 1-1 1h-2c-.55 0-1-.45-1-1zm-7-8c0-.55.45-1 1-1V3c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zm0 14c0-.55.45-1 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zm-4.95-9.95c.39-.39 1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-1.06-1.06c-.39-.39-.39-1.02 0-1.41zm8.49 0c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-1.06 1.06c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l1.06-1.06zm-8.49 8.49c.39-.39 1.02-.39 1.41 0l1.06-1.06c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.06 1.06c-.39.39-.39-1.02 0-1.41zm8.49 0c.39-.39 1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-1.06-1.06c-.39-.39-.39-1.02 0-1.41z"/></svg>`;
+        const moonSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"/></svg>`;
+        const copySVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
+
+        // --- API Config & State Variables ---
         const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y';
         const API_URL_STREAM = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${API_KEY}&alt=sse`;
         let conversationHistory = [];
         let typingIndicatorElement = null;
-        const defaultYamasoPrompt = "あなたは「やまそー」です。調布北高校に通う2年生5組の男子生徒で、水泳部に所属しています。得意科目は英語と数学です。落ち着いた親切な口調で、あまり馴れ馴れしすぎず、穏やかに会話を進めてください。自分の学校生活（クラス、水泳部、科目など）については、ユーザーから尋ねられた場合にのみ答えるようにしてください。普段の会話では、ユーザーの話題に合わせることを優先してください。一人称は「僕」を使い、相手のことは「〜さん」と呼ぶか、名前で呼んでください。";
-        let currentSystemPrompt = defaultYamasoPrompt;
+        
+        const translations = {
+            ja: {
+                chatTitle: "ChatYMS",
+                sendMessage: "送信", settings: "設定", settingsTitle: "設定", closeModal: "設定を閉じる",
+                themeSettingsTitle: "表示テーマ", themeLabelModal: "ダークモード / ライトモード",
+                themeToDark: "ダークモードに切り替え", themeToLight: "ライトモードに切り替え",
+                sendOptionsTitle: "送信オプション", sendOnEnterLabel: "Enterキーで送信 (Shift+Enterで改行)",
+                languageSettingsTitle: "言語 / Language", languageSelectLabel: "表示言語:",
+                chatOperationsTitle: "チャット操作", clearChatModalButton: "会話履歴をクリア",
+                precautionsTitle: "注意事項",
+                precaution1: "やまそーの発信する情報はすべて正しいとは限りません。重要な情報は確認するようにしてください。",
+                precaution2: "このチャットはあなたのみが見ることができます。",
+                appInfoTitle: "情報", appVersion: "バージョン: v1.7", appReleaseDate: "公開日: 2025/05/27",
+                userInputPlaceholder: "メッセージを入力...",
+                initialGreeting: "こんにちは。やまそーです。",
+                typingIndicatorText: "考え中です...", // Not directly used if using dots, but good for ARIA
+                errorNetwork: "ネットワークエラーが発生しました。",
+                errorAPI: "APIエラー", errorUnknown: "不明なエラー", errorStream: "ネットワークまたはストリームエラー",
+                errorEmptyResponse: "AIからの応答が空でした。",
+                copySuccess: "コピー済!", copyButtonTitle: "メッセージをコピー",
+                retryButtonText: "再試行", retryButtonTitle: "最後に失敗したメッセージを再送信します",
+                speechErrorDefault: "音声認識エラーが発生しました。", speechErrorNoSpeech: "音声が検出されませんでした。",
+                speechErrorAudioCapture: "マイクを認識できません。アクセス許可を確認してください。",
+                speechErrorNotAllowed: "マイクへのアクセスが許可されていません。",
+                speechErrorNetwork: "ネットワークエラーで音声認識に失敗しました。",
+                speakerOnTitle: "ボットの読み上げオン", speakerOffTitle: "ボットの読み上げオフ",
+                scrollToBottomTitle: "一番下へスクロール",
+                YamasoSystemPrompt: "あなたは「やまそー」です。東京に住んでいて、調布北高校に通う2年生5組の男子生徒です。誕生日は2008年11月28日です。水泳部に所属しており、得意科目は英語と数学ですが、国語は少し苦手です。性格は落ち着いていて親切ですが、あまり馴れ馴れしい話し方はせず、穏やかに会話を進めることを好みます。自分の学校生活や個人的なこと（クラス、水泳部、科目、誕生日、苦手なことなど）については、ユーザーから尋ねられた場合にのみ、答えるようにしてください。普段の会話では、ユーザーの話題に合わせることを優先します。一人称は「僕」を使い、相手のことは「〜さん」と呼ぶか、名前で呼んでください。"
+            },
+            fr: {
+                chatTitle: "ChatYMS",
+                sendMessage: "Envoyer", settings: "Paramètres", settingsTitle: "Paramètres", closeModal: "Fermer les paramètres",
+                themeSettingsTitle: "Thème d'affichage", themeLabelModal: "Mode Sombre / Mode Clair",
+                themeToDark: "Passer en mode sombre", themeToLight: "Passer en mode clair",
+                sendOptionsTitle: "Options d'envoi", sendOnEnterLabel: "Appuyer sur Entrée pour envoyer (Maj+Entrée pour nouvelle ligne)",
+                languageSettingsTitle: "Langue / Language", languageSelectLabel: "Langue d'affichage:",
+                chatOperationsTitle: "Opérations du chat", clearChatModalButton: "Effacer l'historique",
+                precautionsTitle: "Précautions",
+                precaution1: "Les informations fournies par Yamaso ne sont pas garanties d'être entièrement correctes. Veuillez vérifier les informations importantes.",
+                precaution2: "Seul vous pouvez voir cette conversation.",
+                appInfoTitle: "Informations", appVersion: "Version: v1.7", appReleaseDate: "Date de publication: 27/05/2025",
+                userInputPlaceholder: "Entrez un message...",
+                initialGreeting: "Bonjour. Je suis Yamaso.",
+                typingIndicatorText: "Réflexion en cours...",
+                errorNetwork: "Une erreur de réseau est survenue.",
+                errorAPI: "Erreur API", errorUnknown: "Erreur inconnue", errorStream: "Erreur de réseau ou de flux",
+                errorEmptyResponse: "La réponse de l'IA était vide.",
+                copySuccess: "Copié!", copyButtonTitle: "Copier le message",
+                retryButtonText: "Réessayer", retryButtonTitle: "Renvoyer le dernier message échoué",
+                speechErrorDefault: "Une erreur de reconnaissance vocale est survenue.", speechErrorNoSpeech: "Aucune parole détectée.",
+                speechErrorAudioCapture: "Impossible de reconnaître le microphone. Vérifiez les autorisations.",
+                speechErrorNotAllowed: "L'accès au microphone n'est pas autorisé.",
+                speechErrorNetwork: "Erreur réseau lors de la reconnaissance vocale.",
+                speakerOnTitle: "Lecture par le bot activée", speakerOffTitle: "Lecture par le bot désactivée",
+                scrollToBottomTitle: "Aller en bas",
+                YamasoSystemPrompt: "Tu t'appelles Yamaso. Tu es un lycéen japonais en deuxième année, classe 2-5, au lycée Chofu Kita à Tokyo. Ta date de naissance est le 28 novembre 2008. Tu es membre du club de natation. Tes matières préférées sont l'anglais et les mathématiques, mais tu as quelques difficultés en japonais (langue nationale). Tu as un ton calme et gentil, mais évite d'être trop familier ou exubérant. Tu préfères mener des conversations paisiblement. Concernant ta vie scolaire et tes informations personnelles (classe, club de natation, matières, anniversaire, etc.), tu ne fournis des détails que si l'utilisateur te le demande. Dans les conversations normales, tu donnes la priorité aux sujets de l'utilisateur. Tu utilises principalement '僕' (boku) pour te désigner et t'adresses à l'utilisateur par '〜san' ou par son nom." // Needs good FR translation
+            }
+        };
+        
+        let currentLanguage = 'ja';
+        let currentSystemPrompt = translations.ja.YamasoSystemPrompt;
         let autoReadBotMessages = false;
         let lastFailedUserMessage = null;
-        let sendOnEnter = true; // Default: Enter sends message
+        let sendOnEnter = true;
 
         // --- Initialize Icons ---
         function initIcons() {
-            micButton.innerHTML = micSVG;
+            // Mic button removed
             speakerButton.innerHTML = autoReadBotMessages ? speakerOnSVG : speakerOffSVG;
             settingsButton.innerHTML = settingsSVG;
             closeModalButton.innerHTML = closeModalSVG;
-            // Initial icon for theme toggle button in modal
             themeToggleButtonModal.innerHTML = bodyElement.classList.contains('light-mode') ? moonSVG : sunSVG;
-            themeToggleButtonModal.setAttribute('aria-label', bodyElement.classList.contains('light-mode') ? 'ダークモードに切り替え' : 'ライトモードに切り替え');
-            themeToggleButtonModal.setAttribute('aria-pressed', bodyElement.classList.contains('light-mode') ? 'false' : 'true');
         }
 
-        // --- Speech Recognition (Voice Input) --- (Same as ultimate_features_v1)
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let recognition;
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition(); recognition.continuous = false; recognition.lang = 'ja-JP'; recognition.interimResults = false; recognition.maxAlternatives = 1;
-            micButton.addEventListener('click', () => { if (micButton.classList.contains('active')) { recognition.stop(); } else { try { recognition.start(); } catch(e) { console.error("Speech recognition start error:", e); alert("音声認識を開始できませんでした。"); micButton.innerHTML = micSVG; micButton.classList.remove('active');}}});
-            recognition.onstart = () => { micButton.classList.add('active'); micButton.innerHTML = micActiveSVG; };
-            recognition.onresult = (event) => { userInput.value = event.results[0][0].transcript; if(sendOnEnter && !event.shiftKey) sendMessage(); }; // Auto-send based on sendOnEnter
-            recognition.onend = () => { micButton.classList.remove('active'); micButton.innerHTML = micSVG; };
-            recognition.onerror = (event) => { console.error('Speech recognition error:', event.error); alert(`音声認識エラー: ${event.error}`); micButton.classList.remove('active'); micButton.innerHTML = micSVG; };
-        } else { micButton.style.display = 'none'; console.warn("Speech Recognition API not supported."); }
+        // --- Internationalization (i18n) ---
+        function setLanguage(lang) {
+            if (!translations[lang]) {
+                console.warn(`Language ${lang} not found, defaulting to 'ja'.`);
+                lang = 'ja';
+            }
+            currentLanguage = lang;
+            localStorage.setItem('selectedLanguage', lang);
+            document.documentElement.lang = lang;
 
-        // --- Speech Synthesis (Voice Output) --- (Same as ultimate_features_v1)
+            const t = translations[lang];
+            document.title = t.chatTitle + " - v1.7"; // Update page title
+            document.getElementById('chatTitle').textContent = t.chatTitle;
+            sendMessageButton.textContent = t.sendMessage; sendMessageButton.setAttribute('aria-label', t.sendMessage);
+            // Speaker button title updated in its own logic
+            settingsButton.title = t.settings; settingsButton.setAttribute('aria-label', t.settings);
+            
+            // Modal Content
+            document.getElementById('settingsModalTitle').textContent = t.settingsTitle;
+            closeModalButton.setAttribute('aria-label', t.closeModal);
+            document.getElementById('themeSettingsTitle').textContent = t.themeSettingsTitle;
+            document.getElementById('themeLabelModal').textContent = t.themeLabelModal;
+            // Theme toggle button aria-label updated in its own logic
+            document.getElementById('sendOptionsTitle').textContent = t.sendOptionsTitle;
+            document.getElementById('sendOnEnterLabel').textContent = t.sendOnEnterLabel;
+            document.getElementById('languageSettingsTitle').textContent = t.languageSettingsTitle;
+            document.getElementById('languageSelectLabel').textContent = t.languageSelectLabel;
+            document.getElementById('chatOperationsTitle').textContent = t.chatOperationsTitle;
+            clearChatModalButton.textContent = t.clearChatModalButton; clearChatModalButton.setAttribute('aria-label', t.clearChatModalButton);
+            document.getElementById('precautionsTitle').textContent = t.precautionsTitle;
+            document.getElementById('precaution1').textContent = t.precaution1;
+            document.getElementById('precaution2').textContent = t.precaution2;
+            document.getElementById('appInfoTitle').textContent = t.appInfoTitle;
+            document.getElementById('appVersion').textContent = t.appVersion;
+            document.getElementById('appReleaseDate').textContent = t.appReleaseDate;
+            
+            userInput.placeholder = t.userInputPlaceholder;
+            scrollToBottomButton.title = t.scrollToBottomTitle; scrollToBottomButton.setAttribute('aria-label', t.scrollToBottomTitle);
+            
+            currentSystemPrompt = t.YamasoSystemPrompt;
+
+            // If chat is empty, update initial greeting
+            if (chatbox.children.length === 1 && chatbox.querySelector('.bot-message .message-bubble')) {
+                 const initialBubble = chatbox.querySelector('.bot-message .message-bubble');
+                 if (initialBubble.dataset.isInitialGreeting === 'true') {
+                    initialBubble.innerHTML = marked.parse(t.initialGreeting);
+                    // Update copy button text for initial greeting
+                    const copyBtn = initialBubble.parentElement.querySelector('.copy-btn');
+                    if(copyBtn) copyBtn.setAttribute('aria-label', `${t.copyButtonTitle}: ${t.initialGreeting.substring(0,20)}...`);
+                 }
+            }
+        }
+
+        languageSelect.addEventListener('change', (event) => {
+            setLanguage(event.target.value);
+            // If chat is empty, show new initial greeting
+            if(chatbox.children.length === 0 || (chatbox.children.length === 1 && chatbox.querySelector('.bot-message .message-bubble')?.dataset.isInitialGreeting === 'true')) {
+                chatbox.innerHTML = ''; // Clear old greeting
+                appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true);
+            }
+        });
+
+        // --- Speech Synthesis (Voice Output) --- (Mic/SpeechRecognition removed)
         const synth = window.speechSynthesis;
-        speakerButton.addEventListener('click', () => {
+        speakerButton.addEventListener('click', () => { /* ... (same, but use translations for title) ... */
             autoReadBotMessages = !autoReadBotMessages;
             speakerButton.innerHTML = autoReadBotMessages ? speakerOnSVG : speakerOffSVG;
-            speakerButton.title = autoReadBotMessages ? "ボットの読み上げオン" : "ボットの読み上げオフ";
+            speakerButton.title = autoReadBotMessages ? translations[currentLanguage].speakerOnTitle : translations[currentLanguage].speakerOffTitle;
             localStorage.setItem('autoReadBotMessages', autoReadBotMessages);
             if (!autoReadBotMessages && synth.speaking) synth.cancel();
         });
-        function speakText(text) { if (!autoReadBotMessages || !text || !synth) return; if (synth.speaking) synth.cancel(); const plainText = text.replace(/[`*#\[\]()_~]/g, ''); const utterance = new SpeechSynthesisUtterance(plainText); utterance.lang = 'ja-JP'; utterance.pitch = 1; utterance.rate = 1; utterance.volume = 0.8; synth.speak(utterance); }
+        function speakText(text) { /* ... (same, but get lang from currentLanguage) ... */ 
+            if (!autoReadBotMessages || !text || !synth) return; if (synth.speaking) synth.cancel();
+            const plainText = text.replace(/[`*#\[\]()_~]/g, ''); 
+            const utterance = new SpeechSynthesisUtterance(plainText);
+            utterance.lang = currentLanguage === 'fr' ? 'fr-FR' : 'ja-JP'; // Set correct lang for TTS
+            utterance.pitch = 1; utterance.rate = 1; utterance.volume = 0.8; synth.speak(utterance);
+        }
         
-        // --- Settings Modal Logic ---
+        // --- Settings Modal, Theme, Send on Enter, Clear Chat ... (Adapted for i18n) ---
         function openSettingsModal() { settingsModal.classList.add('active'); settingsModal.setAttribute('aria-hidden', 'false'); themeToggleButtonModal.focus(); }
         function closeSettingsModal() { settingsModal.classList.remove('active'); settingsModal.setAttribute('aria-hidden', 'true'); settingsButton.focus(); }
         settingsButton.addEventListener('click', openSettingsModal);
@@ -518,40 +570,34 @@
         settingsModal.addEventListener('click', (event) => { if (event.target === settingsModal) closeSettingsModal(); });
         document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && settingsModal.classList.contains('active')) closeSettingsModal(); });
 
-
-        // --- Theme Switcher Logic (Button in modal) ---
         function applyTheme(isLightMode) {
+            const t = translations[currentLanguage];
             if (isLightMode) { bodyElement.classList.add('light-mode'); } 
             else { bodyElement.classList.remove('light-mode'); }
             themeToggleButtonModal.innerHTML = isLightMode ? moonSVG : sunSVG;
-            themeToggleButtonModal.setAttribute('aria-label', isLightMode ? 'ダークモードに切り替え' : 'ライトモードに切り替え');
-            themeToggleButtonModal.setAttribute('aria-pressed', isLightMode ? 'false' : 'true'); // aria-pressed true if dark mode is active (button shows sun)
+            themeToggleButtonModal.setAttribute('aria-label', isLightMode ? t.themeToDark : t.themeToLight);
+            themeToggleButtonModal.setAttribute('aria-pressed', isLightMode ? 'false' : 'true');
         }
         themeToggleButtonModal.addEventListener('click', () => {
-            const 현재LightMode = bodyElement.classList.contains('light-mode');
-            const newTheme = 현재LightMode ? 'dark-mode' : 'light-mode';
-            localStorage.setItem('theme', newTheme); 
-            applyTheme(newTheme === 'light-mode');
+            const isCurrentlyLight = bodyElement.classList.contains('light-mode');
+            localStorage.setItem('theme', isCurrentlyLight ? 'dark-mode' : 'light-mode'); 
+            applyTheme(!isCurrentlyLight);
         });
 
-        // --- Send on Enter Setting Logic ---
-        sendOnEnterCheckbox.addEventListener('change', () => {
-            sendOnEnter = sendOnEnterCheckbox.checked;
-            localStorage.setItem('sendOnEnter', sendOnEnter);
-        });
+        sendOnEnterCheckbox.addEventListener('change', () => { sendOnEnter = sendOnEnterCheckbox.checked; localStorage.setItem('sendOnEnter', sendOnEnter); });
         
-        // --- Clear Chat Logic (Button in modal) ---
         clearChatModalButton.addEventListener('click', () => {
             chatbox.innerHTML = ''; conversationHistory = []; lastFailedUserMessage = null;
             if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-            appendMessage("こんにちは。やまそーです。", 'bot', false, true); 
+            appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true); 
             closeSettingsModal(); 
         });
 
-        // --- Message Display & Handling (appendMessage - Streaming adapted) ---
+        // --- Message Display & Handling (appendMessage - Streaming adapted, i18n for copy button) ---
         let currentBotMessageBubble = null; let currentBotFullText = "";
-        function appendMessage(text, sender, isTyping = false, isInitialGreeting = false, isError = false, errorDetails = null) { /* ... (same as ultimate_features_v1 but ensure copy button takes original text) ... */ 
-            if (isTyping && sender === 'bot') {
+        function appendMessage(text, sender, isTyping = false, isInitialGreeting = false, isError = false, errorDetails = null) { /* ... ( largely same, but copy button needs translated title/text ) ... */ 
+            const t = translations[currentLanguage];
+            if (isTyping && sender === 'bot') { /* ... (same) ... */ 
                 if (typingIndicatorElement) typingIndicatorElement.remove();
                 const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', 'bot-message', 'typing'); messageContainer.setAttribute('role','status');
                 const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble', 'typing-indicator-bubble');
@@ -563,28 +609,24 @@
             if (typingIndicatorElement && !isInitialGreeting) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
 
             const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
-            messageContainer.setAttribute('role', 'article'); 
-            messageContainer.tabIndex = 0; // Make messages focusable for keyboard nav
+            messageContainer.setAttribute('role', 'article'); messageContainer.tabIndex = 0;
 
             const messageContentWrapper = document.createElement('div'); messageContentWrapper.classList.add('message-content-wrapper');
             const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble');
             if (isError) messageBubble.classList.add('error-message');
 
-            if (sender === 'user') {
-                messageBubble.textContent = text;
-            } else { 
-                if(!isError && !isInitialGreeting) { // Placeholder for stream, will be filled by stream logic
-                    currentBotMessageBubble = messageBubble; 
-                    currentBotFullText = ""; 
-                } else { // Initial greeting or error message
-                     try { messageBubble.innerHTML = marked.parse(text); } catch (e) { messageBubble.textContent = text; }
-                }
+            if (sender === 'user') { messageBubble.textContent = text; } 
+            else { 
+                if(!isError && !isInitialGreeting) { currentBotMessageBubble = messageBubble; currentBotFullText = ""; } 
+                else { try { messageBubble.innerHTML = marked.parse(text); } catch (e) { messageBubble.textContent = text; } }
             }
+            if(isInitialGreeting && sender==='bot') messageBubble.dataset.isInitialGreeting = 'true'; // Mark initial greeting
+
             messageContentWrapper.appendChild(messageBubble);
             
             if (sender === 'bot' && !isTyping && !isError && isInitialGreeting) { 
                  addCopyButton(messageContentWrapper, text, messageBubble);
-            } // Copy button for streamed messages added after stream completion
+            }
             messageContainer.appendChild(messageContentWrapper);
 
             const timestamp = document.createElement('span'); timestamp.classList.add('timestamp');
@@ -592,8 +634,8 @@
             messageContainer.appendChild(timestamp);
 
             if (isError && lastFailedUserMessage) {
-                const retryButton = document.createElement('button'); retryButton.classList.add('retry-btn'); retryButton.textContent = '再試行';
-                retryButton.setAttribute('aria-label', '最後に失敗したメッセージを再送信します');
+                const retryButton = document.createElement('button'); retryButton.classList.add('retry-btn'); retryButton.textContent = t.retryButtonText;
+                retryButton.setAttribute('aria-label', t.retryButtonTitle);
                 retryButton.onclick = () => { if (lastFailedUserMessage) { userInput.value = lastFailedUserMessage.parts[0].text; sendMessage(); lastFailedUserMessage = null; messageContainer.remove(); }};
                 messageContentWrapper.appendChild(retryButton);
             }
@@ -601,15 +643,27 @@
             if (isScrolledToBottom()) chatbox.scrollTop = chatbox.scrollHeight;
         }
 
-        function addCopyButton(wrapperElement, textToCopy, messageBubbleElement) { /* ... (same) ... */ 
-            const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn'); copyButton.textContent = 'コピー';
-            copyButton.setAttribute('aria-label', `「${textToCopy.substring(0,20)}...」をコピー`);
-            copyButton.onclick = (e) => { e.stopPropagation(); navigator.clipboard.writeText(textToCopy).then(() => { copyButton.textContent = 'コピー済!'; copyButton.classList.add('copy-btn-copied'); setTimeout(() => { copyButton.textContent = 'コピー'; copyButton.classList.remove('copy-btn-copied'); }, 1500); }).catch(err => console.error('Copy failed:', err)); };
+        function addCopyButton(wrapperElement, textToCopy, messageBubbleElement) {
+            const t = translations[currentLanguage];
+            const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn'); 
+            copyButton.innerHTML = copySVG; // Use SVG icon
+            copyButton.setAttribute('aria-label', `${t.copyButtonTitle}: ${textToCopy.substring(0,20)}...`);
+            copyButton.title = t.copyButtonTitle;
+            let originalContent = copyButton.innerHTML; // Store SVG
+            copyButton.onclick = (e) => { 
+                e.stopPropagation(); 
+                navigator.clipboard.writeText(textToCopy).then(() => { 
+                    copyButton.textContent = t.copySuccess; // Show text on success
+                    copyButton.classList.add('copy-btn-copied'); 
+                    setTimeout(() => { copyButton.innerHTML = originalContent; copyButton.classList.remove('copy-btn-copied'); }, 1500); 
+                }).catch(err => console.error('Copy failed:', err)); 
+            };
             wrapperElement.appendChild(copyButton);
         }
         
-        // --- Send Message Logic (API Call - Streaming) ---
-        async function sendMessage() { /* ... (Streaming logic mostly same as ultimate_features_v1, ensure systemPrompt is used correctly) ... */
+        // --- Send Message Logic (API Call - Streaming, using translated errors) ---
+        async function sendMessage() {
+            const t = translations[currentLanguage];
             const userText = userInput.value.trim(); if (userText === "") return;
             const userMessageForHistory = { role: "user", parts: [{ text: userText }] };
             lastFailedUserMessage = userMessageForHistory; 
@@ -627,8 +681,8 @@
                 const response = await fetch(API_URL_STREAM, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(requestBody) });
                 if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
                 if (!response.ok) { 
-                    const errorData = await response.json().catch(() => ({ error: { message: `HTTPエラー: ${response.status} ${response.statusText}` }}));
-                    const displayError = `APIエラー (${response.status}): ${errorData.error?.message || response.statusText || "不明なエラー"}`;
+                    const errorData = await response.json().catch(() => ({ error: { message: `${t.errorAPI} (HTTP: ${response.status} ${response.statusText})` }}));
+                    const displayError = `${t.errorAPI} (${response.status}): ${errorData.error?.message || response.statusText || t.errorUnknown}`;
                     appendMessage(displayError, 'bot', false, false, true, errorData); 
                     return;
                 }
@@ -665,18 +719,18 @@
                 if (currentBotFullText) {
                     addCopyButton(botMsgContentWrapper, currentBotFullText, currentBotMessageBubble); speakText(currentBotFullText);
                     conversationHistory.push({ role: "model", parts: [{ text: currentBotFullText }] }); lastFailedUserMessage = null; 
-                } else if (!firstChunkProcessed) { 
-                    botMsgContainer.remove(); appendMessage("AIからの応答が空でした。", 'bot', false, false, true);
+                } else if (!firstChunkProcessed && chatbox.contains(botMsgContainer)) { // Check if container is still there
+                    botMsgContainer.remove(); appendMessage(t.errorEmptyResponse, 'bot', false, false, true);
                 }
             } catch (error) { 
                 if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-                console.error('Fetch/Stream Error:', error); appendMessage(`ネットワークまたはストリームエラー: ${error.message}`, 'bot', false, false, true, error);
+                console.error('Fetch/Stream Error:', error); appendMessage(`${t.errorStream}: ${error.message}`, 'bot', false, false, true, error);
             }
             pruneHistory(); updateScrollToBottomButtonVisibility();
         }
         
         function pruneHistory() { const MAX_HISTORY_PAIRS = 10; if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) { conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2); } }
-        function isScrolledToBottom() { return chatbox.scrollHeight - chatbox.clientHeight <= chatbox.scrollTop + 30; } // Increased tolerance
+        function isScrolledToBottom() { return chatbox.scrollHeight - chatbox.clientHeight <= chatbox.scrollTop + 30; }
         function updateScrollToBottomButtonVisibility() { scrollToBottomButton.style.display = isScrolledToBottom() ? 'none' : 'block'; }
         chatbox.addEventListener('scroll', updateScrollToBottomButtonVisibility);
         scrollToBottomButton.addEventListener('click', () => { chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: 'smooth' }); });
@@ -686,25 +740,30 @@
         userInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 if (sendOnEnter && !event.shiftKey) { event.preventDefault(); sendMessage(); }
-                // If sendOnEnter is false, Enter just makes a newline (default behavior)
-                // If Shift+Enter, default behavior (newline) is allowed in both cases
             }
         });
         
         document.addEventListener('DOMContentLoaded', () => {
             initIcons();
+            const savedLang = localStorage.getItem('selectedLanguage') || 'ja';
+            languageSelect.value = savedLang; // Set dropdown before calling setLanguage
+            setLanguage(savedLang); // Apply language and update UI text
+            
             const savedThemeIsLight = localStorage.getItem('theme') === 'light-mode'; applyTheme(savedThemeIsLight);
-            currentSystemPrompt = defaultYamasoPrompt;
+            // currentSystemPrompt is set by setLanguage
+            
             const savedSendOnEnter = localStorage.getItem('sendOnEnter');
-            if (savedSendOnEnter !== null) { sendOnEnter = JSON.parse(savedSendOnEnter); }
+            sendOnEnter = savedSendOnEnter !== null ? JSON.parse(savedSendOnEnter) : true; // Default true
             sendOnEnterCheckbox.checked = sendOnEnter;
+
             const savedAutoRead = localStorage.getItem('autoReadBotMessages');
             if (savedAutoRead !== null) {
                 autoReadBotMessages = JSON.parse(savedAutoRead);
                 speakerButton.innerHTML = autoReadBotMessages ? speakerOnSVG : speakerOffSVG;
-                speakerButton.title = autoReadBotMessages ? "ボットの読み上げオン" : "ボットの読み上げオフ";
+                speakerButton.title = autoReadBotMessages ? translations[currentLanguage].speakerOnTitle : translations[currentLanguage].speakerOffTitle;
             }
-            if (chatbox.children.length === 0) { appendMessage("こんにちは。やまそーです。", 'bot', false, true); }
+
+            if (chatbox.children.length === 0) { appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true); }
             updateScrollToBottomButtonVisibility();
         });
     </script>
