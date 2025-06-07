@@ -109,11 +109,11 @@
         /* Header */
         header { padding: 10px 12px; background-color: transparent; border-bottom: 1px solid var(--current-glass-border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; min-height: 54px; position: relative; z-index: 10; backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); }
         header .header-spacer { flex-basis: 44px; flex-shrink: 0;}
-        header h1 { font-weight: 600; font-size: 1.1rem; color: var(--current-header-text-color); text-shadow: none; flex-grow: 1; text-align: center; margin: 0; }
+        header h1 { font-weight: 600; font-size: 1.1rem; color: var(--current-header-text-color); text-shadow: none; flex-grow: 1; text-align: center; margin: 0; padding: 0 5px; }
         .header-controls { display: flex; align-items: center; gap: 4px; flex-basis: 44px; justify-content: flex-end; flex-shrink: 0;}
 
         /* Chatbox */
-        #chatbox { flex-grow: 1; padding: 16px; padding-bottom: 80px; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column-reverse; /* New messages at the bottom */ }
+        #chatbox { flex-grow: 1; padding: 16px; padding-bottom: 80px; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; /* Default direction */ }
         .chatbox-inner { display: flex; flex-direction: column; gap: 16px; }
         #chatbox::-webkit-scrollbar { width: 6px; }
         #chatbox::-webkit-scrollbar-thumb { background-color: var(--current-scrollbar-thumb-bg); border-radius: 3px; }
@@ -219,7 +219,7 @@
 
         <div id="chatbox" role="log" aria-atomic="false" aria-relevant="additions">
            <div class="chatbox-inner">
-               <!-- Messages are prepended here -->
+               <!-- Messages are appended here -->
            </div>
         </div>
         
@@ -276,8 +276,8 @@
                     </div>
                     <div class="settings-section precautions-section">
                         <h3 id="precautionsTitle"></h3>
-                        <div class="precaution-item" role="note" id="precaution1"></div>
-                        <div class="precaution-item" role="note" id="precaution2"></div>
+                        <p class="precaution-item" role="note" id="precaution1"></p>
+                        <p class="precaution-item" role="note" id="precaution2"></p>
                     </div>
                     <div class="settings-section app-info-section">
                         <h3 id="appInfoTitle"></h3>
@@ -291,8 +291,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("Chatbot Initializing...");
-
             // --- DOM Elements ---
             const chatbox = document.getElementById('chatbox');
             const chatboxInner = document.querySelector('.chatbox-inner');
@@ -336,7 +334,7 @@
                     precautionsTitle: "注意事項", precaution1: "やまそーの発信する情報はすべて正しいとは限りません。重要な情報は確認するようにしてください。", precaution2: "このチャットはあなたのみが見ることができます。",
                     appInfoTitle: "情報", appVersion: "バージョン: v1.7", appReleaseDate: "公開日: 2025/05/27",
                     userInputPlaceholder: "メッセージを入力...", initialGreeting: "こんにちは。やまそーです。",
-                    errorAPI: "APIエラー", errorNetwork: "ネットワークエラー", copySuccess: "コピー完了", copyButtonTitle: "コピー",
+                    errorAPI: "APIエラー", errorNetwork: "ネットワークエラー", copySuccess: "コピー完了!", copyButtonTitle: "コピー",
                     retryButtonText: "再試行", scrollToBottomTitle: "一番下へスクロール",
                     YamasoSystemPrompt: "あなたは「やまそー」です。東京に住んでいて、調布北高校に通う2年生5組の男子生徒です。誕生日は2008年11月28日です。水泳部に所属しており、得意科目は英語と数学ですが、国語は少し苦手です。性格は落ち着いていて親切ですが、あまり馴れ馴れしい話し方はせず、穏やかに会話を進めることを好みます。自分の学校生活や個人的なこと（クラス、水泳部、科目、誕生日、苦手なことなど）については、ユーザーから尋ねられた場合にのみ、答えるようにしてください。普段の会話では、ユーザーの話題に合わせることを優先します。一人称は「僕」を使い、相手のことは「〜さん」と呼ぶか、名前で呼んでください。"
                 },
@@ -358,10 +356,10 @@
             
             // --- All Functions ---
             function initIcons() {
-                if(settingsButton) settingsButton.innerHTML = settingsSVG;
-                if(closeModalButton) closeModalButton.innerHTML = closeModalSVG;
-                if(themeToggleButtonModal) themeToggleButtonModal.innerHTML = bodyElement.classList.contains('light-mode') ? moonSVG : sunSVG;
-                if(sendMessageButton) sendMessageButton.innerHTML = sendSVG;
+                settingsButton.innerHTML = settingsSVG;
+                closeModalButton.innerHTML = closeModalSVG;
+                themeToggleButtonModal.innerHTML = bodyElement.classList.contains('light-mode') ? moonSVG : sunSVG;
+                sendMessageButton.innerHTML = sendSVG;
             }
 
             function setLanguage(lang) {
@@ -372,27 +370,28 @@
                 const setEl = (id, prop, val) => { const el = document.getElementById(id); if (el) el[prop] = val; };
                 
                 setEl('chatTitle', 'textContent', t.chatTitle);
-                if(sendMessageButton) sendMessageButton.setAttribute('aria-label', t.sendMessageAriaLabel); 
-                if(settingsButton) { settingsButton.title = t.settings; settingsButton.setAttribute('aria-label', t.settings); }
+                sendMessageButton.setAttribute('aria-label', t.sendMessageAriaLabel); 
+                settingsButton.title = t.settings; settingsButton.setAttribute('aria-label', t.settings);
                 setEl('settingsModalTitle', 'textContent', t.settingsTitle);
-                if(closeModalButton) closeModalButton.setAttribute('aria-label', t.closeModal);
+                closeModalButton.setAttribute('aria-label', t.closeModal);
                 setEl('themeSettingsTitle', 'textContent', t.themeSettingsTitle);
                 setEl('themeLabelModal', 'textContent', t.themeLabelModal);
-                if(themeToggleButtonModal) themeToggleButtonModal.setAttribute('aria-label', bodyElement.classList.contains('light-mode') ? t.themeToDark : t.themeToLight);
+                const isLight = bodyElement.classList.contains('light-mode');
+                themeToggleButtonModal.setAttribute('aria-label', isLight ? t.themeToDark : t.themeToLight);
                 setEl('sendOptionsTitle', 'textContent', t.sendOptionsTitle);
                 setEl('sendOnEnterLabel', 'textContent', t.sendOnEnterLabel);
                 setEl('languageSettingsTitle', 'textContent', t.languageSettingsTitle);
                 setEl('languageSelectLabel', 'textContent', t.languageSelectLabel);
                 setEl('chatOperationsTitle', 'textContent', t.chatOperationsTitle);
-                if(clearChatModalButton) { clearChatModalButton.textContent = t.clearChatModalButton; clearChatModalButton.setAttribute('aria-label', t.clearChatModalButton); }
+                clearChatModalButton.textContent = t.clearChatModalButton; clearChatModalButton.setAttribute('aria-label', t.clearChatModalButton);
                 setEl('precautionsTitle', 'textContent', t.precautionsTitle);
                 setEl('precaution1', 'textContent', t.precaution1);
                 setEl('precaution2', 'textContent', t.precaution2);
                 setEl('appInfoTitle', 'textContent', t.appInfoTitle);
                 setEl('appVersion', 'textContent', t.appVersion);
                 setEl('appReleaseDate', 'textContent', t.appReleaseDate);
-                if(userInput) userInput.placeholder = t.userInputPlaceholder;
-                if(scrollToBottomButton) { scrollToBottomButton.title = t.scrollToBottomTitle; scrollToBottomButton.setAttribute('aria-label', t.scrollToBottomTitle); }
+                userInput.placeholder = t.userInputPlaceholder;
+                scrollToBottomButton.title = t.scrollToBottomTitle; scrollToBottomButton.setAttribute('aria-label', t.scrollToBottomTitle);
                 currentSystemPrompt = t.YamasoSystemPrompt;
             }
 
@@ -443,7 +442,7 @@
                     const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', 'bot-message', 'typing'); messageContainer.setAttribute('role','status'); messageContainer.setAttribute('aria-label', t.typingIndicatorText);
                     const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble', 'typing-indicator-bubble');
                     messageBubble.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
-                    messageContainer.appendChild(messageBubble); chatboxInner.prepend(messageContainer);
+                    messageContainer.appendChild(messageBubble); chatboxInner.appendChild(messageContainer);
                     typingIndicatorElement = messageContainer; chatbox.scrollTop = chatbox.scrollHeight;
                     return;
                 }
@@ -472,9 +471,11 @@
                     retryButton.onclick = () => { if (lastFailedUserMessage && userInput) { userInput.value = lastFailedUserMessage.parts[0].text; sendMessage(); lastFailedUserMessage = null; messageContainer.remove(); }};
                     messageContentWrapper.appendChild(retryButton);
                 }
-                chatboxInner.prepend(messageContainer);
+                chatboxInner.appendChild(messageContainer);
                 updateScrollToBottomButtonVisibility();
-                if(sender === 'user') chatbox.scrollTop = 0;
+                if (sender === 'user' || isInitialGreeting) {
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }
             }
 
             function addCopyButton(wrapperElement, textToCopy, messageBubbleElement) {
@@ -528,7 +529,7 @@
                     const botMsgContentWrapper = document.createElement('div'); botMsgContentWrapper.classList.add('message-content-wrapper');
                     currentBotMessageBubble = document.createElement('p'); currentBotMessageBubble.classList.add('message-bubble');
                     botMsgContentWrapper.appendChild(currentBotMessageBubble); botMsgContainer.appendChild(botMsgContentWrapper);
-                    chatboxInner.prepend(botMsgContainer);
+                    chatboxInner.appendChild(botMsgContainer);
                     const reader = response.body.getReader(); const decoder = new TextDecoder(); let firstChunkProcessed = false;
                     while (true) {
                         const { value, done } = await reader.read(); if (done) break;
@@ -548,6 +549,7 @@
                                             timestamp.textContent = new Date().toLocaleTimeString(currentLanguage === 'fr' ? 'fr-FR' : 'ja-JP', { hour: '2-digit', minute: '2-digit' });
                                             botMsgContainer.appendChild(timestamp); firstChunkProcessed = true;
                                         }
+                                        if (isScrolledToBottom()) chatbox.scrollTop = chatbox.scrollHeight;
                                     }
                                 } catch (e) { /* Ignore occasional parsing errors in stream */ }
                             }
@@ -567,10 +569,10 @@
             }
             
             function pruneHistory() { const MAX_HISTORY_PAIRS = 10; if (conversationHistory.length > MAX_HISTORY_PAIRS * 2) { conversationHistory.splice(0, conversationHistory.length - MAX_HISTORY_PAIRS * 2); } }
-            function isScrolledToBottom() { if(!chatbox) return true; return chatbox.scrollTop >= -30; } 
+            function isScrolledToBottom() { if(!chatbox) return true; return chatbox.scrollHeight - chatbox.clientHeight <= chatbox.scrollTop + 30; } 
             function updateScrollToBottomButtonVisibility() { if(scrollToBottomButton) scrollToBottomButton.style.display = isScrolledToBottom() ? 'none' : 'block'; }
             if(chatbox) chatbox.addEventListener('scroll', updateScrollToBottomButtonVisibility);
-            if(scrollToBottomButton) scrollToBottomButton.addEventListener('click', () => { if(chatbox) chatbox.scrollTo({ top: 0, behavior: 'smooth' }); });
+            if(scrollToBottomButton) scrollToBottomButton.addEventListener('click', () => { if(chatbox) chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: 'smooth' }); });
             
             if(sendMessageButton) sendMessageButton.addEventListener('click', sendMessage);
             if(userInput) {
