@@ -359,3 +359,20 @@ if(userInput) userInput.addEventListener('keydown', (event) => {
         if (sendOnEnter && !event.shiftKey) { event.preventDefault(); sendMessage(); }
     }
 });
+
+// --- Liquid Glass Interactive Light Effect ---
+const chatContainerForEffect = document.getElementById('chatContainer');
+if (chatContainerForEffect) {
+    chatContainerForEffect.addEventListener('mousemove', e => {
+        const rect = chatContainerForEffect.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        chatContainerForEffect.style.setProperty('--mouse-x', `${x}px`);
+        chatContainerForEffect.style.setProperty('--mouse-y', `${y}px`);
+    });
+    chatContainerForEffect.addEventListener('mouseleave', () => {
+        // Optional: Reset position when mouse leaves
+        chatContainerForEffect.style.setProperty('--mouse-x', `50%`);
+        chatContainerForEffect.style.setProperty('--mouse-y', `50%`);
+    });
+}
