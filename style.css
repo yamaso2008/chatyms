@@ -12,14 +12,14 @@
     --lm-aurora-1: hsl(210, 100%, 85%);
     --lm-aurora-2: hsl(180, 100%, 80%);
     --lm-aurora-3: hsl(290, 100%, 90%);
-    --lm-glass-bg: rgba(240, 240, 255, 0.5);
+    --lm-glass-bg: rgba(242, 242, 247, 0.75);
     --lm-glass-border: rgba(255, 255, 255, 0.6);
     --lm-glass-highlight: rgba(255, 255, 255, 0.8);
     --lm-text-primary: #1d1d1f;
     --lm-text-secondary: #585860;
     --lm-shadow-color: rgba(60, 60, 100, 0.15);
     --lm-user-bubble-bg: linear-gradient(135deg, hsla(220, 100%, 70%, 0.6), hsla(240, 100%, 75%, 0.8));
-    --lm-bot-bubble-bg: rgba(250, 250, 255, 0.5);
+    --lm-bot-bubble-bg: rgba(235, 235, 240, 0.7);
     --lm-interactive-glow: hsla(220, 100%, 80%, 0.3);
 
     /* Dark Mode Color Palette */
@@ -256,7 +256,7 @@ header h1 {
 #userInput {
     flex-grow: 1;
     padding: 12px 18px;
-    border-radius: var(--border-radius-m);
+    border-radius: var(--border-radius-l);
     background-color: rgba(0,0,0,0.1);
     color: var(--text-primary);
     font-size: 1rem;
