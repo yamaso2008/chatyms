@@ -26,14 +26,14 @@
     --dm-aurora-1: hsl(220, 100%, 40%);
     --dm-aurora-2: hsl(180, 100%, 30%);
     --dm-aurora-3: hsl(280, 100%, 50%);
-    --dm-glass-bg: rgba(30, 30, 50, 0.25);
+    --dm-glass-bg: rgba(30, 30, 50, 0.40);
     --dm-glass-border: rgba(100, 100, 120, 0.3);
     --dm-glass-highlight: rgba(255, 255, 255, 0.1);
     --dm-text-primary: #f5f5f7;
     --dm-text-secondary: #a8a8b0;
     --dm-shadow-color: rgba(0, 0, 0, 0.3);
     --dm-user-bubble-bg: linear-gradient(135deg, hsla(212, 96%, 60%, 0.7), hsla(240, 90%, 65%, 0.5));
-    --dm-bot-bubble-bg: rgba(50, 50, 70, 0.35);
+    --dm-bot-bubble-bg: rgba(50, 50, 70, 0.10);
     --dm-interactive-glow: hsla(230, 100%, 75%, 0.2);
 
     /* Mapped Variables (Defaults to Dark) */
