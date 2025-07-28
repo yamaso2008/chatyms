@@ -389,3 +389,14 @@ body.light-mode .setting-item label,
 body.light-mode .settings-section h3 {
     text-shadow: 0px 1px 3px rgba(80, 80, 80, 0.15);
 }
+
+/* 入力欄のプレースホルダー文字色を個別に設定 */
+#userInput::placeholder {
+    color: #aaaaaa; /* ダークモード時の色 */
+}
+
+body.light-mode #userInput::placeholder {
+    color: #cccccc; /* ライトモード時の色 */
+}
+
+
