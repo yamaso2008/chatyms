@@ -12,14 +12,14 @@
     --lm-aurora-1: hsl(210, 100%, 85%);
     --lm-aurora-2: hsl(180, 100%, 80%);
     --lm-aurora-3: hsl(290, 100%, 90%);
-    --lm-glass-bg: rgba(0, 232, 237, 0.75);
+    --lm-glass-bg: rgba(225, 225, 225, 0.40);
     --lm-glass-border: rgba(255, 255, 255, 0.6);
     --lm-glass-highlight: rgba(255, 255, 255, 0.8);
     --lm-text-primary: #1d1d1f;
     --lm-text-secondary: #585860;
     --lm-shadow-color: rgba(60, 60, 100, 0.15);
     --lm-user-bubble-bg: linear-gradient(135deg, hsla(220, 100%, 70%, 0.6), hsla(240, 100%, 75%, 0.8));
-    --lm-bot-bubble-bg: rgba(225, 0, 230, 0.7);
+    --lm-bot-bubble-bg: rgba(225, 225, 230, 0.50);
     --lm-interactive-glow: hsla(220, 100%, 80%, 0.3);
 
     /* Dark Mode Color Palette */
@@ -378,3 +378,14 @@ input:checked + .slider:before { transform: translateX(20px); }
 @keyframes slideInModalFromBottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @media (min-width: 768px) { .modal-content { border-radius: var(--border-radius-l); animation: slideInModalFromCenter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); } }
 @keyframes slideInModalFromCenter { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+
+
+/* ライトモードの文字の視認性を上げるための影を追加 */
+body.light-mode .message-bubble {
+    text-shadow: 0px 1px 3px rgba(50, 50, 50, 0.2);
+}
+
+body.light-mode .setting-item label, 
+body.light-mode .settings-section h3 {
+    text-shadow: 0px 1px 3px rgba(80, 80, 80, 0.15);
+}
