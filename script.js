@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('selectedLanguage') || 'ja';
     languageSelect.value = savedLang;
     setLanguage(savedLang);
-    const savedThemeIsLight = localStorage.getItem('theme') === 'light-mode';
+    const savedThemeIsLight = localStorage.getItem('theme') === 'dark-mode';
     applyTheme(savedThemeIsLight);
     const savedSendOnEnter = localStorage.getItem('sendOnEnter');
     sendOnEnter = savedSendOnEnter !== null ? JSON.parse(savedSendOnEnter) : true;
