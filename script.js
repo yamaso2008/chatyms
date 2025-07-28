@@ -330,7 +330,10 @@ if(languageSelect) languageSelect.addEventListener('change', (event) => {
 });
 
 if(settingsButton) settingsButton.addEventListener('click', openSettingsModal);
-if(closeModalButton) closeModalButton.addEventListener('click', closeSettingsModal);
+if(closeModalButton) closeModalButton.addEventListener('click', (event) => {
+    event.stopPropagation(); // イベントの貫通をここで止める
+    closeSettingsModal();
+});
 if(settingsModal) settingsModal.addEventListener('click', (event) => { if (event.target === settingsModal) closeSettingsModal(); });
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && settingsModal && settingsModal.classList.contains('active')) closeSettingsModal(); });
 
