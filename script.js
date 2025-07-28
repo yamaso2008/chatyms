@@ -117,7 +117,7 @@ function applyTheme(isLightMode) {
 
 // --- Modal Logic ---
 function openSettingsModal() { if(settingsModal) { settingsModal.classList.add('active'); settingsModal.setAttribute('aria-hidden', 'false'); if(themeToggleButtonModal) themeToggleButtonModal.focus(); } }
-function closeSettingsModal() { if(settingsModal) { settingsModal.style.opacity = '0'; setTimeout(() => {settingsModal.classList.remove('active'); if(settingsButton) settingsButton.focus(); settingsModal.style.opacity = '1';}, 300);} }
+function closeSettingsModal() { if(settingsModal) { settingsModal.style.opacity = '0'; setTimeout(() => {settingsModal.classList.remove('active'); settingsModal.style.opacity = '1';}, 300);} }
 
 // --- History Persistence ---
 function saveHistory() {
