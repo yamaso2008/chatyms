@@ -171,7 +171,7 @@ body::before {
     z-index: 1;
 }
 #chatContainer:hover::before {
-    opacity: 0.6; /* Weakened glow effect */
+    opacity: 0.3; /* Weakened glow effect */
 }
 
 /* Glossy sheen on top */
