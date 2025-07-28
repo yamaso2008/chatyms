@@ -1,5 +1,5 @@
 /*
-    Title: ChatYMS - iOS 26 "Liquid Glass" Theme
+    Title: ChatYMS - iOS 26 "Liquid Glass" Theme v2 (Bug-Fix Release)
     Concept: A futuristic, fluid, and interactive glass-based UI.
     Features: Animated aurora background, multi-layered glass elements, interactive lighting.
 */
@@ -54,7 +54,7 @@
     --current-text-primary: var(--text-primary);
     --current-text-secondary: var(--text-secondary);
     --current-header-text-color: var(--text-primary);
-    --current-accent-blue: #0A84FF; /* Retained for some elements */
+    --current-accent-blue: #0A84FF;
     --current-accent-red: #FF453A;
     --current-accent-green: #30D158;
     --current-text-placeholder: var(--text-secondary);
@@ -137,15 +137,15 @@ body::before {
     width: 100%;
     max-width: 800px;
     height: 100%;
-    max-height: 90vh; /* Consistent height */
+    max-height: 90vh;
     background-color: var(--glass-bg);
     border-radius: var(--border-radius-xl);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     box-shadow: 
         0 20px 60px -10px var(--shadow-color),
-        inset 0 0 0 1px var(--glass-border), /* Inner border */
-        inset 0 1px 2px 0 var(--glass-highlight); /* Top highlight */
+        inset 0 0 0 1px var(--glass-border),
+        inset 0 1px 2px 0 var(--glass-highlight);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -171,7 +171,7 @@ body::before {
     z-index: 1;
 }
 #chatContainer:hover::before {
-    opacity: 0.2;
+    opacity: 0.6; /* Weakened glow effect */
 }
 
 /* Glossy sheen on top */
@@ -186,11 +186,10 @@ body::before {
     z-index: 1;
 }
 
-
 /* --- Header, Footer, Chatbox --- */
 header, footer {
     position: relative;
-    z-index: 2; /* To appear above the sheen/glow effects */
+    z-index: 10; /* Ensures content is above glow/sheen effects */
     flex-shrink: 0;
     background: transparent;
     padding: 10px 16px;
@@ -215,7 +214,7 @@ header h1 {
     flex-direction: column;
     gap: 16px;
     position: relative;
-    z-index: 2;
+    z-index: 10; /* Ensures content is above glow/sheen effects */
 }
 
 #chatbox::-webkit-scrollbar { width: 6px; }
@@ -232,7 +231,7 @@ header h1 {
     box-shadow: 
         0 4px 12px -2px var(--shadow-color),
         inset 0 1px 1px 0 var(--glass-highlight);
-    border: 1px solid transparent; /* Prepare for gradient border */
+    border: 1px solid transparent;
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -306,36 +305,50 @@ header h1 {
 .icon-button svg { width: 22px; height: 22px; fill: currentColor; }
 #sendMessage svg { width: 18px; height: 18px; fill: #fff; }
 
-/* ---  --- */
-/* (Keeping modal styles largely the same for functionality but applying glass) */
+/* --- Modal --- */
 .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: flex-end;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: rgba(0,0,0,0.3);
-    z-index: 2000;
+    z-index: 2000; /* CRITICAL BUG FIX: Ensure modal is on top of everything */
+    transition: opacity 0.3s ease;
 }
+.modal-overlay.active {
+    display: flex;
+}
+
 .modal-content {
     background-color: var(--glass-bg);
     border-radius: var(--border-radius-l);
     box-shadow: 0 20px 60px -10px var(--shadow-color), inset 0 0 0 1px var(--glass-border);
     color: var(--text-primary);
     max-width: 550px;
+    width: 100%;
+    border-top: 1px solid var(--glass-border);
     animation: slideInModalFromBottom 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
-@media (min-width: 768px) {
-    .modal-content { animation: slideInModalFromCenter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); }
-}
-.modal-header { border-bottom: 1px solid var(--glass-border); }
+.modal-header { border-bottom: 1px solid var(--glass-border); padding: 16px; }
+.settings-body { overflow-y: auto; flex-grow: 1; padding: 16px; }
 .settings-section h3 { color: var(--text-secondary); }
-#languageSelect {
+#languageSelect, .theme-switch .slider {
     background-color: rgba(0,0,0,0.1);
     color: var(--text-primary);
     border: 1px solid var(--glass-border);
 }
-.theme-switch .slider { background-color: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); }
 input:checked + .slider { background-color: var(--current-accent-green); border-color: transparent; }
 
-/* --- Fallback for old styles that might be referenced by JS --- */
+/* --- Fallback / Compatibility Styles --- */
 .user-message { align-items: flex-end; }
 .bot-message { align-items: flex-start; }
 .message-content-wrapper { display: flex; align-items: flex-end; width: 100%; }
@@ -348,10 +361,20 @@ input:checked + .slider { background-color: var(--current-accent-green); border-
     box-shadow: 0 4px 12px -2px var(--shadow-color), inset 0 1px 1px 0 var(--glass-highlight);
 }
 
-/* This is a bare minimum to not break the rest of the file that was provided for context*/
-body.light-mode .copy-btn:hover { background-color: rgba(0,0,0,0.05); }
-.typing-dot { width: 8px; height: 8px; background-color: var(--current-typing-dot-color); border-radius: 50%; margin: 0 3px; animation: typingDotsiOS 1.2s infinite ease-in-out; }
-.typing-dot:nth-child(1) { animation-delay: -0.24s; } .typing-dot:nth-child(2) { animation-delay: -0.12s; }
-@keyframes typingDotsiOS { 0%, 60%, 100% { transform: scale(0.5); opacity: 0.3; } 30% { transform: scale(1); opacity: 1; } }
+/* Base functional styles from original CSS, kept for compatibility */
+.modal-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.modal-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin:0; }
+.settings-section { margin-bottom: 24px; } .settings-section:last-child { margin-bottom: 8px; }
+.settings-section h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 0; min-height: 44px; }
+.setting-item label { font-size: 1rem; color: var(--text-primary); flex-grow:1; margin-right:12px; }
+#clearChatModalButton { background-color: var(--current-accent-red); color: white; border: none; }
+.theme-switch { position: relative; display: inline-block; width: 51px; height: 31px; flex-shrink:0; }
+.theme-switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; transition: .3s; border-radius: 31px; }
+.slider:before { position: absolute; content: ""; height: 27px; width: 27px; left: 1px; bottom: 1px; background-color: white; transition: .3s cubic-bezier(0.25, 0.1, 0.25, 1); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+input:checked + .slider:before { transform: translateX(20px); }
+
 @keyframes slideInModalFromBottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@media (min-width: 768px) { .modal-content { border-radius: var(--border-radius-l); animation: slideInModalFromCenter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); } }
 @keyframes slideInModalFromCenter { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
