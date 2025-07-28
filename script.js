@@ -21,7 +21,7 @@ const copySVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-
 const sendSVG = `<svg viewBox="0 0 24 24" fill="currentColor" transform="rotate(90)"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>`; // Up arrow
 
 // --- API Config & State Variables ---
-const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // サーバーサイドで管理するのが望ましい
+const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // This should be managed on a server for security.
 const API_URL_STREAM = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${API_KEY}&alt=sse`;
 const HISTORY_STORAGE_KEY = 'chatyms_history';
 let conversationHistory = [];
@@ -65,7 +65,6 @@ let currentSystemPrompt = translations.ja.YamasoSystemPrompt;
 let lastFailedUserMessage = null;
 let sendOnEnter = true;
 
-// --- Initialize Icons ---
 function initIcons() {
     if(settingsButton) settingsButton.innerHTML = settingsSVG;
     if(closeModalButton) closeModalButton.innerHTML = closeModalSVG;
@@ -73,14 +72,13 @@ function initIcons() {
     if(sendMessageButton) sendMessageButton.innerHTML = sendSVG;
 }
 
-// --- Language & Theme ---
 function setLanguage(lang) {
     if (!translations[lang]) { lang = 'ja'; }
     currentLanguage = lang; localStorage.setItem('selectedLanguage', lang); document.documentElement.lang = lang;
     const t = translations[lang];
-    document.title = t.chatTitle + " - v1.7"; 
+    document.title = t.chatTitle + " - v1.7";
     const chatTitleEl = document.getElementById('chatTitle'); if(chatTitleEl) chatTitleEl.textContent = t.chatTitle;
-    if(sendMessageButton) sendMessageButton.setAttribute('aria-label', t.sendMessageAriaLabel); 
+    if(sendMessageButton) sendMessageButton.setAttribute('aria-label', t.sendMessageAriaLabel);
     if(settingsButton) { settingsButton.title = t.settings; settingsButton.setAttribute('aria-label', t.settings); }
     const settingsModalTitleEl = document.getElementById('settingsModalTitle'); if(settingsModalTitleEl) settingsModalTitleEl.textContent = t.settingsTitle;
     if(closeModalButton) closeModalButton.setAttribute('aria-label', t.closeModal);
@@ -106,7 +104,7 @@ function setLanguage(lang) {
 
 function applyTheme(isLightMode) {
     const t = translations[currentLanguage];
-    if (isLightMode) { bodyElement.classList.add('light-mode'); } 
+    if (isLightMode) { bodyElement.classList.add('light-mode'); }
     else { bodyElement.classList.remove('light-mode'); }
     if(themeToggleButtonModal) {
         themeToggleButtonModal.innerHTML = isLightMode ? moonSVG : sunSVG;
@@ -115,11 +113,25 @@ function applyTheme(isLightMode) {
     }
 }
 
-// --- Modal Logic ---
-function openSettingsModal() { if(settingsModal) { settingsModal.classList.add('active'); settingsModal.setAttribute('aria-hidden', 'false'); if(themeToggleButtonModal) themeToggleButtonModal.focus(); } }
-function closeSettingsModal() { if(settingsModal) { settingsModal.style.opacity = '0'; setTimeout(() => {settingsModal.classList.remove('active'); settingsModal.style.opacity = '1';}, 300);} }
+function openSettingsModal() {
+    if(settingsModal) {
+        settingsModal.classList.add('active');
+        settingsModal.setAttribute('aria-hidden', 'false');
+    }
+}
 
-// --- History Persistence ---
+function closeSettingsModal() {
+    if(settingsModal) {
+        settingsModal.style.opacity = '0';
+        setTimeout(() => {
+            settingsModal.classList.remove('active');
+            // 【修正2】設定画面を閉じた後の不要なフォーカス処理を削除
+            // if(settingsButton) settingsButton.focus();
+            settingsModal.style.opacity = '1';
+        }, 300);
+    }
+}
+
 function saveHistory() {
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(conversationHistory));
 }
@@ -128,33 +140,27 @@ function loadAndRenderHistory() {
     const savedHistoryJSON = localStorage.getItem(HISTORY_STORAGE_KEY);
     if (savedHistoryJSON) {
         conversationHistory = JSON.parse(savedHistoryJSON);
-        chatbox.innerHTML = ''; // Clear initial message
-
+        chatbox.innerHTML = '';
         if (conversationHistory.length > 0) {
             conversationHistory.forEach(msg => {
                 const sender = msg.role === 'user' ? 'user' : 'bot';
                 const text = msg.parts[0].text;
-                // Render message from history, ensuring copy button is added for bot messages
                 appendMessage(text, sender, false, false, false, null, true);
             });
         } else {
-            // If history was saved but is empty, show greeting
             appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true);
         }
     } else {
-        // No history found, show initial greeting
         appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true);
     }
-    // Ensure chatbox is scrolled to the bottom after rendering history
     chatbox.scrollTop = chatbox.scrollHeight;
     updateScrollToBottomButtonVisibility();
 }
 
-// --- Chat Logic ---
 let currentBotMessageBubble = null; let currentBotFullText = "";
-function appendMessage(text, sender, isTyping = false, isInitialGreeting = false, isError = false, errorDetails = null, fromHistory = false) { 
+function appendMessage(text, sender, isTyping = false, isInitialGreeting = false, isError = false, errorDetails = null, fromHistory = false) {
     const t = translations[currentLanguage];
-    if (isTyping && sender === 'bot') { 
+    if (isTyping && sender === 'bot') {
         if (typingIndicatorElement) typingIndicatorElement.remove();
         const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', 'bot-message', 'typing'); messageContainer.setAttribute('role','status'); messageContainer.setAttribute('aria-label', t.typingIndicatorText);
         const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble', 'typing-indicator-bubble');
@@ -165,13 +171,13 @@ function appendMessage(text, sender, isTyping = false, isInitialGreeting = false
     }
     if (typingIndicatorElement && !isInitialGreeting) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
     const messageContainer = document.createElement('div'); messageContainer.classList.add('message-container', sender === 'user' ? 'user-message' : 'bot-message');
-    messageContainer.setAttribute('role', 'article'); messageContainer.tabIndex = -1; 
+    messageContainer.setAttribute('role', 'article'); messageContainer.tabIndex = -1;
     const messageContentWrapper = document.createElement('div'); messageContentWrapper.classList.add('message-content-wrapper');
     const messageBubble = document.createElement('p'); messageBubble.classList.add('message-bubble');
     if (isError) messageBubble.classList.add('error-message');
-    if (sender === 'user') { messageBubble.textContent = text; } 
-    else { 
-        if(!isError && !isInitialGreeting && !fromHistory) { currentBotMessageBubble = messageBubble; currentBotFullText = ""; } 
+    if (sender === 'user') { messageBubble.textContent = text; }
+    else {
+        if(!isError && !isInitialGreeting && !fromHistory) { currentBotMessageBubble = messageBubble; currentBotFullText = ""; }
         else { try { messageBubble.innerHTML = marked.parse(text); } catch (e) { console.error("Markdown parse error:", e); messageBubble.textContent = text; } }
     }
     if(isInitialGreeting && sender==='bot') messageBubble.dataset.isInitialGreeting = 'true';
@@ -192,49 +198,49 @@ function appendMessage(text, sender, isTyping = false, isInitialGreeting = false
 
 function addCopyButton(wrapperElement, textToCopy, messageBubbleElement) {
     const t = translations[currentLanguage];
-    const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn'); 
-    copyButton.innerHTML = copySVG; 
+    const copyButton = document.createElement('button'); copyButton.classList.add('copy-btn');
+    copyButton.innerHTML = copySVG;
     const shortText = textToCopy.length > 20 ? textToCopy.substring(0,20) + "..." : textToCopy;
     copyButton.setAttribute('aria-label', `${t.copyButtonTitle}: 「${shortText}」`);
     copyButton.title = t.copyButtonTitle;
-    let originalContent = copyButton.innerHTML; 
-    copyButton.onclick = (e) => { 
-        e.stopPropagation(); 
-        navigator.clipboard.writeText(textToCopy).then(() => { 
-            copyButton.innerHTML = '✓'; 
+    let originalContent = copyButton.innerHTML;
+    copyButton.onclick = (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            copyButton.innerHTML = '✓';
             copyButton.title = t.copySuccess;
-            copyButton.classList.add('copy-btn-copied'); 
-            setTimeout(() => { copyButton.innerHTML = originalContent; copyButton.title = t.copyButtonTitle; copyButton.classList.remove('copy-btn-copied'); }, 2000); 
-        }).catch(err => { console.error('Copy failed:', err); copyButton.title = "コピー失敗";}); 
+            copyButton.classList.add('copy-btn-copied');
+            setTimeout(() => { copyButton.innerHTML = originalContent; copyButton.title = t.copyButtonTitle; copyButton.classList.remove('copy-btn-copied'); }, 2000);
+        }).catch(err => { console.error('Copy failed:', err); copyButton.title = "コピー失敗";});
     };
     wrapperElement.appendChild(copyButton);
 }
 
 async function sendMessage() {
-    const t = translations[currentLanguage]; 
+    const t = translations[currentLanguage];
     if (!userInput) return;
-    const userText = userInput.value.trim(); 
+    const userText = userInput.value.trim();
     if (userText === "") return;
     const userMessageForHistory = { role: "user", parts: [{ text: userText }] };
-    lastFailedUserMessage = userMessageForHistory; 
+    lastFailedUserMessage = userMessageForHistory;
     appendMessage(userText, 'user'); userInput.value = "";
     conversationHistory.push(userMessageForHistory);
-    saveHistory(); // Save after adding user message
-    appendMessage("", 'bot', true); 
+    saveHistory();
+    appendMessage("", 'bot', true);
     currentBotMessageBubble = null; currentBotFullText = "";
     try {
         const requestBody = {
             contents: conversationHistory,
             systemInstruction: currentSystemPrompt ? { parts: [{ text: currentSystemPrompt }] } : undefined,
-            generationConfig: {}, 
+            generationConfig: {},
             safetySettings: [ { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" } ]
         };
         const response = await fetch(API_URL_STREAM, { method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(requestBody) });
         if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-        if (!response.ok) { 
+        if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: { message: `${t.errorAPI} (HTTP: ${response.status} ${response.statusText})` }}));
             const displayError = `${t.errorAPI} (${response.status}): ${errorData.error?.message || response.statusText || t.errorUnknown}`;
-            appendMessage(displayError, 'bot', false, false, true, errorData); 
+            appendMessage(displayError, 'bot', false, false, true, errorData);
             return;
         }
         const botMsgContainer = document.createElement('div'); botMsgContainer.classList.add('message-container', 'bot-message'); botMsgContainer.setAttribute('role', 'article'); botMsgContainer.tabIndex = -1;
@@ -256,7 +262,7 @@ async function sendMessage() {
                             const textPart = streamData.candidates[0].content.parts[0].text;
                             currentBotFullText += textPart;
                             if (currentBotMessageBubble) currentBotMessageBubble.innerHTML = marked.parse(currentBotFullText);
-                            if(!firstChunkProcessed && currentBotMessageBubble) { 
+                            if(!firstChunkProcessed && currentBotMessageBubble) {
                                 const timestamp = document.createElement('span'); timestamp.classList.add('timestamp');
                                 timestamp.textContent = new Date().toLocaleTimeString(currentLanguage === 'fr' ? 'fr-FR' : 'ja-JP', { hour: '2-digit', minute: '2-digit' });
                                 botMsgContainer.appendChild(timestamp); firstChunkProcessed = true;
@@ -268,14 +274,14 @@ async function sendMessage() {
             }
         }
         if (currentBotFullText && currentBotMessageBubble) {
-            addCopyButton(botMsgContentWrapper, currentBotFullText, currentBotMessageBubble); 
+            addCopyButton(botMsgContentWrapper, currentBotFullText, currentBotMessageBubble);
             conversationHistory.push({ role: "model", parts: [{ text: currentBotFullText }] });
-            saveHistory(); // Save after adding bot message
-            lastFailedUserMessage = null; 
-        } else if (!firstChunkProcessed && chatbox && chatbox.contains(botMsgContainer)) { 
+            saveHistory();
+            lastFailedUserMessage = null;
+        } else if (!firstChunkProcessed && chatbox && chatbox.contains(botMsgContainer)) {
             botMsgContainer.remove(); appendMessage(t.errorEmptyResponse, 'bot', false, false, true);
         }
-    } catch (error) { 
+    } catch (error) {
         if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
         console.error('Fetch/Stream Error:', error); appendMessage(`${t.errorStream}: ${error.message}`, 'bot', false, false, true, error);
     }
@@ -286,9 +292,7 @@ function pruneHistory() { const MAX_HISTORY_PAIRS = 10; if (conversationHistory.
 function isScrolledToBottom() { if(!chatbox) return true; return chatbox.scrollHeight - chatbox.clientHeight <= chatbox.scrollTop + 30; }
 function updateScrollToBottomButtonVisibility() { if(scrollToBottomButton) scrollToBottomButton.style.display = isScrolledToBottom() ? 'none' : 'block'; }
 
-// --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Check for critical elements
     if (!settingsButton || !closeModalButton || !themeToggleButtonModal || !sendOnEnterCheckbox || !clearChatModalButton || !languageSelect || !userInput || !sendMessageButton || !chatbox || !scrollToBottomButton) {
         console.error("One or more critical DOM elements were not found on page load. Check HTML IDs.");
         const errDiv = document.createElement('div');
@@ -298,23 +302,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    initIcons();
-    
-    // Load User Settings
-    const savedLang = localStorage.getItem('selectedLanguage') || 'ja';
-    languageSelect.value = savedLang; 
-    setLanguage(savedLang); 
-    
-    const savedThemeIsLight = localStorage.getItem('theme') === 'light-mode'; 
-    applyTheme(savedThemeIsLight); 
-    
-    const savedSendOnEnter = localStorage.getItem('sendOnEnter');
-    sendOnEnter = savedSendOnEnter !== null ? JSON.parse(savedSendOnEnter) : true; 
-    sendOnEnterCheckbox.checked = sendOnEnter;
+    // 【修正1】ページ読み込み時に設定画面が強制的に閉じるようにする
+    if (settingsModal && settingsModal.classList.contains('active')) {
+        settingsModal.classList.remove('active');
+    }
 
-    // Load and Render History (or initial message)
+    initIcons();
+    const savedLang = localStorage.getItem('selectedLanguage') || 'ja';
+    languageSelect.value = savedLang;
+    setLanguage(savedLang);
+    const savedThemeIsLight = localStorage.getItem('theme') === 'light-mode';
+    applyTheme(savedThemeIsLight);
+    const savedSendOnEnter = localStorage.getItem('sendOnEnter');
+    sendOnEnter = savedSendOnEnter !== null ? JSON.parse(savedSendOnEnter) : true;
+    sendOnEnterCheckbox.checked = sendOnEnter;
     loadAndRenderHistory();
-    
     console.log("Chatbot initialized.");
 });
 
@@ -322,7 +324,7 @@ if(languageSelect) languageSelect.addEventListener('change', (event) => {
     setLanguage(event.target.value);
     applyTheme(bodyElement.classList.contains('light-mode'));
     if(chatbox.children.length === 0 || (chatbox.children.length === 1 && chatbox.querySelector('.bot-message .message-bubble')?.dataset.isInitialGreeting === 'true')) {
-        chatbox.innerHTML = ''; 
+        chatbox.innerHTML = '';
         appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true);
     }
 });
@@ -334,7 +336,7 @@ document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && 
 
 if(themeToggleButtonModal) themeToggleButtonModal.addEventListener('click', () => {
     const isCurrentlyLight = bodyElement.classList.contains('light-mode');
-    localStorage.setItem('theme', isCurrentlyLight ? 'dark-mode' : 'light-mode'); 
+    localStorage.setItem('theme', isCurrentlyLight ? 'dark-mode' : 'light-mode');
     applyTheme(!isCurrentlyLight);
 });
 
@@ -345,9 +347,9 @@ if(clearChatModalButton) clearChatModalButton.addEventListener('click', () => {
     conversationHistory = [];
     lastFailedUserMessage = null;
     if (typingIndicatorElement) { typingIndicatorElement.remove(); typingIndicatorElement = null; }
-    saveHistory(); // Save the empty history
-    appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true); 
-    closeSettingsModal(); 
+    saveHistory();
+    appendMessage(translations[currentLanguage].initialGreeting, 'bot', false, true);
+    closeSettingsModal();
 });
 
 if(chatbox) chatbox.addEventListener('scroll', updateScrollToBottomButtonVisibility);
@@ -360,7 +362,6 @@ if(userInput) userInput.addEventListener('keydown', (event) => {
     }
 });
 
-// --- Liquid Glass Interactive Light Effect ---
 const chatContainerForEffect = document.getElementById('chatContainer');
 if (chatContainerForEffect) {
     chatContainerForEffect.addEventListener('mousemove', e => {
@@ -371,7 +372,6 @@ if (chatContainerForEffect) {
         chatContainerForEffect.style.setProperty('--mouse-y', `${y}px`);
     });
     chatContainerForEffect.addEventListener('mouseleave', () => {
-        // Optional: Reset position when mouse leaves
         chatContainerForEffect.style.setProperty('--mouse-x', `50%`);
         chatContainerForEffect.style.setProperty('--mouse-y', `50%`);
     });
