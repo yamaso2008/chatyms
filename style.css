@@ -306,12 +306,13 @@ header h1 {
 .icon-button svg { width: 22px; height: 22px; fill: currentColor; }
 #sendMessage svg { width: 18px; height: 18px; fill: #fff; }
 
-/* --- Modal --- */
+/* ---  --- */
 /* (Keeping modal styles largely the same for functionality but applying glass) */
 .modal-overlay {
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: rgba(0,0,0,0.3);
+    z-index: 2000;
 }
 .modal-content {
     background-color: var(--glass-bg);
