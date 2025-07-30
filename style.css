@@ -19,7 +19,7 @@
     --lm-text-secondary: #585860;
     --lm-shadow-color: rgba(60, 60, 100, 0.15);
     --lm-user-bubble-bg: linear-gradient(135deg, hsla(220, 100%, 70%, 0.3), hsla(240, 100%, 75%, 0.4));
-    --lm-bot-bubble-bg: rgba(225, 225, 230, 0.05);
+    --lm-bot-bubble-bg: rgba(225, 225, 240, 0.05);
     --lm-interactive-glow: hsla(220, 100%, 80%, 0.3);
 
     /* Dark Mode Color Palette */
