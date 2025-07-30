@@ -98,7 +98,7 @@ body {
     font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #000000;
+    background-color: #888888;
     color: var(--text-primary);
     height: 100%;
     overflow: hidden;
