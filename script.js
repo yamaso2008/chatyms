@@ -69,7 +69,7 @@ let sendOnEnter = true;
 // (The functions initIcons, setLanguage, applyTheme, saveHistory, loadAndRenderHistory, appendMessage, addCopyButton, sendMessage, pruneHistory, isScrolledToBottom, updateScrollToBottomButtonVisibility remain the same as the previous stable version)
 //function initIcons() { if(settingsButton) settingsButton.innerHTML = settingsSVG; if(closeModalButton) closeModalButton.innerHTML = closeModalSVG; if(themeToggleButtonModal) themeToggleButtonModal.innerHTML = bodyElement.classList.contains('light-mode') ? moonSVG : sunSVG; if(sendMessageButton) sendMessageButton.innerHTML = sendSVG; }
 function initIcons() {
-    /* if(settingsButton) settingsButton.innerHTML = settingsSVG; */ // この行をコメントアウトまたは削除
+    if(settingsButton) settingsButton.innerHTML = settingsSVG; */ // この行をコメントアウトまたは削除
     if(closeModalButton) closeModalButton.innerHTML = closeModalSVG;
     if(themeToggleButtonModal) themeToggleButtonModal.innerHTML = bodyElement.classList.contains('light-mode') ? moonSVG : sunSVG;
     if(sendMessageButton) sendMessageButton.innerHTML = sendSVG;
