@@ -420,3 +420,26 @@ body.light-mode #userInput::placeholder {
 }
 
 
+/* Material Symbols のフォントが確実に適用されるようにする */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important; /* 最も重要 */
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: 28px !important; /* ボタンサイズに合わせて調整 */
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  direction: ltr !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  font-feature-settings: 'liga' !important; /* リガチャー機能を強制的に有効化 */
+}
+
+
+
+
+
+
