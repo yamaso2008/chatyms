@@ -1,4 +1,4 @@
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 /*
     Title: ChatYMS - iOS 26 "Liquid Glass" Theme v2 (Bug-Fix Release)
     Concept: A futuristic, fluid, and interactive glass-based UI.
@@ -188,16 +188,28 @@ body::before {
 }
 
 /* --- Header, Footer, Chatbox --- */
-header, footer {
+header {
+    display: flex;
+    justify-content: center; /* タイトルを中央に配置 */
+    align-items: center;
+    position: relative; /* ボタンを配置する基準にします */
+    z-index: 10;
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border-color: var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+footer {
     position: relative;
-    z-index: 10; /* Ensures content is above glow/sheen effects */
+    z-index: 10;
     flex-shrink: 0;
     background: transparent;
     padding: 10px 16px;
     border-color: var(--glass-border);
+    border-top: 1px solid var(--glass-border);
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
 }
-header { border-bottom: 1px solid var(--glass-border); }
-footer { border-top: 1px solid var(--glass-border); padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
 
 header h1 {
     font-weight: 600;
