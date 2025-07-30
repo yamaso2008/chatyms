@@ -10,31 +10,31 @@
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
     /* Light Mode Color Palette */
-    --lm-aurora-1: hsl(210, 100%, 85%);
-    --lm-aurora-2: hsl(180, 100%, 80%);
-    --lm-aurora-3: hsl(290, 100%, 90%);
-    --lm-glass-bg: rgba(225, 225, 225, 0);
-    --lm-glass-border: rgba(100, 100, 100, 0.6);
+    --lm-aurora-1: hsl(210, 100%, 56%);
+    --lm-aurora-2: hsl(180, 100%, 57%);
+    --lm-aurora-3: hsl(289, 100%, 74%);
+    --lm-glass-bg: rgba(159, 186, 194, 0.4);
+    /*--lm-glass-border: rgba(100, 100, 100, 0.2);*/
     --lm-glass-highlight: rgba(255, 255, 255, 0.8);
     --lm-text-primary: #1d1d1f;
     --lm-text-secondary: #585860;
-    --lm-shadow-color: rgba(60, 60, 100, 0.15);
+    --lm-shadow-color: rgba(26, 26, 104, 0.5);
     --lm-user-bubble-bg: linear-gradient(135deg, hsla(220, 100%, 70%, 0.3), hsla(240, 100%, 75%, 0.4));
-    --lm-bot-bubble-bg: rgba(225, 225, 230, 0);
+    --lm-bot-bubble-bg: rgba(87, 87, 87, 0.1);
     --lm-interactive-glow: hsla(220, 100%, 80%, 0.3);
 
     /* Dark Mode Color Palette */
     --dm-aurora-1: hsl(220, 100%, 40%);
     --dm-aurora-2: hsl(180, 100%, 30%);
-    --dm-aurora-3: hsl(280, 100%, 50%);
-    --dm-glass-bg: rgba(30, 30, 50, 0.40);
-    --dm-glass-border: rgba(100, 100, 120, 0.3);
+    --dm-aurora-3: hsl(280, 97%, 74%);
+    --dm-glass-bg: rgba(30, 30, 50, 0.4);
+    /*--dm-glass-border: rgba(74, 74, 87, 0.3);*/
     --dm-glass-highlight: rgba(255, 255, 255, 0.1);
     --dm-text-primary: #f5f5f7;
     --dm-text-secondary: #a8a8b0;
     --dm-shadow-color: rgba(0, 0, 0, 0.3);
     --dm-user-bubble-bg: linear-gradient(135deg, hsla(212, 96%, 60%, 0.7), hsla(240, 90%, 65%, 0.5));
-    --dm-bot-bubble-bg: rgba(50, 50, 70, 0.10);
+    --dm-bot-bubble-bg: rgba(109, 109, 109, 0.1);
     --dm-interactive-glow: hsla(230, 100%, 75%, 0.2);
 
     /* Mapped Variables (Defaults to Dark) */
@@ -99,7 +99,7 @@ body {
     font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #050508;
+    background-color: #4d4d4d;
     color: var(--text-primary);
     height: 100%;
     overflow: hidden;
@@ -195,7 +195,7 @@ header {
     position: relative; /* ボタンを配置する基準にします */
     z-index: 10;
     flex-shrink: 0;
-    padding: 10px 16px;
+    padding: 26px 16px;
     border-color: var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
 }
@@ -217,6 +217,7 @@ footer {
     border-color: var(--glass-border);
     border-top: 1px solid var(--glass-border);
     padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    margin-bottom: 8px;
 }
 
 header h1 {
@@ -389,7 +390,25 @@ input:checked + .slider { background-color: var(--current-accent-green); border-
 .settings-section h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
 .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 0; min-height: 44px; }
 .setting-item label { font-size: 1rem; color: var(--text-primary); flex-grow:1; margin-right:12px; }
-#clearChatModalButton { background-color: var(--current-accent-red); color: white; border: none; }
+/*#clearChatModalButton { background-color: var(--current-accent-red); color: white; border: none; }*/
+#clearChatModalButton {
+    background-color: var(--current-accent-red);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-m); /* 角を丸くする */
+    padding: 10px 16px; /* 少し余白を増やす */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション用 */
+}
+
+#clearChatModalButton:hover {
+    background-color: #FF6B6B; /* ホバー時の色を少し明るくする */
+    transform: scale(1.05); /* ホバー時に少し拡大 */
+}
+
+#clearChatModalButton:active {
+    transform: scale(0.95); /* クリック時に少し縮小 */
+}
 .theme-switch { position: relative; display: inline-block; width: 51px; height: 31px; flex-shrink:0; }
 .theme-switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; transition: .3s; border-radius: 31px; }
@@ -457,7 +476,6 @@ body.light-mode #userInput::placeholder {
   -moz-osx-font-smoothing: grayscale !important;
   font-feature-settings: 'liga' !important; /* リガチャー機能を強制的に有効化 */
 }
-
 
 
 
