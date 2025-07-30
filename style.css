@@ -200,6 +200,14 @@ header {
     border-bottom: 1px solid var(--glass-border);
 }
 
+.header-controls {
+    position: absolute;
+    left: 16px; /* ヘッダーの左端からの距離 */
+    top: 50%;
+    transform: translateY(-50%); /* 上下中央に配置 */
+}
+
+
 footer {
     position: relative;
     z-index: 10;
