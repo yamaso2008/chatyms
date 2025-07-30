@@ -9,10 +9,10 @@
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
     /* Light Mode Color Palette */
-    --lm-aurora-1: hsl(210, 80%, 80%);
-    --lm-aurora-2: hsl(180, 80%, 80%);
-    --lm-aurora-3: hsl(290, 80%, 80%);
-    --lm-glass-bg: rgba(200, 200, 225, 0.5);
+    --lm-aurora-1: hsl(210, 100%, 100%);
+    --lm-aurora-2: hsl(180, 100%, 100%);
+    --lm-aurora-3: hsl(290, 100%, 100%);
+    --lm-glass-bg: rgba(200, 200, 225, 0.3);
     --lm-glass-border: rgba(100, 100, 100, 0.6);
     --lm-glass-highlight: rgba(255, 255, 255, 0.8);
     --lm-text-primary: #1d1d1f;
