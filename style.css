@@ -1,15 +1,15 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 /*
-    Title: ChatYMS - iOS 26 "Liquid Glass" Theme v2 (Bug-Fix Release)
+    Title: ChatYMS - iOS 26 "Liquid Glass" Theme v2
     Concept: A futuristic, fluid, and interactive glass-based UI.
     Features: Animated aurora background, multi-layered glass elements, interactive lighting.
 */
 
-/* --- Base & Theming Variables --- */
+/* --- 1. 基本設定とテーマ変数 --- */
 :root {
+    /* 基本フォント設定 */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
-    /* Light Mode Color Palette */
+    /* --- Light Mode カラーパレット --- */
     --lm-aurora-1: hsl(210, 100%, 56%);
     --lm-aurora-2: hsl(180, 100%, 57%);
     --lm-aurora-3: hsl(289, 100%, 74%);
@@ -23,7 +23,7 @@
     --lm-bot-bubble-bg: rgba(87, 87, 87, 0.1);
     --lm-interactive-glow: hsla(220, 100%, 80%, 0.3);
 
-    /* Dark Mode Color Palette */
+    /* --- Dark Mode カラーパレット --- */
     --dm-aurora-1: hsl(220, 100%, 40%);
     --dm-aurora-2: hsl(180, 100%, 30%);
     --dm-aurora-3: hsl(280, 97%, 74%);
@@ -37,7 +37,7 @@
     --dm-bot-bubble-bg: rgba(109, 109, 109, 0.1);
     --dm-interactive-glow: hsla(230, 100%, 75%, 0.2);
 
-    /* Mapped Variables (Defaults to Dark) */
+    /* --- 現在のテーマに応じて切り替わる変数（デフォルトはDark Mode） --- */
     --aurora-1: var(--dm-aurora-1);
     --aurora-2: var(--dm-aurora-2);
     --aurora-3: var(--dm-aurora-3);
@@ -51,23 +51,20 @@
     --bot-bubble-bg: var(--dm-bot-bubble-bg);
     --interactive-glow: var(--dm-interactive-glow);
     
-    /* --- Inherited styles for compatibility --- */
-    --current-text-primary: var(--text-primary);
-    --current-text-secondary: var(--text-secondary);
-    --current-header-text-color: var(--text-primary);
-    --current-accent-blue: #0A84FF;
-    --current-accent-red: #FF453A;
-    --current-accent-green: #30D158;
-    --current-text-placeholder: var(--text-secondary);
-    --current-user-bubble-text-color: #fff;
-    --current-bot-bubble-text-color: var(--text-primary);
-    --current-typing-dot-color: var(--text-secondary);
-    --current-scrollbar-thumb-bg: rgba(120, 120, 128, 0.6);
-    --current-scrollbar-thumb-hover-bg: rgba(142, 142, 147, 0.8);
-    --current-markdown-code-bg-color: rgba(120,120,128,0.2);
-    --current-markdown-pre-bg-color: rgba(30,30,32,0.8);
-    --current-markdown-border-color: rgba(100, 100, 120, 0.3);
+    /* --- その他のUIカラー --- */
+    --accent-blue: #0A84FF;
+    --accent-red: #FF453A;
+    --accent-green: #30D158;
+    --user-bubble-text-color: #fff;
+    --bot-bubble-text-color: var(--text-primary);
+    --typing-dot-color: var(--text-secondary);
+    --scrollbar-thumb-bg: rgba(120, 120, 128, 0.6);
+    --scrollbar-thumb-hover-bg: rgba(142, 142, 147, 0.8);
+    --markdown-code-bg-color: rgba(120,120,128,0.2);
+    --markdown-pre-bg-color: rgba(30,30,32,0.8);
+    --markdown-border-color: rgba(100, 100, 120, 0.3);
 
+    /* --- 角丸の大きさ --- */
     --border-radius-xl: 32px;
     --border-radius-l: 24px;
     --border-radius-m: 16px;
@@ -75,6 +72,8 @@
     --border-radius-round: 50%;
 }
 
+/* --- 2. Light Mode スタイル --- */
+/* bodyに .light-mode クラスが付与された場合に変数を上書き */
 body.light-mode {
     --aurora-1: var(--lm-aurora-1);
     --aurora-2: var(--lm-aurora-2);
@@ -88,12 +87,28 @@ body.light-mode {
     --user-bubble-bg: var(--lm-user-bubble-bg);
     --bot-bubble-bg: var(--lm-bot-bubble-bg);
     --interactive-glow: var(--lm-interactive-glow);
-    --current-accent-blue: #007AFF;
+    --accent-blue: #007AFF;
+
+    /* Light Modeでの視認性向上のためのテキストシャドウ */
+    .message-bubble {
+        text-shadow: 0px 1px 3px rgba(50, 50, 50, 0.2);
+    }
+    .setting-item label, 
+    .settings-section h3 {
+        text-shadow: 0px 1px 3px rgba(80, 80, 80, 0.15);
+    }
 }
 
-/* --- Base Styles & Aurora Background --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { height: 100%; }
+/* --- 3. 基本レイアウトと背景 --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
 
 body {
     font-family: var(--font-primary);
@@ -111,7 +126,7 @@ body {
     position: relative;
 }
 
-/* The fluid aurora effect */
+/* 背景のオーロラエフェクト */
 body::before {
     content: '';
     position: fixed;
@@ -124,16 +139,16 @@ body::before {
     filter: blur(100px);
     opacity: 0.6;
     animation: aurora-flow 45s linear infinite;
-    z-index: -1;
+    z-index: -1; /* 他の要素の背面に配置 */
 }
 
 @keyframes aurora-flow {
-    0% { transform: rotate(0deg) scale(1.2); }
-    50% { transform: rotate(180deg) scale(1.3); }
+    0%   { transform: rotate(0deg) scale(1.2); }
+    50%  { transform: rotate(180deg) scale(1.3); }
     100% { transform: rotate(360deg) scale(1.2); }
 }
 
-/* --- Main Chat Container (The "Liquid Glass") --- */
+/* --- 4. メインチャットコンテナ（Liquid Glass効果） --- */
 #chatContainer {
     width: 100%;
     max-width: 800px;
@@ -154,7 +169,7 @@ body::before {
     transition: background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* Interactive light that follows the mouse */
+/* マウスに追従するインタラクティブな光のエフェクト */
 #chatContainer::before {
     content: '';
     position: absolute;
@@ -168,14 +183,14 @@ body::before {
     );
     opacity: 0;
     transition: opacity 0.3s ease;
-    pointer-events: none;
+    pointer-events: none; /* マウスイベントを透過させる */
     z-index: 1;
 }
 #chatContainer:hover::before {
-    opacity: 0.3; /* Weakened glow effect */
+    opacity: 0.3;
 }
 
-/* Glossy sheen on top */
+/* ガラス表面の光沢（グロス）エフェクト */
 #chatContainer::after {
     content: '';
     position: absolute;
@@ -187,37 +202,16 @@ body::before {
     z-index: 1;
 }
 
-/* --- Header, Footer, Chatbox --- */
+/* --- 5. ヘッダー、フッター、チャットボックス --- */
 header {
     display: flex;
     justify-content: center; /* タイトルを中央に配置 */
     align-items: center;
-    position: relative; /* ボタンを配置する基準にします */
-    z-index: 10;
-    flex-shrink: 0;
-    padding: 26px 16px;
-    border-color: var(--glass-border);
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.header-controls {
-    position: absolute;
-    left: 16px; /* ヘッダーの左端からの距離 */
-    top: 50%;
-    transform: translateY(-50%); /* 上下中央に配置 */
-}
-
-
-footer {
     position: relative;
     z-index: 10;
     flex-shrink: 0;
-    background: transparent;
-    padding: 10px 16px;
-    border-color: var(--glass-border);
-    border-top: 1px solid var(--glass-border);
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
-    margin-bottom: 8px;
+    padding: 26px 16px;
+    border-bottom: 1px solid var(--glass-border);
 }
 
 header h1 {
@@ -228,6 +222,25 @@ header h1 {
     flex-grow: 1;
 }
 
+/* ヘッダー内のコントロールボタン（設定ボタン）を左に配置 */
+.header-controls {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+footer {
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border-top: 1px solid var(--glass-border);
+    /* iPhoneのノッチなどを避けるためのsafe-area */
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    margin-bottom: 8px;
+}
+
 #chatbox {
     flex-grow: 1;
     padding: 16px;
@@ -236,18 +249,41 @@ header h1 {
     flex-direction: column;
     gap: 16px;
     position: relative;
-    z-index: 10; /* Ensures content is above glow/sheen effects */
+    z-index: 2; /* 光や光沢のエフェクト(z-index:1)より手前に表示 */
 }
 
+/* スクロールバーのスタイル */
 #chatbox::-webkit-scrollbar { width: 6px; }
-#chatbox::-webkit-scrollbar-thumb { background-color: var(--current-scrollbar-thumb-bg); border-radius: 3px; }
-#chatbox::-webkit-scrollbar-thumb:hover { background-color: var(--current-scrollbar-thumb-hover-bg); }
+#chatbox::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb-bg); border-radius: 3px; }
+#chatbox::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover-bg); }
 
-/* --- Message Bubbles --- */
+/* --- 6. メッセージ表示スタイル --- */
+.message-container {
+    display: flex;
+    flex-direction: column;
+    animation: fadeInSlideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.user-message { align-items: flex-end; }
+.bot-message  { align-items: flex-start; }
+
+.message-content-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+/* ユーザーとボットのメッセージで左右を分ける */
+.user-message .message-content-wrapper { flex-direction: row-reverse; }
+
 .message-bubble {
     padding: 12px 18px;
     border-radius: var(--border-radius-l);
-    max-width: 80%;
+    max-width: 85%;
     line-height: 1.55;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 
@@ -260,21 +296,35 @@ header h1 {
 
 .user-message .message-bubble {
     background: var(--user-bubble-bg);
-    color: var(--current-user-bubble-text-color);
+    color: var(--user-bubble-text-color);
     border-color: hsla(230, 100%, 80%, 0.7);
 }
 .bot-message .message-bubble {
     background: var(--bot-bubble-bg);
-    color: var(--current-bot-bubble-text-color);
+    color: var(--bot-bubble-text-color);
     border-color: var(--glass-border);
 }
-.message-container { animation: fadeInSlideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-@keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-.timestamp { font-size: 0.75rem; color: var(--text-secondary); margin-top: 6px; padding: 0 8px; }
+.timestamp {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    padding: 0 8px;
+    white-space: nowrap;
+}
 
-/* --- Input Area & Buttons --- */
-.input-area { display: flex; gap: 10px; align-items: center; }
+.typing-indicator-bubble {
+    background: var(--bot-bubble-bg) !important;
+    box-shadow: 0 4px 12px -2px var(--shadow-color), inset 0 1px 1px 0 var(--glass-highlight);
+}
+
+/* --- 7. 入力エリアとボタン --- */
+.input-area {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 #userInput {
     flex-grow: 1;
     padding: 12px 18px;
@@ -288,13 +338,16 @@ header h1 {
     min-height: 44px;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
+
 #userInput::placeholder { color: var(--text-secondary); }
+
 #userInput:focus {
-    border-color: var(--current-accent-blue);
+    border-color: var(--accent-blue);
     background-color: rgba(0,0,0,0.2);
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 3px hsla(212, 96%, 60%, 0.3);
 }
 
+/* 共通のアイコンボタンスタイル */
 .icon-button, #sendMessage {
     flex-shrink: 0;
     width: 44px;
@@ -310,11 +363,13 @@ header h1 {
     justify-content: center;
     transition: all 0.2s ease;
 }
+
 #sendMessage {
     background: linear-gradient(135deg, hsla(212, 96%, 60%, 0.7), hsla(240, 90%, 65%, 0.5));
     color: white;
     border-color: hsla(230, 100%, 80%, 0.7);
 }
+
 .icon-button:hover, #sendMessage:hover {
     transform: translateY(-2px);
     box-shadow: inset 0 1px 1px var(--glass-highlight), 0 5px 10px var(--shadow-color);
@@ -324,23 +379,32 @@ header h1 {
     background: linear-gradient(135deg, hsla(212, 96%, 60%, 0.9), hsla(240, 90%, 65%, 0.7));
 }
 
-.icon-button svg { width: 65%; height: 65%; fill: currentColor; }
-#sendMessage svg { width: 18px; height: 18px; fill: #fff; }
+#sendMessage svg {
+    width: 18px;
+    height: 18px;
+    fill: #fff;
+}
 
-/* --- Modal --- */
+.icon-button svg {
+    width: 55%;
+    height: 55%;
+    fill: currentColor;
+}
+
+/* --- 8. 設定モーダル --- */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: none;
+    display: none; /* JSで.activeクラスを付与して表示 */
     justify-content: center;
-    align-items: flex-end;
+    align-items: center; /* PCでは中央、スマホでは下から出すためにJSと連携 */
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: rgba(0,0,0,0.3);
-    z-index: 2000; /* CRITICAL BUG FIX: Ensure modal is on top of everything */
+    z-index: 2000; /* 全ての要素より手前に表示 */
     transition: opacity 0.3s ease;
 }
 .modal-overlay.active {
@@ -349,135 +413,139 @@ header h1 {
 
 .modal-content {
     background-color: var(--glass-bg);
-    border-radius: var(--border-radius-l);
+    border-radius: var(--border-radius-xl);
     box-shadow: 0 20px 60px -10px var(--shadow-color), inset 0 0 0 1px var(--glass-border);
     color: var(--text-primary);
     max-width: 550px;
-    width: 100%;
-    border-top: 1px solid var(--glass-border);
-    animation: slideInModalFromBottom 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    width: 90%;
+    animation: slideInModalFromCenter 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
     max-height: 90vh;
     display: flex;
     flex-direction: column;
 }
-.modal-header { border-bottom: 1px solid var(--glass-border); padding: 16px; }
-.settings-body { overflow-y: auto; flex-grow: 1; padding: 16px; }
-.settings-section h3 { color: var(--text-secondary); }
-#languageSelect, .theme-switch .slider {
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 16px;
+}
+.modal-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin:0;
+}
+
+.settings-body {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 16px;
+}
+.settings-section { margin-bottom: 24px; }
+.settings-section:last-child { margin-bottom: 8px; }
+
+.settings-section h3 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px 0;
+    min-height: 44px;
+}
+.setting-item label {
+    font-size: 1rem;
+    flex-grow:1;
+    margin-right:12px;
+}
+
+#clearChatModalButton {
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-m);
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+#clearChatModalButton:hover {
+    background-color: #FF6B6B;
+    transform: scale(1.05);
+}
+#clearChatModalButton:active {
+    transform: scale(0.95);
+}
+
+/* --- 9. UIコンポーネント（トグルスイッチ等） --- */
+#languageSelect {
     background-color: rgba(0,0,0,0.1);
     color: var(--text-primary);
     border: 1px solid var(--glass-border);
-}
-input:checked + .slider { background-color: var(--current-accent-green); border-color: transparent; }
-
-/* --- Fallback / Compatibility Styles --- */
-.user-message { align-items: flex-end; }
-.bot-message { align-items: flex-start; }
-.message-content-wrapper { display: flex; align-items: flex-end; width: 100%; }
-.user-message .message-bubble { margin-left: auto; }
-.bot-message .message-bubble { margin-right: auto; }
-.copy-btn { color: var(--text-secondary); }
-.copy-btn:hover { background-color: rgba(255,255,255,0.1); }
-.typing-indicator-bubble {
-    background: var(--bot-bubble-bg) !important;
-    box-shadow: 0 4px 12px -2px var(--shadow-color), inset 0 1px 1px 0 var(--glass-highlight);
+    border-radius: 8px;
+    padding: 8px;
 }
 
-/* Base functional styles from original CSS, kept for compatibility */
-.modal-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-.modal-header h2 { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin:0; }
-.settings-section { margin-bottom: 24px; } .settings-section:last-child { margin-bottom: 8px; }
-.settings-section h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-.setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 0; min-height: 44px; }
-.setting-item label { font-size: 1rem; color: var(--text-primary); flex-grow:1; margin-right:12px; }
-/*#clearChatModalButton { background-color: var(--current-accent-red); color: white; border: none; }*/
-#clearChatModalButton {
-    background-color: var(--current-accent-red);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius-m); /* 角を丸くする */
-    padding: 10px 16px; /* 少し余白を増やす */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション用 */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 51px;
+    height: 31px;
+    flex-shrink:0;
 }
-
-#clearChatModalButton:hover {
-    background-color: #FF6B6B; /* ホバー時の色を少し明るくする */
-    transform: scale(1.05); /* ホバー時に少し拡大 */
-}
-
-#clearChatModalButton:active {
-    transform: scale(0.95); /* クリック時に少し縮小 */
-}
-.theme-switch { position: relative; display: inline-block; width: 51px; height: 31px; flex-shrink:0; }
 .theme-switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; transition: .3s; border-radius: 31px; }
-.slider:before { position: absolute; content: ""; height: 27px; width: 27px; left: 1px; bottom: 1px; background-color: white; transition: .3s cubic-bezier(0.25, 0.1, 0.25, 1); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: .3s;
+    border-radius: 31px;
+    background-color: rgba(0,0,0,0.1);
+    border: 1px solid var(--glass-border);
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 27px; width: 27px;
+    left: 1px; bottom: 1px;
+    background-color: white;
+    transition: .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+input:checked + .slider { background-color: var(--accent-green); border-color: transparent; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-@keyframes slideInModalFromBottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@media (min-width: 768px) { .modal-content { border-radius: var(--border-radius-l); animation: slideInModalFromCenter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); } }
-@keyframes slideInModalFromCenter { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
-
-
-/* ライトモードの文字の視認性を上げるための影を追加 */
-body.light-mode .message-bubble {
-    text-shadow: 0px 1px 3px rgba(50, 50, 50, 0.2);
-}
-
-body.light-mode .setting-item label, 
-body.light-mode .settings-section h3 {
-    text-shadow: 0px 1px 3px rgba(80, 80, 80, 0.15);
-}
-
-/* 入力欄のプレースホルダー文字色を個別に設定 */
-#userInput::placeholder {
-    color: #aaaaaa; /* ダークモード時の色 */
-}
-
-body.light-mode #userInput::placeholder {
-    color: #cccccc; /* ライトモード時の色 */
-}
-
-
-/* Material Symbols のフォントが確実に適用されるようにする */
+/* --- 10. Material Symbolsアイコンの強制適用 --- */
+/* アイコンフォントが確実に表示されるように !important を使用 */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined' !important;
-  font-weight: normal !important;
-  font-style: normal !important;
-  font-size: 28px !important; /* ボタンサイズに合わせて調整 */
-  line-height: 1 !important;
-  letter-spacing: normal !important;
-  text-transform: none !important;
-  white-space: nowrap !important;
-  word-wrap: normal !important;
-  direction: ltr !important;
-  -webkit-font-smoothing: antialiased !important;
-  text-rendering: optimizeLegibility !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  font-feature-settings: 'liga' !important;
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-size: 26px !important;
+    line-height: 1 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    word-wrap: normal !important;
+    direction: ltr !important;
+    -webkit-font-smoothing: antialiased !important;
+    text-rendering: optimizeLegibility !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-feature-settings: 'liga' !important;
 }
 
-
-/* Material Symbols のフォントが確実に適用されるようにする */
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined' !important; /* 最も重要 */
-  font-weight: normal !important;
-  font-style: normal !important;
-  font-size: 28px !important; /* ボタンサイズに合わせて調整 */
-  line-height: 1 !important;
-  letter-spacing: normal !important;
-  text-transform: none !important;
-  white-space: nowrap !important;
-  word-wrap: normal !important;
-  direction: ltr !important;
-  -webkit-font-smoothing: antialiased !important;
-  text-rendering: optimizeLegibility !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  font-feature-settings: 'liga' !important; /* リガチャー機能を強制的に有効化 */
+/* --- 11. モーダルのアニメーション --- */
+@keyframes slideInModalFromCenter {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
 }
-
-
-
-
-
