@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ChatYMS - v3.0</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+
     <div id="chatContainer" aria-live="polite">
+        
         <header>
             <h1 id="chatTitle">ChatYMS</h1>
             <div class="header-controls">
                 <button id="settingsButton" class="icon-button" title="設定" aria-label="設定を開く">
-                    <span class="material-symbols-outlined">
-                        settings
-                    </span>
+                    <span class="material-symbols-outlined">settings</span>
                 </button>
             </div>
         </header>
@@ -30,28 +34,30 @@
         <footer>
             <div class="input-area">
                 <input type="text" id="userInput" placeholder="メッセージを入力..." aria-label="メッセージ入力欄">
-                <button id="sendMessage" aria-label="メッセージを送信">
-                    </button>
+                <button id="sendMessage" aria-label="メッセージを送信"></button>
             </div>
         </footer>
+
         <button id="scrollToBottomButton" title="一番下へスクロール" aria-label="一番下へスクロール">↓</button>
 
         <div id="settingsModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="settingsModalTitle" aria-modal="true">
             <div class="modal-content" role="document">
+                
                 <div class="modal-header">
                     <h2 id="settingsModalTitle">設定</h2>
-                    <button id="closeModalButton" class="icon-button close-modal-btn" aria-label="設定を閉じる">
-                        </button>
+                    <button id="closeModalButton" class="icon-button close-modal-btn" aria-label="設定を閉じる"></button>
                 </div>
+
                 <div class="settings-body">
+                    
                     <div class="settings-section">
                         <h3 id="themeSettingsTitle">表示テーマ</h3>
                         <div class="setting-item">
                             <label for="themeToggleButtonModal" id="themeLabelModal">ダークモード / ライトモード</label>
-                            <button id="themeToggleButtonModal" class="icon-button" aria-labelledby="themeLabelModal" aria-pressed="false" title="テーマを切り替え">
-                                </button>
+                            <button id="themeToggleButtonModal" class="icon-button" aria-labelledby="themeLabelModal" aria-pressed="false" title="テーマを切り替え"></button>
                         </div>
                     </div>
+
                     <div class="settings-section">
                         <h3 id="sendOptionsTitle">送信オプション</h3>
                         <div class="setting-item">
@@ -64,7 +70,8 @@
                             </div>
                         </div>
                     </div>
-                     <div class="settings-section">
+                    
+                    <div class="settings-section">
                         <h3 id="languageSettingsTitle">言語 / Language</h3>
                         <div class="setting-item">
                             <label for="languageSelect" id="languageSelectLabel">表示言語:</label>
@@ -74,24 +81,25 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div class="settings-section">
                         <h3 id="chatOperationsTitle">チャット操作</h3>
-                         <button id="clearChatModalButton" aria-label="会話履歴をクリアする">会話履歴をクリア</button>
+                        <button id="clearChatModalButton" aria-label="会話履歴をクリアする">会話履歴をクリア</button>
                     </div>
+
                     <div class="settings-section">
                         <h3 id="precautionsTitle">注意事項</h3>
                         <p class="precaution-item" role="note" id="precaution1"></p>
                         <p class="precaution-item" role="note" id="precaution2"></p>
-                        <p class="precaution-item" role="note" id="precaution3"></p>
-                        <p class="precaution-item" role="note" id="precaution4"></p>
-                        <p class="precaution-item" role="note" id="precaution5"></p>
                     </div>
+
                     <div class="settings-section app-info-section">
                         <h3 id="appInfoTitle">情報</h3>
                         <p class="app-version-info" id="appVersion"></p>
                         <p class="app-release-date" id="appReleaseDate"></p>
                         <p class="app-developer-info" id="appDeveloperInfo"></p>
                     </div>
+
                 </div>
             </div>
         </div>
