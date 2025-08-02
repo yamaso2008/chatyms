@@ -30,7 +30,7 @@ const sendSVG = `<svg viewBox="0 0 24 24" fill="currentColor" transform="rotate(
 
 // --- 3. API設定とグローバル変数 ---
 // Gemini APIの設定と、アプリケーション全体で利用する変数を定義します。
-const API_KEY = 'YOUR_API_KEY'; // ※注意: このキーはサンプルです。実際のキーに置き換えてください。
+const API_KEY = 'AIzaSyB2R4PVr5xgHlivkgz7kSBqNRJy6Ev434Y'; // ※注意: このキーはサンプルです。実際のキーに置き換えてください。
 const API_URL_STREAM = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:streamGenerateContent?key=${API_KEY}&alt=sse`;
 const HISTORY_STORAGE_KEY = 'chatyms_history'; // ローカルストレージに保存する際のキー
 
@@ -641,3 +641,4 @@ if (chatContainerForEffect) {
         chatContainerForEffect.style.setProperty('--mouse-y', `50%`);
     });
 }
+
